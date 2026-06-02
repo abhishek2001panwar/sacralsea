@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 interface FooterLink {
@@ -61,7 +62,12 @@ const Footer: React.FC = () => {
           {/* Brand/Bio Column */}
           <div className="lg:col-span-4 flex flex-col gap-6">
             <h3 className="font-serif text-xl md:text-2xl tracking-wide font-medium">
-              Sacral<span className="text-[#c5a880]">Sea</span>
+             <Image             src="/logo.png"
+                alt="SacralSea Logo"
+                width={150}
+                height={50}
+                className="object-contain"
+                />
             </h3>
             <p className="text-neutral-500 font-sans text-xs md:text-sm leading-relaxed max-w-sm tracking-wide">
               We build brands, campaigns, and digital experiences for companies that refuse to be ordinary.

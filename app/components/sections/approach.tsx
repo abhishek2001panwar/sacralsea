@@ -31,7 +31,7 @@ const approaches = [
 
 export default function OurApproach() {
   return (
-    <section id='approach' className="relative bg-[#0C0C0A] text-white py-32 overflow-hidden">
+    <section id='about' className="relative bg-[#0C0C0A] text-white py-32 overflow-hidden">
 
       {/* Soft Grid */}
       <div className="absolute inset-0 opacity-[0.03]

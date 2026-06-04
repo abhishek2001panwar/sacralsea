@@ -1,75 +1,99 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Menu, X } from 'lucide-react';
 
 export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const menuItems = [
+    { href: '/#services', label: 'Services' },
+    { href: '/#industries', label: 'Industries' },
+    { href: '/#work', label: 'Work' },
+    { href: '/#about', label: 'About' },
+  ];
+
   return (
-    <header className="sticky top-0 z-50 bg-black/95 backdrop-blur-md ">
-      <nav className="h-20 px-14 flex items-center justify-between">
+    <header className="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-white/5">
+      <nav className="h-16 px-[clamp(1rem,3vw,3.5rem)] flex items-center justify-between">
         {/* Logo */}
-        <Link
-          href="/"
-          className="text-[#F2E5C0] text-2xl font-serif tracking-wide"
-        >
-        <Image 
+        <Link href="/" className="flex-shrink-0">
+          <Image 
             src="/logo.png" 
             alt="SacralSea Logo"
-            width={120}
-            height={40}
-            className="object-contain"
-            />
+            width={140}
+            height={42}
+            className="object-contain w-40 h-10"
+          />
         </Link>
 
-        {/* Menu */}
-        <div className="flex items-center gap-12">
-          <Link
-            href="/#services"
-            className="text-[10px] uppercase tracking-[0.2em] text-[#B8B6AF] hover:text-[#D8C08A] transition"
-          >
-            Services
-          </Link>
-
-          <Link
-            href="/#industries"
-            className="text-[10px] uppercase tracking-[0.2em] text-[#B8B6AF] hover:text-[#D8C08A] transition"
-          >
-            Industries
-          </Link>
-
-          <Link
-            href="/#work"
-            className="text-[10px] uppercase tracking-[0.2em] text-[#B8B6AF] hover:text-[#D8C08A] transition"
-          >
-            Work
-          </Link>
-
-          <Link
-            href="/#about"
-            className="text-[10px] uppercase tracking-[0.2em] text-[#B8B6AF] hover:text-[#D8C08A] transition"
-          >
-            About
-          </Link>
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center gap-8 lg:gap-12">
+          {menuItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="text-[clamp(0.625rem,0.6vw,0.875rem)] uppercase tracking-[0.2em] text-[#B8B6AF] hover:text-[#D8C08A] transition duration-200"
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
 
-        {/* Button */}
+        {/* Desktop CTA Button */}
         <Link
           href="/contact"
-          className="
-            px-5
-            py-2
-            bg-[#D2B47A]
-            text-black
-            text-[10px]
-            uppercase
-            tracking-[0.25em]
-            hover:bg-[#e0c58f]
-            transition
-          "
+          className="hidden md:block px-[clamp(.5rem,1.4vw,1.25rem)] py-2 bg-[#D2B47A] text-black text-[clamp(0.625rem,0.8vw,0.875rem)] uppercase tracking-[0.25em] hover:bg-[#e0c58f] transition duration-200 flex-shrink-0"
         >
           Start A Project
         </Link>
+
+        {/* Mobile Hamburger Button */}
+        <button
+          onClick={toggleMenu}
+          className="md:hidden p-2 text-[#B8B6AF] hover:text-[#D8C08A] transition"
+          aria-label="Toggle menu"
+        >
+          {isOpen ? (
+            <X size={24} />
+          ) : (
+            <Menu size={24} />
+          )}
+        </button>
       </nav>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden absolute top-16 left-0 right-0 bg-black/95 backdrop-blur-md border-b border-white/5 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="px-[clamp(1rem,3vw,3.5rem)] py-6 flex flex-col gap-6">
+            {menuItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-sm uppercase tracking-[0.2em] text-[#B8B6AF] hover:text-[#D8C08A] transition duration-200"
+                onClick={() => setIsOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
+
+            {/* Mobile CTA Button */}
+            <Link
+              href="/contact"
+              className="w-full px-4 py-3 bg-[#D2B47A] text-black text-[12px] uppercase tracking-[0.25em] text-center hover:bg-[#e0c58f] transition duration-200"
+              onClick={() => setIsOpen(false)}
+            >
+              Start A Project
+            </Link>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

@@ -122,13 +122,9 @@ export default function ServicesSection() {
         </div>
 
         {/* Decorative Circle */}
-        <div className="hidden lg:block absolute right-72 bottom-[-20px]">
-          <div className="w-12 h-12 rounded-full border border-[#c7a86d]" />
-        </div>
+       
 
-        <div className="hidden lg:block absolute right-96 bottom-20">
-          <div className="w-3 h-3 rounded-full bg-[#c7a86d]" />
-        </div>
+      
       </div>
     </section>
   );

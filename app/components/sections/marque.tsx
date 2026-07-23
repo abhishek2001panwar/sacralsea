@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const BrandMarquee: React.FC = () => {
@@ -17,6 +18,7 @@ const BrandMarquee: React.FC = () => {
     "Craftlane",
   ];
 
+  const router = useRouter();
   // Reverse the same brands for second row
   const reversedBrands = [...brands].reverse();
 
@@ -61,11 +63,11 @@ const BrandMarquee: React.FC = () => {
 
         {/* Left Fade */}
 
-        <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-[#0d0d0c] to-transparent sm:w-40 lg:w-64" />
+        <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-[#0d0d0c] to-transparent sm:w-40 lg:w-84" />
 
         {/* Right Fade */}
 
-        <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-[#0d0d0c] to-transparent sm:w-40 lg:w-64" />
+        <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-[#0d0d0c] to-transparent sm:w-40 lg:w-84" />
 
 
         {/* =====================================
@@ -140,7 +142,9 @@ const BrandMarquee: React.FC = () => {
 
       <div className="mt-20 flex justify-center">
 
-        <button className="group flex items-center gap-5">
+        <button onClick={() => {
+          router.push('/#contact');
+        }} className="group flex items-center gap-5">
 
           <span className="flex h-12 w-12 items-center justify-center rounded-full border border-[#c5a880] text-[#c5a880] transition-all duration-500 group-hover:bg-[#c5a880] group-hover:text-[#0d0d0c]">
 

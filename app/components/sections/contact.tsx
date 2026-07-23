@@ -278,6 +278,7 @@ export default function InteractiveContactSection() {
   return (
     <section
       ref={containerRef}
+      id="contact"
       className="relative min-h-[250vh] bg-[#0a0a09] font-sans text-[#fbfaf7] selection:bg-[#c5a880] selection:text-[#0a0a09]"
     >
       {/* Sticky Viewport Container */}

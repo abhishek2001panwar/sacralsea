@@ -1,0 +1,504 @@
+"use client";
+
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Plus,
+  ArrowUpRight,
+  Sparkles,
+  Layers,
+  Compass,
+  Briefcase,
+  Users,
+} from "lucide-react";
+
+/* ============================================================================
+   TYPES & FAQ DATA
+   ============================================================================ */
+
+interface FAQItem {
+  id: string;
+  number: string;
+  question: string;
+  answer: string;
+  visualType: "strategy" | "signals" | "project" | "team";
+}
+
+const faqData: FAQItem[] = [
+  {
+    id: "1",
+    number: "01",
+    question: "Why do businesses hire a creative agency?",
+    answer:
+      "Businesses hire creative agencies to gain specialized expertise, fresh external perspectives, and high-impact strategies that elevate their brand presence. Partnering with an agency allows companies to scale faster while focusing on their core operational strengths.",
+    visualType: "strategy",
+  },
+  {
+    id: "2",
+    number: "02",
+    question: "How do I know if my business needs a creative agency?",
+    answer:
+      "You likely need a creative agency if your current branding feels outdated, marketing efforts lack consistent performance, or your in-house team is stretched thin. It becomes essential when you want to launch a new product or rebrand with precision and speed.",
+    visualType: "signals",
+  },
+  {
+    id: "3",
+    number: "03",
+    question: "Can I hire a creative agency for a single project instead of ongoing work?",
+    answer:
+      "Yes, creative agencies frequently offer project-based engagements tailored to specific goals like a website redesign or brand campaign. This provides flexibility to achieve high-value outcomes without committing to a long-term retainer.",
+    visualType: "project",
+  },
+  {
+    id: "4",
+    number: "04",
+    question: "Who works at a creative agency?",
+    answer:
+      "A creative agency is powered by a multidisciplinary team including Creative Directors, Designers, Copywriters, Account Representatives, and Researchers. Together, these specialists blend strategic research, compelling narrative, and cutting-edge visual design to drive results.",
+    visualType: "team",
+  },
+];
+
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+/* ============================================================================
+   ANIMATION VARIANTS
+   ============================================================================ */
+
+// Container variant for word-by-word answer animation
+const wordContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.025,
+      delayChildren: 0.1,
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      staggerChildren: 0.01,
+      staggerDirection: -1,
+    },
+  },
+};
+
+// Individual word variant (slides in from left)
+const wordChildVariants = {
+  hidden: {
+    opacity: 0,
+    x: -12,
+    filter: "blur(4px)",
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.4,
+      ease: EASE,
+    },
+  },
+  exit: {
+    opacity: 0,
+    x: -8,
+    filter: "blur(2px)",
+    transition: {
+      duration: 0.2,
+    },
+  },
+};
+
+/* ============================================================================
+   WORD-BY-WORD TEXT ANIMATED COMPONENT
+   ============================================================================ */
+
+const WordByWordText = ({ text }: { text: string }) => {
+  const words = text.split(" ");
+
+  return (
+    <motion.p
+      variants={wordContainerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className="flex flex-wrap gap-x-[0.3em] gap-y-1 text-sm sm:text-base font-light leading-relaxed text-[#a1a09d]"
+    >
+      {words.map((word, index) => (
+        <motion.span
+          key={`${word}-${index}`}
+          variants={wordChildVariants}
+          className="inline-block"
+        >
+          {word}
+        </motion.span>
+      ))}
+    </motion.p>
+  );
+};
+
+/* ============================================================================
+   DYNAMIC MOTION GRAPHIC CANVAS (Per Active FAQ)
+   ============================================================================ */
+
+const DynamicVisualCanvas = ({ activeType }: { activeType: FAQItem["visualType"] }) => {
+  return (
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-3xl border border-[#c5a880]/20 bg-[#121210]/90 backdrop-blur-xl p-8">
+      {/* Background Radial Glow */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(197,168,128,0.12)_0%,transparent_70%)]" />
+
+      {/* Grid Pattern Overlay */}
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:2rem_2rem]" />
+
+      <AnimatePresence mode="wait">
+        {activeType === "strategy" && (
+          <motion.div
+            key="strategy"
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.85 }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="relative flex items-center justify-center"
+          >
+            {/* Concentric Rotating Strategy Rings */}
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+              className="relative h-48 w-48 rounded-full border border-dashed border-[#c5a880]/40 flex items-center justify-center"
+            >
+              <div className="h-32 w-32 rounded-full border border-[#c5a880]/30" />
+            </motion.div>
+            <motion.div
+              animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.9, 0.5] }}
+              transition={{ duration: 3, repeat: Infinity }}
+              className="absolute h-16 w-16 rounded-full bg-[#c5a880]/10 border border-[#c5a880] flex items-center justify-center shadow-[0_0_25px_rgba(197,168,128,0.2)]"
+            >
+              <Layers className="h-7 w-7 text-[#c5a880]" />
+            </motion.div>
+          </motion.div>
+        )}
+
+        {activeType === "signals" && (
+          <motion.div
+            key="signals"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="flex flex-col items-center gap-4"
+          >
+            {/* Radar Pulse Signals */}
+            <div className="relative flex h-36 w-36 items-center justify-center">
+              {[1, 2, 3].map((ring) => (
+                <motion.div
+                  key={ring}
+                  animate={{
+                    scale: [0.6, 1.5],
+                    opacity: [0.8, 0],
+                  }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    delay: ring * 0.6,
+                    ease: "easeOut",
+                  }}
+                  className="absolute inset-0 rounded-full border border-[#c5a880]"
+                />
+              ))}
+              <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-[#c5a880] text-[#0a0a09]">
+                <Compass className="h-7 w-7" />
+              </div>
+            </div>
+            <span className="font-mono text-xs uppercase tracking-widest text-[#c5a880]">
+              Diagnostic Radar
+            </span>
+          </motion.div>
+        )}
+
+        {activeType === "project" && (
+          <motion.div
+            key="project"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="w-full space-y-4 max-w-xs"
+          >
+            {/* Project Task Timeline Motion */}
+            <div className="flex items-center gap-3">
+              <div className="h-3 w-3 rounded-full bg-[#c5a880]" />
+              <div className="h-2 flex-1 rounded-full bg-[#c5a880]/20 overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 1.2, ease: EASE }}
+                  className="h-full bg-[#c5a880]"
+                />
+              </div>
+              <span className="font-mono text-[10px] text-[#c5a880]">100%</span>
+            </div>
+
+            <div className="p-4 rounded-xl border border-[#c5a880]/30 bg-[#0a0a09]/80 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs text-[#fbfaf7]">Single Sprint</span>
+                <Briefcase className="h-4 w-4 text-[#c5a880]" />
+              </div>
+              <div className="h-1.5 w-3/4 rounded-full bg-[#c5a880]/20" />
+              <div className="h-1.5 w-1/2 rounded-full bg-[#c5a880]/10" />
+            </div>
+          </motion.div>
+        )}
+
+        {activeType === "team" && (
+          <motion.div
+            key="team"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="relative flex items-center justify-center"
+          >
+            {/* Team Orbit Nodes */}
+            <div className="relative flex h-40 w-40 items-center justify-center">
+              <Users className="h-8 w-8 text-[#c5a880] relative z-10" />
+              {[0, 72, 144, 216, 288].map((deg, i) => (
+                <motion.div
+                  key={i}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                  className="absolute h-full w-full"
+                >
+                  <motion.div
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                    className="h-4 w-4 rounded-full border border-[#c5a880] bg-[#c5a880]/30 shadow-[0_0_10px_#c5a880]"
+                    style={{
+                      position: "absolute",
+                      top: "0%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+/* ============================================================================
+   MAIN FAQ COMPONENT
+   ============================================================================ */
+
+export default function FAQ() {
+  const [openId, setOpenId] = useState<string>("1");
+
+  const activeFAQ = faqData.find((item) => item.id === openId) || faqData[0];
+
+  const toggleAccordion = (id: string) => {
+    setOpenId(openId === id ? "" : id);
+  };
+
+  return (
+    <section className="relative min-h-screen bg-[#0a0a09] font-sans text-[#fbfaf7] py-20 lg:py-32 selection:bg-[#c5a880] selection:text-[#0a0a09]">
+      {/* Background Ambient Glow */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(197,168,128,0.06)_0%,transparent_60%)]" />
+
+      <div className="relative z-10 mx-auto w-full max-w-8xl px-6 lg:px-12">
+        
+        {/* HEADER SECTION - ON VIEW ANIMATIONS */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: EASE }}
+          className="mb-16 lg:mb-20"
+        >
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1, ease: EASE }}
+            className="flex items-center gap-3"
+          >
+            <Sparkles className="h-4 w-4 text-[#c5a880]" />
+            <span className="font-mono text-xs uppercase tracking-[0.35em] text-[#c5a880]">
+              Most Asked, Always Answered
+            </span>
+          </motion.div>
+          
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
+            className="mt-4 text-4xl font-extralight tracking-tight sm:text-6xl lg:text-7xl"
+          >
+            Frequently Asked <span className="font-serif italic text-[#c5a880]">Questions</span>
+          </motion.h2>
+        </motion.div>
+
+        {/* FAQ ACCORDION + MOTION GRAPHIC GRID */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          
+          {/* ACCORDION LIST (LEFT COLUMN) */}
+          <div className="lg:col-span-7 space-y-4">
+            {faqData.map((item, index) => {
+              const isOpen = openId === item.id;
+
+              return (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 25 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.6, delay: index * 0.1, ease: EASE }}
+                  className={`
+                    group relative overflow-hidden rounded-2xl border transition-colors duration-500
+                    ${
+                      isOpen
+                        ? "border-[#c5a880]/60 bg-[#121210]/90 shadow-[0_0_30px_rgba(197,168,128,0.1)]"
+                        : "border-[#c5a880]/15 bg-[#121210]/30 hover:border-[#c5a880]/40"
+                    }
+                  `}
+                >
+                  {/* TRIGGER HEADER */}
+                  <button
+                    onClick={() => toggleAccordion(item.id)}
+                    className="flex w-full items-center justify-between p-6 sm:p-8 text-left outline-none cursor-pointer"
+                  >
+                    <div className="flex items-center gap-6 pr-4">
+                      {/* Dynamic Number Shifting */}
+                      <motion.span
+                        animate={{
+                          color: isOpen ? "#c5a880" : "#a1a09d",
+                          scale: isOpen ? 1.1 : 1,
+                        }}
+                        transition={{ duration: 0.4 }}
+                        className="font-mono text-base font-light tracking-wider"
+                      >
+                        {item.number}
+                      </motion.span>
+
+                      {/* Question Text */}
+                      <h3
+                        className={`text-lg sm:text-xl font-light transition-colors duration-500 ${
+                          isOpen ? "text-[#fbfaf7]" : "text-[#a1a09d] group-hover:text-[#fbfaf7]"
+                        }`}
+                      >
+                        {item.question}
+                      </h3>
+                    </div>
+
+                    {/* ENHANCED CIRCULAR TOGGLE BUTTON WITH RIPPLE & ROTATION */}
+                    <motion.div
+                      whileHover={{ scale: 1.08 }}
+                      whileTap={{ scale: 0.94 }}
+                      className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full"
+                    >
+                      {/* Expanding Background Circle Fill */}
+                      <motion.div
+                        initial={false}
+                        animate={{
+                          scale: isOpen ? 1 : 0,
+                          opacity: isOpen ? 1 : 0,
+                        }}
+                        transition={{ duration: 0.4, ease: EASE }}
+                        className="absolute inset-0 rounded-full bg-[#c5a880] shadow-[0_0_15px_rgba(197,168,128,0.4)]"
+                      />
+
+                      {/* Static Outline Circle */}
+                      <motion.div
+                        animate={{
+                          borderColor: isOpen ? "#c5a880" : "rgba(197, 168, 128, 0.3)",
+                        }}
+                        transition={{ duration: 0.3 }}
+                        className="absolute inset-0 rounded-full border group-hover:border-[#c5a880]"
+                      />
+
+                      {/* Animated Plus / Cross Icon */}
+                      <motion.div
+                        animate={{
+                          rotate: isOpen ? 135 : 0,
+                          color: isOpen ? "#0a0a09" : "#c5a880",
+                        }}
+                        transition={{ duration: 0.5, ease: EASE }}
+                        className="relative z-10"
+                      >
+                        <Plus className="h-5 w-5" />
+                      </motion.div>
+                    </motion.div>
+                  </button>
+
+                  {/* KINETIC DRAWING ACCENT LINE */}
+                  {isOpen && (
+                    <motion.div
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ duration: 0.6, ease: EASE }}
+                      className="h-[1px] w-full origin-left bg-gradient-to-r from-transparent via-[#c5a880]/50 to-transparent"
+                    />
+                  )}
+
+                  {/* EXPANDABLE ANSWER BODY WITH WORD-BY-WORD ANIMATION */}
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.5, ease: EASE }}
+                        className="overflow-hidden"
+                      >
+                        <div className="p-6 sm:p-8 pt-4 sm:pt-4">
+                          <WordByWordText text={item.answer} />
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* DYNAMIC MOTION GRAPHIC DISPLAY (RIGHT COLUMN) */}
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
+            className="hidden lg:block lg:col-span-5 sticky top-28 h-[420px]"
+          >
+            <DynamicVisualCanvas activeType={activeFAQ.visualType} />
+          </motion.div>
+
+        </div>
+
+        {/* BOTTOM HUD HELP */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4, ease: EASE }}
+          className="mt-16 border-t border-[#c5a880]/15 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs uppercase tracking-widest text-[#a1a09d]/60"
+        >
+          <span>Still have questions?</span>
+          <motion.a
+            whileHover={{ x: 3 }}
+            transition={{ duration: 0.2 }}
+            href="#contact"
+            className="flex items-center gap-1.5 text-[#c5a880] hover:underline"
+          >
+            <span>Speak directly with our strategy team</span>
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </motion.a>
+        </motion.div>
+
+      </div>
+    </section>
+  );
+}

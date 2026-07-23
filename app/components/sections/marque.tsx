@@ -1,66 +1,210 @@
-import React from 'react';
+"use client";
+
+import React from "react";
 
 const BrandMarquee: React.FC = () => {
-  const brands: string[] = [
-    'Luminary',
-    'Axion Labs',
-    'Verdant',
-    'Northpeak',
-    'Solace AI',
-    'Meridian',
-    'Drift & Co',
-    'Harbour'
+  const brands = [
+    "Japri",
+    "Valens",
+    "Ecofira",
+    "Whimsikidz",
+    "Volvo",
+    "Gymbaby",
+    "EHS",
+    "Mineha",
+    "Stalwart Elevators",
+    "Design Ace",
+    "Craftlane",
   ];
 
-  // We duplicate the list to ensure there's no visible "pop" or gap when the animation loops
-  const duplicatedBrands = [...brands, ...brands, ...brands];
+  // Reverse the same brands for second row
+  const reversedBrands = [...brands].reverse();
+
+  // Duplicate for seamless looping
+  const rowOne = [...brands, ...brands, ...brands];
+
+  const rowTwo = [
+    ...reversedBrands,
+    ...reversedBrands,
+    ...reversedBrands,
+  ];
 
   return (
-    <div className="bg-[#121211] w-full py-10 overflow-hidden border-y border-neutral-900/60 relative flex items-center select-none">
-      
-      {/* Left Gradient Fade Overlay for Premium Blend */}
-      <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-48 bg-gradient-to-r from-[#121211] to-transparent z-10 pointer-events-none" />
-      
-      {/* Right Gradient Fade Overlay for Premium Blend */}
-      <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-48 bg-gradient-to-l from-[#121211] to-transparent z-10 pointer-events-none" />
+    <section className="relative w-full overflow-hidden bg-[#0d0d0c] py-24 text-[#fbfaf7] sm:py-32">
 
-      {/* Marquee Container Tracking Layer */}
-      <div className="flex whitespace-nowrap min-w-full shrink-0 items-center justify-around gap-12 animate-marquee">
-        {duplicatedBrands.map((brand, idx) => (
-          <div key={idx} className="flex items-center gap-12 shrink-0">
-            {/* Elegant Serif Brand Item */}
-            <span className=" text-xl sm:text-2xl md:text-3xl text-neutral-400 font-light tracking-wide transition-colors duration-300 hover:text-[#c5a880]">
-              {brand}
-            </span>
-            
-            {/* Premium Gold Muted Diamond Separator */}
-            <span className="text-[#c5a880]/40 text-xs sm:text-sm select-none font-sans">
-              ◆
-            </span>
-          </div>
-        ))}
+      {/* =========================================
+          HEADER
+      ========================================== */}
+
+      <div className="mx-auto mb-16 max-w-[1600px] px-5 sm:px-8 lg:px-12">
+
+        <div className="flex items-center gap-4">
+
+          <span className="h-px w-8 bg-[#c5a880]" />
+
+          <span className="text-[10px] uppercase tracking-[0.3em] text-[#c5a880]">
+            Brands and us
+          </span>
+
+          <span className="hidden h-px flex-1 bg-[#c5a880]/15 sm:block" />
+
+        </div>
+
       </div>
 
-      {/* Tailwind Custom Keyframes Injection */}
-      <style>{`
-        @keyframes marquee {
-          0% {
-            transform: translateX(0%);
+
+      {/* =========================================
+          MARQUEE
+      ========================================== */}
+
+      <div className="relative">
+
+        {/* Left Fade */}
+
+        <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-[#0d0d0c] to-transparent sm:w-40 lg:w-64" />
+
+        {/* Right Fade */}
+
+        <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-[#0d0d0c] to-transparent sm:w-40 lg:w-64" />
+
+
+        {/* =====================================
+            ROW 1
+        ====================================== */}
+
+        <div className="mb-8 flex w-max animate-marquee-left">
+
+          {rowOne.map((brand, index) => (
+
+            <div
+              key={`row-one-${index}`}
+              className="group flex shrink-0 items-center"
+            >
+
+              <span className="px-8 font-serif text-3xl font-light tracking-tight text-[#77736c] transition-colors duration-500 group-hover:text-[#c5a880] sm:px-12 sm:text-4xl md:text-5xl lg:px-16 lg:text-6xl">
+
+                {brand}
+
+              </span>
+
+              <span className="text-xs text-[#c5a880]/40 transition-transform duration-500 group-hover:rotate-45">
+
+                ◆
+
+              </span>
+
+            </div>
+
+          ))}
+
+        </div>
+
+
+        {/* =====================================
+            ROW 2 — REVERSED
+        ====================================== */}
+
+        <div className="flex w-max animate-marquee-right">
+
+          {rowTwo.map((brand, index) => (
+
+            <div
+              key={`row-two-${index}`}
+              className="group flex shrink-0 items-center"
+            >
+
+              <span className="px-8 font-serif text-3xl font-light tracking-tight text-[#77736c] transition-colors duration-500 group-hover:text-[#c5a880] sm:px-12 sm:text-4xl md:text-5xl lg:px-16 lg:text-6xl">
+
+                {brand}
+
+              </span>
+
+              <span className="text-xs text-[#c5a880]/40 transition-transform duration-500 group-hover:rotate-45">
+
+                ◆
+
+              </span>
+
+            </div>
+
+          ))}
+
+        </div>
+
+      </div>
+
+
+      {/* =========================================
+          CTA
+      ========================================== */}
+
+      <div className="mt-20 flex justify-center">
+
+        <button className="group flex items-center gap-5">
+
+          <span className="flex h-12 w-12 items-center justify-center rounded-full border border-[#c5a880] text-[#c5a880] transition-all duration-500 group-hover:bg-[#c5a880] group-hover:text-[#0d0d0c]">
+
+            <span className="text-lg transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1">
+              ↗
+            </span>
+
+          </span>
+
+          <span className="relative text-[10px] uppercase tracking-[0.3em] text-[#c5a880]">
+
+            Understand us better
+
+            <span className="absolute -bottom-2 left-0 h-px w-0 bg-[#c5a880] transition-all duration-500 group-hover:w-full" />
+
+          </span>
+
+        </button>
+
+      </div>
+
+
+      {/* =========================================
+          ANIMATIONS
+      ========================================== */}
+
+      <style jsx>{`
+
+        @keyframes marqueeLeft {
+          from {
+            transform: translateX(0);
           }
-          100% {
+
+          to {
             transform: translateX(-33.333%);
           }
         }
-        .animate-marquee {
-          animation: marquee 25s linear infinite;
+
+        @keyframes marqueeRight {
+          from {
+            transform: translateX(-33.333%);
+          }
+
+          to {
+            transform: translateX(0);
+          }
         }
-        /* Optional: slow down marquee when users hover over it */
-        .animate-marquee:hover {
+
+        .animate-marquee-left {
+          animation: marqueeLeft 65s linear infinite;
+        }
+
+        .animate-marquee-right {
+          animation: marqueeRight 65s linear infinite;
+        }
+
+        .animate-marquee-left:hover,
+        .animate-marquee-right:hover {
           animation-play-state: paused;
         }
+
       `}</style>
 
-    </div>
+    </section>
   );
 };
 

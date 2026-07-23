@@ -11,22 +11,35 @@ import StatsGrid from './components/sections/stats'
 import CallToAction from './components/sections/cta'
 import Footer from './components/sections/footer'
 import BrandMarquee from './components/sections/marque'
+import WhyCollaborate from './components/sections/whycollaborate'
+import WhatWeOffer from './components/sections/whatweoffer'
+import PerformanceStats from './components/sections/performancestats'
+import InteractiveContactSection from './components/sections/contact'
+import FAQ from './components/sections/faq'
+import HeroNewSection from './components/sections/heronew'
+import SideScroller from './components/sidescroll'
 
 function page() {
   return (
     <div>
       
       <>
+      
       <Navbar />
-      <HeroSection />
+      <HeroNewSection />
+      <WhyCollaborate />
       <BrandMarquee />
-      <ServicesSection />
+      <WhatWeOffer />
+      <PerformanceStats />
+      <Testiminial />
+      <InteractiveContactSection />
+      <FAQ />
+      {/* <ServicesSection />
       <SelectedWork />
       <OurApproach />
       <IndustriesSection />
-      <Testiminial />
       <StatsGrid/>
-      <CallToAction />
+      <CallToAction /> */}
       <Footer />
       
       </>

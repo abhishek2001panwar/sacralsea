@@ -23,10 +23,25 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-::-webkit-scrollbar {
-  width: 1px;
+
+
+/* Locomotive Scroll v5 Core Styles */
+html.lenis, html.lenis body {
+  height: auto;
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }

@@ -59,7 +59,7 @@ const services: ServiceItem[] = [
 ];
 
 // Ultra-smooth, fluid easing curve
-const ULTRA_SMOOTH_EASE = [0.25, 1, 0.5, 1];
+const ULTRA_SMOOTH_EASE: [number, number, number, number] = [0.25, 1, 0.5, 1];
 
 /* ============================================================================
    WORD-BY-WORD SCROLL REVEAL COMPONENT FOR HEADERS & PARAGRAPHS

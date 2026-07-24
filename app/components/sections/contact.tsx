@@ -40,7 +40,7 @@ const services: ServiceOption[] = [
   { id: "performance", label: "Performance Growth", icon: TrendingUp },
 ];
 
-const EASE = [0.16, 1, 0.3, 1];
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 /* ============================================================================
    DYNAMIC MOTION GRAPHIC CANVAS (Triggers per Selection)

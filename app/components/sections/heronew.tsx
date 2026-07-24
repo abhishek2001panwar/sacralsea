@@ -173,6 +173,8 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { useRef } from 'react';
 
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
 export default function CinematicHero() {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -219,7 +221,7 @@ export default function CinematicHero() {
       filter: 'blur(0px)',
       transition: {
         duration: 0.8,
-        ease: [0.16, 1, 0.3, 1],
+        ease: EASE,
       },
     },
   };

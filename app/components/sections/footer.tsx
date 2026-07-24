@@ -20,7 +20,7 @@ interface FooterSection {
   links: FooterLink[];
 }
 
-const EASE = [0.16, 1, 0.3, 1];
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const Footer: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);

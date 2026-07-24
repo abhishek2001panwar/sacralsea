@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { ArrowUpRight, Menu, X } from 'lucide-react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -47,7 +49,7 @@ export default function Navbar() {
     <motion.header
       initial={{ y: 0 }}
       animate={{ y: isVisible ? 0 : -100 }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.4, ease: EASE }}
       className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-500 ${
         isScrolled || isOpen
           ? 'bg-black/80 backdrop-blur-md border-b border-white/10 shadow-2xl'

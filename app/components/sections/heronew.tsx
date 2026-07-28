@@ -7,33 +7,31 @@ import { useRef } from 'react';
 // High-end agency quintic ease curve
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-// Parent Container — Controls sequence timing and character stagger
+// Parent Container Variant — Handles clean word staggering with zero DOM bloat
 const sentenceContainer: Variants = {
   hidden: { opacity: 1 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.025, // Delay between each letter
-      delayChildren: 0.2,    // Initial wait before animation begins
+      staggerChildren: 0.08, // Stagger pacing per word
+      delayChildren: 0.2,    // Initial delay before start
     },
   },
 };
 
-// Child Character Variant — Smooth mask reveal with blur & scale
-const letterVariant: Variants = {
+// Word Mask Variant — Smooth upward slide out of a overflow mask
+const wordVariant: Variants = {
   hidden: {
-    y: '110%',
+    y: '100%',
     opacity: 0,
-    scale: 0.9,
-    filter: 'blur(10px)',
+    filter: 'blur(8px)',
   },
   visible: {
     y: '0%',
     opacity: 1,
-    scale: 1,
     filter: 'blur(0px)',
     transition: {
-      duration: 0.9,
+      duration: 0.8,
       ease: EASE,
     },
   },
@@ -44,23 +42,18 @@ interface SmoothWordProps {
   isYellow?: boolean;
 }
 
-// Word Wrapper Component — Uses overflow mask to clip letters cleanly
+// Word Component wrapped in an overflow clipping mask
 const SmoothWord: React.FC<SmoothWordProps> = ({ word, isYellow = false }) => {
   return (
-    <span className="inline-block whitespace-nowrap overflow-hidden py-1">
-      <span className="inline-flex">
-        {word.split('').map((char, index) => (
-          <motion.span
-            key={index}
-            variants={letterVariant}
-            className={`inline-block transform-gpu will-change-transform ${
-              isYellow ? 'text-[#f5c563] font-normal' : ''
-            }`}
-          >
-            {char}
-          </motion.span>
-        ))}
-      </span>
+    <span className="inline-block overflow-hidden py-1">
+      <motion.span
+        variants={wordVariant}
+        className={`inline-block transform-gpu will-change-transform ${
+          isYellow ? 'text-[#f5c563] font-normal' : ''
+        }`}
+      >
+        {word}
+      </motion.span>
     </span>
   );
 };
@@ -92,30 +85,17 @@ export default function CinematicHero() {
         {/* Background Radial Glow */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(255,255,255,0.02),transparent_100%)] z-1" />
 
-        {/* CINEMATIC GRID BACKGROUND LAYER */}
-        {/* <div 
-          className="absolute inset-0 z-0 pointer-events-none opacity-[0.05]"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, #ffffff 1px, transparent 1px),
-              linear-gradient(to bottom, #ffffff 1px, transparent 1px)
-            `,
-            backgroundSize: '2rem 2rem',
-            maskImage: 'radial-gradient(circle at center, black 40%, transparent 85%)',
-            WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 85%)',
-          }}
-        /> */}
-
         {/* VIDEO BACKGROUND */}
         <motion.div 
           style={{ opacity: videoOpacity }}
-          className="absolute inset-0 z-0 pointer-events-none"
+          className="absolute inset-0 z-0 pointer-events-none transform-gpu will-change-transform"
         >
           <video
             autoPlay
             loop
             muted
             playsInline
+            preload="none"
             className="w-full h-full object-cover brightness-95 contrast-105"
           >
             <source src="https://player.vimeo.com/progressive_redirect/playback/1020697798/rendition/720p/file.mp4?loc=external&log_user=0&signature=cd45f23683db91c40f08a3f4a31ba153f1e93eac3d4f98cb3ca4b651b8830d04" type="video/mp4" />
@@ -131,7 +111,7 @@ export default function CinematicHero() {
             y: phase1Y,
             display: useTransform(scrollYProgress, (v) => (v >= 0.35 ? 'none' : 'flex'))
           }}
-          className="relative z-10 w-full max-w-5xl px-6 flex-col items-center justify-between h-[75vh]"
+          className="relative z-10 w-full max-w-5xl px-6 flex-col items-center justify-between h-[75vh] transform-gpu will-change-transform"
         >
           {/* Top Pill Badge */}
           <motion.div
@@ -146,7 +126,7 @@ export default function CinematicHero() {
             </span>
           </motion.div>
 
-          {/* ULTRA-SMOOTH MASKED LETTER ANIMATED HEADING */}
+          {/* ULTRA-SMOOTH MASKED WORD ANIMATED HEADING */}
           <div className="text-center space-y-6 my-auto max-w-4xl">
             <motion.h1
               variants={sentenceContainer}
@@ -163,7 +143,7 @@ export default function CinematicHero() {
               </div>
 
               {/* Second Line */}
-              <div className="flex flex-wrap justify-center gap-x-[0.28em]">
+              <div className="flex flex-wrap justify-center font-serif gap-x-[0.28em]">
                 <SmoothWord word="from" isYellow={true} />
                 <SmoothWord word="here." isYellow={true} />
               </div>
@@ -195,7 +175,7 @@ export default function CinematicHero() {
             y: phase2Y,
             display: useTransform(scrollYProgress, (v) => (v < 0.35 ? 'none' : 'flex'))
           }}
-          className="absolute z-10 text-center px-6 max-w-5xl flex-col items-center justify-center space-y-8"
+          className="absolute z-10 text-center px-6 max-w-5xl flex-col items-center justify-center space-y-8 transform-gpu will-change-transform"
         >
           {/* Subheading Badges */}
           <div className="space-y-2">
@@ -208,8 +188,8 @@ export default function CinematicHero() {
           </div>
 
           {/* Hero Action Headline */}
-          <h2 className="text-4xl sm:text-6xl md:text-8xl font-black uppercase tracking-tight text-white leading-none drop-shadow-2xl">
-            Get Full-Stack <br />
+          <h2 className="text-4xl sm:text-6xl md:text-8xl font-serif uppercase tracking-tight text-white leading-none drop-shadow-2xl">
+            Get  Full-Stack <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#f5c563] to-white">
               Agency Services
             </span>

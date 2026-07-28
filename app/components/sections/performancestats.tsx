@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, memo } from "react";
 import {
   motion,
   useScroll,
@@ -94,10 +94,10 @@ const stats: StatData[] = [
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 /* ============================================================================
-   KINETIC NUMBER COUNTER COMPONENT
+   KINETIC NUMBER COUNTER COMPONENT (OPTIMIZED)
    ============================================================================ */
 
-function AnimatedNumber({
+const AnimatedNumber = memo(function AnimatedNumber({
   value,
   decimals = 0,
   prefix = "",
@@ -136,13 +136,13 @@ function AnimatedNumber({
       {suffix}
     </span>
   );
-}
+});
 
 /* ============================================================================
    MICRO VISUALIZER GRAPHICS
    ============================================================================ */
 
-const StatVisualizer = ({ type, isHovered }: { type: StatData["vizType"]; isHovered: boolean }) => {
+const StatVisualizer = memo(function StatVisualizer({ type, isHovered }: { type: StatData["vizType"]; isHovered: boolean }) {
   if (type === "bar") {
     return (
       <div className="flex items-end gap-1.5 h-6">
@@ -153,7 +153,7 @@ const StatVisualizer = ({ type, isHovered }: { type: StatData["vizType"]; isHove
               scaleY: isHovered ? [h, h * 1.3, h] : h,
             }}
             transition={{ duration: 0.8, repeat: isHovered ? Infinity : 0, delay: i * 0.1 }}
-            className="w-1.5 h-full origin-bottom rounded-full bg-white/40"
+            className="w-1.5 h-full origin-bottom rounded-full bg-white/40 transform-gpu"
           />
         ))}
       </div>
@@ -171,7 +171,7 @@ const StatVisualizer = ({ type, isHovered }: { type: StatData["vizType"]; isHove
               opacity: isHovered ? [0.4, 1, 0.4] : 0.3,
             }}
             transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.15 }}
-            className="w-1 h-5 rounded-full bg-white"
+            className="w-1 h-5 rounded-full bg-white transform-gpu"
           />
         ))}
       </div>
@@ -186,7 +186,7 @@ const StatVisualizer = ({ type, isHovered }: { type: StatData["vizType"]; isHove
           rotate: isHovered ? 180 : 0,
         }}
         transition={{ duration: 1.5, ease: "easeInOut" }}
-        className="relative flex items-center justify-center h-7 w-7 rounded-full border border-white/20 bg-white/5"
+        className="relative flex items-center justify-center h-7 w-7 rounded-full border border-white/20 bg-white/5 transform-gpu"
       >
         <div className="h-2 w-2 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.8)]" />
       </motion.div>
@@ -203,18 +203,18 @@ const StatVisualizer = ({ type, isHovered }: { type: StatData["vizType"]; isHove
             opacity: isHovered ? 1 : 0.4,
           }}
           transition={{ duration: 1, repeat: Infinity, delay: i * 0.1 }}
-          className="bg-white rounded-sm"
+          className="bg-white rounded-sm transform-gpu"
         />
       ))}
     </div>
   );
-};
+});
 
 /* ============================================================================
    SINGLE STAT CARD COMPONENT
    ============================================================================ */
 
-const StatCard = ({ stat }: { stat: StatData }) => {
+const StatCard = memo(function StatCard({ stat }: { stat: StatData }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -226,7 +226,7 @@ const StatCard = ({ stat }: { stat: StatData }) => {
       className={`
         relative group overflow-hidden rounded-2xl p-8 lg:p-10
         border border-white/5 bg-[#1a1a1a] shadow-2xl
-        transition-colors duration-500
+        transition-colors duration-500 transform-gpu will-change-transform
         hover:border-white/20 hover:bg-[#202020]
       `}
     >
@@ -276,7 +276,7 @@ const StatCard = ({ stat }: { stat: StatData }) => {
       />
     </motion.div>
   );
-};
+});
 
 /* ============================================================================
    MAIN KINETIC STATS SECTION
@@ -311,20 +311,17 @@ export default function PerformanceStats() {
       className="relative w-full overflow-hidden bg-[#131313] py-5 font-sans text-zinc-100 selection:bg-white selection:text-[#131313]"
     >
       {/* Background Radial Glow */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(255,255,255,0.02),transparent_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(255,255,255,0.02),transparent_100%)] z-1" />
 
       {/* Watermark Background Typography */}
       <div className="pointer-events-none absolute inset-0 flex flex-col justify-center space-y-12 opacity-[0.02] select-none font-bold text-9xl uppercase tracking-tighter">
-        <motion.div style={{ x: tickerX1 }} className="whitespace-nowrap">
+        <motion.div style={{ x: tickerX1 }} className="whitespace-nowrap transform-gpu will-change-transform">
           PERFORMANCE GROWTH DATA RESULTS IMPACT
         </motion.div>
-        <motion.div style={{ x: tickerX2 }} className="whitespace-nowrap">
+        <motion.div style={{ x: tickerX2 }} className="whitespace-nowrap transform-gpu will-change-transform">
           METRICS INTELLIGENCE ORGANIC SCALING
         </motion.div>
       </div>
-
-      {/* Grid Pattern Overlay */}
-      {/* <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:2rem_2rem]" /> */}
 
       {/* Main Heading Section */}
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-12 mb-20 lg:mb-32 overflow-hidden">
@@ -344,21 +341,21 @@ export default function PerformanceStats() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           
           {/* COLUMN 1 */}
-          <motion.div style={{ y: col1Y }} className="flex flex-col gap-6 lg:gap-8">
+          <motion.div style={{ y: col1Y }} className="flex flex-col gap-6 lg:gap-8 transform-gpu will-change-transform">
             {col1Stats.map((stat) => (
               <StatCard key={stat.id} stat={stat} />
             ))}
           </motion.div>
 
           {/* COLUMN 2 */}
-          <motion.div style={{ y: col2Y }} className="flex flex-col gap-6 lg:gap-8 md:mt-12 lg:mt-16">
+          <motion.div style={{ y: col2Y }} className="flex flex-col gap-6 lg:gap-8 md:mt-12 lg:mt-16 transform-gpu will-change-transform">
             {col2Stats.map((stat) => (
               <StatCard key={stat.id} stat={stat} />
             ))}
           </motion.div>
 
           {/* COLUMN 3 */}
-          <motion.div style={{ y: col3Y }} className="flex flex-col gap-6 lg:gap-8 md:col-span-2 lg:col-span-1">
+          <motion.div style={{ y: col3Y }} className="flex flex-col gap-6 lg:gap-8 md:col-span-2 lg:col-span-1 transform-gpu will-change-transform">
             {col3Stats.map((stat) => (
               <StatCard key={stat.id} stat={stat} />
             ))}

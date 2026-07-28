@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, memo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus,
@@ -109,10 +109,10 @@ const wordChildVariants = {
 };
 
 /* ============================================================================
-   WORD-BY-WORD TEXT ANIMATED COMPONENT
+   WORD-BY-WORD TEXT ANIMATED COMPONENT (MEMOIZED)
    ============================================================================ */
 
-const WordByWordText = ({ text }: { text: string }) => {
+const WordByWordText = memo(function WordByWordText({ text }: { text: string }) {
   const words = text.split(" ");
 
   return (
@@ -127,22 +127,26 @@ const WordByWordText = ({ text }: { text: string }) => {
         <motion.span
           key={`${word}-${index}`}
           variants={wordChildVariants}
-          className="inline-block"
+          className="inline-block transform-gpu"
         >
           {word}
         </motion.span>
       ))}
     </motion.p>
   );
-};
+});
 
 /* ============================================================================
-   DYNAMIC MOTION GRAPHIC CANVAS
+   DYNAMIC MOTION GRAPHIC CANVAS (GPU ACCELERATED)
    ============================================================================ */
 
-const DynamicVisualCanvas = ({ activeType }: { activeType: FAQItem["visualType"] }) => {
+const DynamicVisualCanvas = memo(function DynamicVisualCanvas({
+  activeType,
+}: {
+  activeType: FAQItem["visualType"];
+}) {
   return (
-    <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-[#1c1c1c] p-8 shadow-2xl">
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-[#1c1c1c] p-8 shadow-2xl transform-gpu">
       {/* Subtle Background Glow */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
 
@@ -157,19 +161,19 @@ const DynamicVisualCanvas = ({ activeType }: { activeType: FAQItem["visualType"]
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.5, ease: EASE }}
-            className="relative flex items-center justify-center"
+            className="relative flex items-center justify-center transform-gpu"
           >
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-              className="relative h-48 w-48 rounded-full border border-dashed border-white/20 flex items-center justify-center"
+              className="relative h-48 w-48 rounded-full border border-dashed border-white/20 flex items-center justify-center transform-gpu"
             >
               <div className="h-32 w-32 rounded-full border border-white/10" />
             </motion.div>
             <motion.div
               animate={{ scale: [1, 1.08, 1], opacity: [0.8, 1, 0.8] }}
               transition={{ duration: 3, repeat: Infinity }}
-              className="absolute h-16 w-16 rounded-2xl bg-[#242424] border border-white/20 flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.05)]"
+              className="absolute h-16 w-16 rounded-2xl bg-[#242424] border border-white/20 flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.05)] transform-gpu"
             >
               <Layers className="h-7 w-7 text-white" />
             </motion.div>
@@ -183,7 +187,7 @@ const DynamicVisualCanvas = ({ activeType }: { activeType: FAQItem["visualType"]
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.5, ease: EASE }}
-            className="flex flex-col items-center gap-4"
+            className="flex flex-col items-center gap-4 transform-gpu"
           >
             <div className="relative flex h-36 w-36 items-center justify-center">
               {[1, 2, 3].map((ring) => (
@@ -199,7 +203,7 @@ const DynamicVisualCanvas = ({ activeType }: { activeType: FAQItem["visualType"]
                     delay: ring * 0.5,
                     ease: "easeOut",
                   }}
-                  className="absolute inset-0 rounded-full border border-white/20"
+                  className="absolute inset-0 rounded-full border border-white/20 transform-gpu"
                 />
               ))}
               <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-white text-[#131313] shadow-[0_0_20px_rgba(255,255,255,0.2)]">
@@ -219,7 +223,7 @@ const DynamicVisualCanvas = ({ activeType }: { activeType: FAQItem["visualType"]
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.5, ease: EASE }}
-            className="w-full space-y-4 max-w-xs"
+            className="w-full space-y-4 max-w-xs transform-gpu"
           >
             <div className="flex items-center gap-3">
               <div className="h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
@@ -252,7 +256,7 @@ const DynamicVisualCanvas = ({ activeType }: { activeType: FAQItem["visualType"]
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.5, ease: EASE }}
-            className="relative flex items-center justify-center"
+            className="relative flex items-center justify-center transform-gpu"
           >
             <div className="relative flex h-40 w-40 items-center justify-center">
               <Users className="h-8 w-8 text-white relative z-10" />
@@ -261,7 +265,7 @@ const DynamicVisualCanvas = ({ activeType }: { activeType: FAQItem["visualType"]
                   key={i}
                   animate={{ rotate: 360 }}
                   transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
-                  className="absolute h-full w-full"
+                  className="absolute h-full w-full transform-gpu"
                 >
                   <motion.div
                     animate={{ scale: [1, 1.25, 1] }}
@@ -282,7 +286,7 @@ const DynamicVisualCanvas = ({ activeType }: { activeType: FAQItem["visualType"]
       </AnimatePresence>
     </div>
   );
-};
+});
 
 /* ============================================================================
    MAIN FAQ COMPONENT
@@ -293,15 +297,12 @@ export default function FAQ() {
 
   const activeFAQ = faqData.find((item) => item.id === openId) || faqData[0];
 
-  const toggleAccordion = (id: string) => {
-    setOpenId(openId === id ? "" : id);
-  };
+  const toggleAccordion = useCallback((id: string) => {
+    setOpenId((prev) => (prev === id ? "" : id));
+  }, []);
 
   return (
     <section className="relative min-h-screen bg-[#131313] font-sans text-zinc-100 py-10 selection:bg-white selection:text-[#131313]">
-      
-      {/* Background Soft Glow */}
-
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 lg:px-12">
         
         {/* HEADER SECTION */}
@@ -330,7 +331,7 @@ export default function FAQ() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
-            className="mt-4 text-4xl font-regular tracking-tight text-white sm:text-5xl lg:text-6xl"
+            className="mt-4 text-4xl font-normal tracking-tight text-white sm:text-5xl lg:text-6xl"
           >
             Frequently Asked <span className="text-[#f5c563] font-serif">Questions</span>
           </motion.h2>
@@ -352,7 +353,7 @@ export default function FAQ() {
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.5, delay: index * 0.08, ease: EASE }}
                   className={`
-                    group relative overflow-hidden rounded-xl border transition-all duration-300
+                    group relative overflow-hidden rounded-xl border transition-all duration-300 transform-gpu
                     ${
                       isOpen
                         ? "border-white/20 bg-[#202020] shadow-[0_4px_25px_rgba(0,0,0,0.5)]"
@@ -445,7 +446,7 @@ export default function FAQ() {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.4, ease: EASE }}
-                        className="overflow-hidden"
+                        className="overflow-hidden transform-gpu"
                       >
                         <div className="p-6 pt-3">
                           <WordByWordText text={item.answer} />

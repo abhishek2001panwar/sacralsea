@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence, useMotionValue, useSpring, useInView } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 
 interface ServiceItem {
@@ -61,7 +61,7 @@ const services: ServiceItem[] = [
 const ULTRA_SMOOTH_EASE: [number, number, number, number] = [0.25, 1, 0.5, 1];
 
 /* ============================================================================
-   WORD-BY-WORD SCROLL REVEAL COMPONENT
+   OPTIMIZED WORD-BY-WORD SCROLL REVEAL COMPONENT
    ============================================================================ */
 
 interface WordByWordRevealProps {
@@ -121,88 +121,68 @@ const WordByWordReveal: React.FC<WordByWordRevealProps> = ({
 };
 
 /* ============================================================================
-   LETTER-BY-LETTER REVEAL COMPONENT
+   OPTIMIZED FAST TEXT REVEAL (HOVER/ACTIVE CARDS)
    ============================================================================ */
 
-interface KineticLetterProps {
+interface KineticTextProps {
   text: string;
   isActive: boolean;
   className?: string;
   delayOffset?: number;
-  letterStagger?: number;
+  wordStagger?: number;
   duration?: number;
 }
 
-const LetterByLetterReveal: React.FC<KineticLetterProps> = ({
+const KineticTextReveal: React.FC<KineticTextProps> = ({
   text,
   isActive,
   className = "",
   delayOffset = 0,
-  letterStagger = 0.015,
-  duration = 0.85,
+  wordStagger = 0.03,
+  duration = 0.5,
 }) => {
   const words = text.split(" ");
 
   return (
-    <span className={`inline-flex flex-wrap gap-x-[0.25em] ${className}`}>
-      {words.map((word, wordIdx) => {
-        const wordOffset = words
-          .slice(0, wordIdx)
-          .reduce((acc, curr) => acc + curr.length, 0);
-
-        return (
-          <span key={wordIdx} className="inline-block whitespace-nowrap">
-            {word.split("").map((char, charIdx) => {
-              const totalIndex = wordOffset + charIdx;
-
-              return (
-                <motion.span
-                  key={charIdx}
-                  initial={{
+    <span className={`inline-flex flex-wrap gap-x-[0.28em] ${className}`}>
+      {words.map((word, index) => (
+        <span key={index} className="inline-block overflow-hidden py-0.5">
+          <motion.span
+            initial={{ opacity: 0.5, y: 0, filter: "blur(0px)" }}
+            animate={
+              isActive
+                ? {
+                    opacity: [0, 1],
+                    y: [10, 0],
+                    filter: ["blur(4px)", "blur(0px)"],
+                  }
+                : {
                     opacity: 0.5,
                     y: 0,
-                    scale: 1,
                     filter: "blur(0px)",
-                  }}
-                  animate={
-                    isActive
-                      ? {
-                          opacity: [0, 0.6, 1],
-                          y: [12, -2, 0],
-                          scale: [0.85, 1.05, 1],
-                          filter: ["blur(5px)", "blur(1px)", "blur(0px)"],
-                        }
-                      : {
-                          opacity: 0.5,
-                          y: 0,
-                          scale: 1,
-                          filter: "blur(0px)",
-                        }
                   }
-                  transition={{
-                    duration: duration,
-                    ease: ULTRA_SMOOTH_EASE,
-                    delay: delayOffset + totalIndex * letterStagger,
-                  }}
-                  className="inline-block transform-gpu will-change-transform"
-                >
-                  {char}
-                </motion.span>
-              );
-            })}
-          </span>
-        );
-      })}
+            }
+            transition={{
+              duration: duration,
+              ease: ULTRA_SMOOTH_EASE,
+              delay: delayOffset + index * wordStagger,
+            }}
+            className="inline-block transform-gpu will-change-transform"
+          >
+            {word}
+          </motion.span>
+        </span>
+      ))}
     </span>
   );
 };
 
 /* ============================================================================
-   GRAPHICS COMPONENTS
+   GRAPHICS COMPONENTS (GPU ACCELERATED)
    ============================================================================ */
 
 const IdeaGraphic = ({ isActive }: { isActive: boolean }) => (
-  <div className="relative flex h-64 w-64 items-center justify-center">
+  <div className="relative flex h-64 w-64 items-center justify-center transform-gpu will-change-transform">
     <motion.div
       animate={{
         scale: isActive ? [1, 1.3, 1] : [1, 1.1, 1],
@@ -260,7 +240,7 @@ const IdeaGraphic = ({ isActive }: { isActive: boolean }) => (
 );
 
 const WaveGraphic = ({ isActive }: { isActive: boolean }) => (
-  <div className="relative flex h-64 w-80 items-center justify-center overflow-hidden">
+  <div className="relative flex h-64 w-80 items-center justify-center overflow-hidden transform-gpu will-change-transform">
     {[...Array(9)].map((_, i) => (
       <motion.div
         key={i}
@@ -281,7 +261,7 @@ const WaveGraphic = ({ isActive }: { isActive: boolean }) => (
 );
 
 const MatrixGraphic = ({ isActive }: { isActive: boolean }) => (
-  <div className="relative flex h-64 w-64 items-center justify-center">
+  <div className="relative flex h-64 w-64 items-center justify-center transform-gpu will-change-transform">
     <motion.div
       animate={{
         rotate: isActive ? 135 : 45,
@@ -301,7 +281,7 @@ const MatrixGraphic = ({ isActive }: { isActive: boolean }) => (
 );
 
 const RadarGraphic = ({ isActive }: { isActive: boolean }) => (
-  <div className="relative flex h-64 w-64 items-center justify-center">
+  <div className="relative flex h-64 w-64 items-center justify-center transform-gpu will-change-transform">
     {[1, 2, 3].map((ring) => (
       <div
         key={ring}
@@ -329,45 +309,17 @@ const RadarGraphic = ({ isActive }: { isActive: boolean }) => (
 
 export default function WhatWeOffer() {
   const [active, setActive] = useState<number | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  
+
   const headerRef = useRef<HTMLDivElement>(null);
   const isHeaderInView = useInView(headerRef, { once: true, margin: "-100px" });
 
-  const rawX = useMotionValue(0);
-  const rawY = useMotionValue(0);
-
-  const springConfig = { damping: 50, stiffness: 40 };
-  const mouseX = useSpring(rawX, springConfig);
-  const mouseY = useSpring(rawY, springConfig);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    rawX.set(e.clientX - rect.left);
-    rawY.set(e.clientY - rect.top);
-  };
-
   return (
     <section
-      ref={containerRef}
-      onMouseMove={handleMouseMove}
       className="relative w-full overflow-hidden bg-[#131313] font-sans text-zinc-100 py-10 selection:bg-white selection:text-[#131313]"
     >
-      {/* Background Radial Glow */}
-
-      {/* Grid Pattern Overlay */}
-
-      {/* Dynamic Cursor Glow */}
-      {/* <motion.div
-        className="pointer-events-none absolute -inset-px z-10 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-        style={{
-          background: `radial-gradient(800px circle at ${mouseX}px ${mouseY}px, rgba(255, 255, 255, 0.03), transparent 80%)`,
-        }}
-      /> */}
-
+   
       {/* SECTION HEADER */}
-      <div ref={headerRef} className="mx-auto max-w-7xl px-6 pb-16 lg:px-12">
+      <div ref={headerRef} className="relative z-10 mx-auto max-w-7xl px-6 pb-16 lg:px-12">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <motion.div 
@@ -383,7 +335,7 @@ export default function WhatWeOffer() {
             </motion.div>
 
             {/* Heading with Yellow Accent on "Offer" only */}
-            <h2 className="text-4xl font-normal  tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h2 className="text-4xl font-normal tracking-tight text-white sm:text-5xl lg:text-6xl">
               <WordByWordReveal
                 text="What We Offer"
                 isInView={isHeaderInView}
@@ -407,7 +359,7 @@ export default function WhatWeOffer() {
       </div>
 
       {/* CARDS GRID */}
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-6 md:grid-cols-2 lg:px-12">
+      <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-6 px-6 md:grid-cols-2 lg:px-12">
         {services.map((service, index) => {
           const isActive = active === index;
 
@@ -425,7 +377,7 @@ export default function WhatWeOffer() {
                 whileHover={{ y: -6 }}
                 transition={{ duration: 0.5, ease: ULTRA_SMOOTH_EASE }}
                 className={`
-                  group relative min-h-[580px] overflow-hidden rounded-2xl border transition-all duration-500 lg:min-h-[640px]
+                  group relative min-h-[580px] overflow-hidden rounded-2xl border transition-all duration-500 lg:min-h-[640px] transform-gpu will-change-transform
                   ${
                     isActive
                       ? "border-white/20 bg-[#202020] shadow-[0_4px_30px_rgba(0,0,0,0.6)]"
@@ -462,12 +414,11 @@ export default function WhatWeOffer() {
 
                   <div className="flex items-center gap-2 rounded-full border border-white/10 bg-[#131313]/60 px-3.5 py-1 backdrop-blur-md">
                     <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-400">
-                      <LetterByLetterReveal
+                      <KineticTextReveal
                         text={service.subtitle}
                         isActive={isActive}
                         delayOffset={0.02}
-                        letterStagger={0.02}
-                        duration={0.7}
+                        duration={0.4}
                       />
                     </span>
                   </div>
@@ -477,12 +428,11 @@ export default function WhatWeOffer() {
                 <div className="absolute bottom-0 left-0 right-0 z-20 p-8 sm:p-10 lg:p-12">
                   <div className="flex items-center justify-between">
                     <h3 className="text-4xl font-light tracking-tight text-white sm:text-5xl lg:text-5xl">
-                      <LetterByLetterReveal
+                      <KineticTextReveal
                         text={service.title}
                         isActive={isActive}
                         delayOffset={0}
-                        letterStagger={0.04}
-                        duration={0.8}
+                        duration={0.5}
                       />
                     </h3>
 
@@ -499,16 +449,15 @@ export default function WhatWeOffer() {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.6, ease: ULTRA_SMOOTH_EASE }}
+                        transition={{ duration: 0.5, ease: ULTRA_SMOOTH_EASE }}
                         className="overflow-hidden"
                       >
                         <div className="pt-4 max-w-md text-sm leading-relaxed text-zinc-400 sm:text-base">
-                          <LetterByLetterReveal
+                          <KineticTextReveal
                             text={service.description}
                             isActive={isActive}
-                            delayOffset={0.12}
-                            letterStagger={0.006}
-                            duration={0.9}
+                            delayOffset={0.08}
+                            duration={0.5}
                           />
                         </div>
 
@@ -531,7 +480,7 @@ export default function WhatWeOffer() {
                 <motion.div
                   initial={false}
                   animate={{ scaleX: isActive ? 1 : 0 }}
-                  transition={{ duration: 0.8, ease: ULTRA_SMOOTH_EASE }}
+                  transition={{ duration: 0.6, ease: ULTRA_SMOOTH_EASE }}
                   className="absolute bottom-0 left-0 right-0 h-[1px] origin-left bg-gradient-to-r from-transparent via-white/40 to-transparent"
                 />
               </motion.div>
@@ -541,7 +490,7 @@ export default function WhatWeOffer() {
       </div>
 
       {/* FOOTER CTA */}
-      <div className="mx-auto flex max-w-7xl justify-between items-center px-6 pt-16 lg:px-12">
+      <div className="relative z-10 mx-auto flex max-w-7xl justify-between items-center px-6 pt-16 lg:px-12">
         <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-zinc-500 uppercase tracking-widest">
           <Sparkles className="h-3.5 w-3.5 text-zinc-400" />
           <span>Interactive Service Suite</span>

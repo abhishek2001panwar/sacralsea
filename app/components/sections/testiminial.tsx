@@ -127,7 +127,7 @@ function WordByWordText({
       className={`inline-flex flex-wrap gap-x-[0.28em] gap-y-[0.1em] ${className}`}
     >
       {words.map((word, index) => (
-        <motion.span key={index} variants={wordVariants} className="inline-block">
+        <motion.span key={index} variants={wordVariants} className="inline-block transform-gpu">
           {word}
         </motion.span>
       ))}
@@ -142,7 +142,7 @@ function WordByWordText({
 const CardBadge = ({ type, isCurrent }: { type: Testimonial["badgeType"]; isCurrent: boolean }) => {
   if (type === "rating") {
     return (
-      <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-[#222222] px-3.5 py-1.5 backdrop-blur-md transition-all duration-300">
+      <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-[#222222] px-3 py-1 sm:px-3.5 sm:py-1.5 backdrop-blur-md transition-all duration-300">
         {[...Array(5)].map((_, i) => (
           <motion.div
             key={i}
@@ -156,18 +156,18 @@ const CardBadge = ({ type, isCurrent }: { type: Testimonial["badgeType"]; isCurr
               delay: i * 0.15,
             }}
           >
-            <Star className="h-3.5 w-3.5 fill-white text-white" />
+            <Star className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-white text-white" />
           </motion.div>
         ))}
-        <span className="ml-1 font-mono text-[11px] text-zinc-300">5.0 Verified</span>
+        <span className="ml-1 font-mono text-[10px] sm:text-[11px] text-zinc-300">5.0 Verified</span>
       </div>
     );
   }
 
   if (type === "growth") {
     return (
-      <div className="flex items-center gap-2 rounded-full border border-white/10 bg-[#222222] px-3.5 py-1.5 backdrop-blur-md transition-all duration-300">
-        <Activity className="h-3.5 w-3.5 text-white" />
+      <div className="flex items-center gap-2 rounded-full border border-white/10 bg-[#222222] px-3 py-1 sm:px-3.5 sm:py-1.5 backdrop-blur-md transition-all duration-300">
+        <Activity className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-white" />
         <div className="flex h-3.5 items-end gap-1">
           {[0.4, 0.7, 0.5, 1].map((h, i) => (
             <motion.div
@@ -184,15 +184,15 @@ const CardBadge = ({ type, isCurrent }: { type: Testimonial["badgeType"]; isCurr
             />
           ))}
         </div>
-        <span className="font-mono text-[11px] text-zinc-300">Scale Spike</span>
+        <span className="font-mono text-[10px] sm:text-[11px] text-zinc-300">Scale Spike</span>
       </div>
     );
   }
 
   if (type === "ai") {
     return (
-      <div className="flex items-center gap-2 rounded-full border border-white/10 bg-[#222222] px-3.5 py-1.5 backdrop-blur-md transition-all duration-300">
-        <Cpu className="h-3.5 w-3.5 text-white" />
+      <div className="flex items-center gap-2 rounded-full border border-white/10 bg-[#222222] px-3 py-1 sm:px-3.5 sm:py-1.5 backdrop-blur-md transition-all duration-300">
+        <Cpu className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-white" />
         <motion.div
           animate={{
             rotate: isCurrent ? 360 : 0,
@@ -200,13 +200,13 @@ const CardBadge = ({ type, isCurrent }: { type: Testimonial["badgeType"]; isCurr
           transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
           className="h-2 w-2 rounded-sm border border-white bg-white/40"
         />
-        <span className="font-mono text-[11px] text-zinc-300">AI Neural Sync</span>
+        <span className="font-mono text-[10px] sm:text-[11px] text-zinc-300">AI Neural Sync</span>
       </div>
     );
   }
 
   return (
-    <div className="flex items-center gap-2 rounded-full border border-white/10 bg-[#222222] px-3.5 py-1.5 backdrop-blur-md transition-all duration-300">
+    <div className="flex items-center gap-2 rounded-full border border-white/10 bg-[#222222] px-3 py-1 sm:px-3.5 sm:py-1.5 backdrop-blur-md transition-all duration-300">
       <div className="relative flex h-2.5 w-2.5 items-center justify-center">
         <motion.div
           animate={{
@@ -218,13 +218,13 @@ const CardBadge = ({ type, isCurrent }: { type: Testimonial["badgeType"]; isCurr
         />
         <div className="h-1.5 w-1.5 rounded-full bg-white" />
       </div>
-      <span className="font-mono text-[11px] text-zinc-300">Live Hook Metric</span>
+      <span className="font-mono text-[10px] sm:text-[11px] text-zinc-300">Live Hook Metric</span>
     </div>
   );
 };
 
 /* ============================================================================
-   3D TILT HOVER TESTIMONIAL CARD
+   RESPONSIVE 3D TILT HOVER TESTIMONIAL CARD
    ============================================================================ */
 
 function InteractiveCard({
@@ -273,7 +273,7 @@ function InteractiveCard({
         opacity: isCurrent ? 1 : 0.3,
       }}
       transition={{ duration: 0.9, ease: EASE }}
-      className="perspective-1000 w-full max-w-2xl"
+      className="perspective-1000 w-full max-w-xl lg:max-w-2xl transform-gpu"
     >
       <motion.div
         ref={cardRef}
@@ -285,22 +285,22 @@ function InteractiveCard({
           transformStyle: "preserve-3d",
         }}
         className={`
-          group relative w-full overflow-hidden rounded-2xl p-8 sm:p-12 lg:p-14
-          bg-[#1a1a1a] shadow-2xl transition-all duration-500
-          ${isCurrent ? "border-white/20 bg-[#202020] shadow-[0_4px_30px_rgba(0,0,0,0.6)]" : "hover:border-white/10"}
+          group relative w-full overflow-hidden rounded-2xl p-6 sm:p-10 lg:p-14
+          bg-[#1a1a1a] shadow-2xl transition-all duration-500 transform-gpu
+          ${isCurrent ? "border border-white/20 bg-[#202020] shadow-[0_4px_30px_rgba(0,0,0,0.6)]" : "border border-white/5 hover:border-white/10"}
         `}
       >
         {/* Dynamic Light Overlay on Hover */}
         <div className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(600px_circle_at_center,rgba(255,255,255,0.04),transparent_80%)]" />
 
         {/* Top Bar: Quote Icon & Badge */}
-        <div className="relative z-10 flex items-center justify-between pb-8">
-          <Quote className="h-8 w-8 text-zinc-500 transition-colors duration-300 group-hover:text-white" />
+        <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 pb-6 sm:pb-8">
+          <Quote className="h-6 w-6 sm:h-8 sm:w-8 text-zinc-500 transition-colors duration-300 group-hover:text-white" />
           <CardBadge type={item.badgeType} isCurrent={isCurrent} />
         </div>
 
         {/* Quote Content */}
-        <blockquote className="relative z-10 text-xl font-light leading-relaxed text-zinc-100 sm:text-2xl lg:text-3xl">
+        <blockquote className="relative z-10 text-lg sm:text-2xl lg:text-3xl font-light leading-relaxed text-zinc-100">
           <WordByWordText
             text={`"${item.quote}"`}
             wordDelay={0.025}
@@ -310,13 +310,13 @@ function InteractiveCard({
         </blockquote>
 
         {/* Author & Highlight Footer */}
-        <div className="relative z-10 mt-10 flex items-center justify-between border-t border-white/10 pt-8 transition-colors duration-500">
+        <div className="relative z-10 mt-6 sm:mt-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-white/10 pt-6 sm:pt-8 transition-colors duration-500">
           <div>
-            <div className="flex items-center gap-2 text-lg font-medium text-white">
+            <div className="flex items-center gap-2 text-base sm:text-lg font-medium text-white">
               <span>{item.author}</span>
               <CheckCircle2 className="h-4 w-4 text-zinc-400" />
             </div>
-            <div className="text-sm font-light text-zinc-400">
+            <div className="text-xs sm:text-sm font-light text-zinc-400">
               {item.role},{" "}
               <span className="text-zinc-200">
                 {item.company}
@@ -324,11 +324,11 @@ function InteractiveCard({
             </div>
           </div>
 
-          <div className="flex flex-col items-end">
-            <span className="font-mono text-xs uppercase tracking-widest text-zinc-500">
+          <div className="flex flex-col items-start sm:items-end">
+            <span className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-zinc-500">
               Result
             </span>
-            <span className="font-mono text-sm font-medium text-white transition-transform duration-300 group-hover:scale-105">
+            <span className="font-mono text-xs sm:text-sm font-medium text-white transition-transform duration-300 group-hover:scale-105">
               {item.highlight}
             </span>
           </div>
@@ -417,11 +417,11 @@ export default function Testimonial() {
       className="relative h-[400vh] bg-[#131313] font-sans text-zinc-100 selection:bg-white selection:text-[#131313]"
     >
       {/* Sticky Viewport Area */}
-      <div className="sticky top-0 flex h-screen w-full flex-col justify-between overflow-hidden px-6 lg:px-12">
+      <div className="sticky top-0 flex h-screen w-full flex-col justify-between overflow-hidden px-4 sm:px-6 lg:px-12">
         
       
         {/* TOP HEADER BAR */}
-        <div ref={headerRef} className="relative z-20 mx-auto w-full max-w-7xl pt-16 lg:pt-20">
+        <div ref={headerRef} className="relative z-20 mx-auto w-full max-w-7xl pt-12 sm:pt-16 lg:pt-20">
           <div className="flex items-center justify-between">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -436,7 +436,7 @@ export default function Testimonial() {
             </motion.div>
 
             {/* Kinetic Active Index Counter */}
-            <div className="flex items-center gap-2 font-mono text-sm tracking-widest text-zinc-400">
+            <div className="flex items-center gap-2 font-mono text-xs sm:text-sm tracking-widest text-zinc-400">
               <span className="text-white">
                 {testimonials[activeIndex].number}
               </span>
@@ -450,9 +450,9 @@ export default function Testimonial() {
             variants={headerContainerVariants}
             initial="hidden"
             animate={isHeaderInView ? "visible" : "hidden"}
-            className="mt-4 space-y-3"
+            className="mt-3 sm:mt-4 space-y-2 sm:space-y-3"
           >
-            <h2 className="text-4xl font-normal tracking-tight text-white sm:text-5xl lg:text-6xl flex flex-wrap gap-x-[0.3em] overflow-hidden py-1">
+            <h2 className="text-3xl font-normal tracking-tight text-white sm:text-5xl lg:text-6xl flex flex-wrap gap-x-[0.3em] overflow-hidden py-1">
               <motion.span variants={headerItemVariants} className="inline-block transform-gpu">
                 Client
               </motion.span>
@@ -467,7 +467,7 @@ export default function Testimonial() {
             <div className="overflow-hidden py-1">
               <motion.p
                 variants={headerItemVariants}
-                className="max-w-xl text-sm font-light leading-relaxed text-zinc-400 sm:text-base transform-gpu"
+                className="max-w-xl text-xs sm:text-base font-light leading-relaxed text-zinc-400 transform-gpu"
               >
                 Direct insights from market leaders and enterprise founders scaling with our full-stack digital engine.
               </motion.p>
@@ -476,10 +476,10 @@ export default function Testimonial() {
         </div>
 
         {/* CENTER CARDS CONTAINER */}
-        <div className="relative z-10 my-auto w-full py-6 [perspective:1200px]">
+        <div className="relative z-10 my-auto w-full py-4 sm:py-6 [perspective:1200px]">
           <motion.div
             style={{ x: xTransform }}
-            className="flex w-[400%] items-center"
+            className="flex w-[400%] items-center transform-gpu will-change-transform"
           >
             {testimonials.map((item, index) => {
               const isCurrent = index === activeIndex;
@@ -488,7 +488,7 @@ export default function Testimonial() {
               return (
                 <div
                   key={item.id}
-                  className="flex w-full justify-center px-4 sm:px-6 lg:px-12"
+                  className="flex w-full justify-center px-2 sm:px-6 lg:px-12"
                 >
                   <InteractiveCard
                     item={item}
@@ -502,15 +502,15 @@ export default function Testimonial() {
         </div>
 
         {/* BOTTOM NAVIGATION */}
-        <div className="relative z-20 mx-auto w-full max-w-7xl pb-10 lg:pb-14">
-          <div className="flex items-center justify-between border-t border-white/10 pt-6">
+        <div className="relative z-20 mx-auto w-full max-w-7xl pb-6 sm:pb-10 lg:pb-14">
+          <div className="flex items-center justify-between border-t border-white/10 pt-4 sm:pt-6">
             
             {/* Step Progress Indicators */}
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4 sm:gap-6">
               {testimonials.map((t, idx) => (
                 <div key={t.id} className="group cursor-pointer flex flex-col items-start gap-1.5">
                   <span
-                    className={`font-mono text-xs tracking-widest transition-colors duration-300 ${
+                    className={`font-mono text-[10px] sm:text-xs tracking-widest transition-colors duration-300 ${
                       idx === activeIndex
                         ? "text-white"
                         : "text-zinc-600 group-hover:text-zinc-400"
@@ -518,7 +518,7 @@ export default function Testimonial() {
                   >
                     {t.number}
                   </span>
-                  <div className="h-1 w-12 overflow-hidden rounded-full bg-white/10 transition-all duration-300 group-hover:bg-white/20">
+                  <div className="h-1 w-8 sm:w-12 overflow-hidden rounded-full bg-white/10 transition-all duration-300 group-hover:bg-white/20">
                     <motion.div
                       animate={{
                         width: idx === activeIndex ? "100%" : "0%",

@@ -16,7 +16,7 @@ import { ArrowUpRight } from "lucide-react";
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 /* ============================================================================
-   WORD-BY-WORD KINETIC TYPOGRAPHY
+   WORD-BY-WORD KINETIC TYPOGRAPHY (GPU ACCELERATED)
    ============================================================================ */
 function EditorialText({
   text,
@@ -75,7 +75,7 @@ function EditorialText({
           <motion.span
             key={index}
             variants={wordVariants}
-            className={`inline-block ${
+            className={`inline-block transform-gpu will-change-transform ${
               isItalic ? "font-serif italic tracking-normal font-normal" : ""
             } ${isYellow ? "text-[#f5c563] font-normal" : ""}`}
           >
@@ -88,7 +88,7 @@ function EditorialText({
 }
 
 /* ============================================================================
-   AMBIENT CANVAS (FAINT PARTICLES)
+   AMBIENT CANVAS (VIEWPORT OBSERVED FOR ZERO OFF-SCREEN LAG)
    ============================================================================ */
 function AmbientGrainCanvas() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -100,6 +100,7 @@ function AmbientGrainCanvas() {
     if (!ctx) return;
 
     let animationFrameId: number;
+    let isVisible = false;
     let width = (canvas.width = canvas.offsetWidth);
     let height = (canvas.height = canvas.offsetHeight);
 
@@ -111,7 +112,7 @@ function AmbientGrainCanvas() {
 
     window.addEventListener("resize", handleResize);
 
-    const stars = Array.from({ length: 24 }, () => ({
+    const stars = Array.from({ length: 20 }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
       vx: (Math.random() - 0.5) * 0.15,
@@ -121,6 +122,7 @@ function AmbientGrainCanvas() {
     }));
 
     const render = () => {
+      if (!isVisible) return;
       ctx.clearRect(0, 0, width, height);
 
       stars.forEach((star) => {
@@ -139,10 +141,24 @@ function AmbientGrainCanvas() {
       animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    // Pause rendering when canvas is scrolled out of view
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible) {
+          render();
+        } else {
+          cancelAnimationFrame(animationFrameId);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(canvas);
 
     return () => {
       window.removeEventListener("resize", handleResize);
+      observer.disconnect();
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
@@ -189,7 +205,7 @@ function MagneticButton({ href, label }: { href: string; label: string }) {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ x: springX, y: springY }}
-      className="group relative inline-flex items-center gap-4 overflow-hidden rounded-xl border border-white/15 bg-[#1a1a1a] px-8 py-4 shadow-2xl transition-all duration-300 hover:border-white hover:bg-white hover:text-[#131313]"
+      className="group relative inline-flex items-center gap-4 overflow-hidden rounded-xl border border-white/15 bg-[#1a1a1a] px-8 py-4 shadow-2xl transition-all duration-300 hover:border-white hover:bg-white hover:text-[#131313] transform-gpu"
     >
       <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white transition-colors duration-300 group-hover:bg-[#131313] group-hover:text-white">
         <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -229,16 +245,12 @@ export default function UltraPremiumWhyCollaborate() {
       onMouseMove={handleMouseMove}
       className="relative w-full overflow-hidden bg-[#131313] py-20 font-sans text-zinc-100 selection:bg-white selection:text-[#131313]"
     >
-      {/* Background Radial Glow */}
-
-      {/* Grid Pattern Overlay */}
-
       {/* Ambient Canvas */}
       <AmbientGrainCanvas />
 
       {/* Cursor Light Glow */}
       <motion.div
-        className="pointer-events-none absolute -inset-px opacity-20 transition-opacity duration-500"
+        className="pointer-events-none absolute -inset-px opacity-20 transition-opacity duration-500 transform-gpu"
         style={{
           background: useTransform(
             [mouseX, mouseY],
@@ -250,7 +262,7 @@ export default function UltraPremiumWhyCollaborate() {
 
       {/* Watermark Typography */}
       <div className="pointer-events-none absolute inset-0 flex items-center opacity-[0.015] select-none font-bold text-[16vw] uppercase leading-none tracking-tighter">
-        <motion.div style={{ x: tickerX }} className="whitespace-nowrap">
+        <motion.div style={{ x: tickerX }} className="whitespace-nowrap transform-gpu">
           COLLABORATE AGILITY STRATEGY IMPACT CREATIVITY
         </motion.div>
       </div>
@@ -267,7 +279,7 @@ export default function UltraPremiumWhyCollaborate() {
         />
 
         {/* 1. Main Headline */}
-        <h2 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight leading-[1.02] text-white">
+        <h2 className="text-4xl sm:text-6xl lg:text-7xl font-normal  font-serif tracking-tight leading-[1.02] text-white">
           <EditorialText
             text="Why collaborate?"
             wordDelay={0.12}

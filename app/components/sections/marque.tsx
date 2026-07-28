@@ -1,37 +1,44 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useMemo, useCallback } from "react";
 import { Sparkles, ArrowUpRight } from "lucide-react";
 
+const BRANDS = [
+  "Japri",
+  "Valens",
+  "Ecofira",
+  "Whimsikidz",
+  "Volvo",
+  "Gymbaby",
+  "EHS",
+  "Mineha",
+  "Stalwart Elevators",
+  "Design Ace",
+  "Craftlane",
+] as const;
+
 const BrandMarquee: React.FC = () => {
-  const brands = [
-    "Japri",
-    "Valens",
-    "Ecofira",
-    "Whimsikidz",
-    "Volvo",
-    "Gymbaby",
-    "EHS",
-    "Mineha",
-    "Stalwart Elevators",
-    "Design Ace",
-    "Craftlane",
-  ];
-
   const router = useRouter();
-  const reversedBrands = [...brands].reverse();
 
-  // Duplicate for seamless looping
-  const rowOne = [...brands, ...brands, ...brands];
-  const rowTwo = [...reversedBrands, ...reversedBrands, ...reversedBrands];
+  // Memoize arrays to avoid re-allocation on re-renders
+  const { rowOne, rowTwo } = useMemo(() => {
+    const reversed = [...BRANDS].reverse();
+    return {
+      rowOne: [...BRANDS, ...BRANDS, ...BRANDS],
+      rowTwo: [...reversed, ...reversed, ...reversed],
+    };
+  }, []);
+
+  const handleNavigate = useCallback(() => {
+    router.push("/#contact");
+  }, [router]);
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#131313] py-15 text-zinc-100  selection:bg-white selection:text-[#131313]">
+    <section className="relative w-full overflow-hidden bg-[#131313] py-20 text-zinc-100 selection:bg-white selection:text-[#131313]">
       {/* Background Radial Glow */}
 
-      {/* Grid Pattern Overlay */}
-
+   
       {/* =========================================
           HEADER
       ========================================== */}
@@ -46,7 +53,7 @@ const BrandMarquee: React.FC = () => {
       </div>
 
       {/* =========================================
-          MARQUEE
+          MARQUEE (HARDWARE ACCELERATED)
       ========================================== */}
       <div className="relative z-10">
         {/* Left Fade */}
@@ -58,7 +65,7 @@ const BrandMarquee: React.FC = () => {
         {/* =====================================
             ROW 1
         ====================================== */}
-        <div className="mb-8 flex w-max animate-marquee-left">
+        <div className="mb-8 flex w-max animate-marquee-left transform-gpu will-change-transform">
           {rowOne.map((brand, index) => (
             <div
               key={`row-one-${index}`}
@@ -77,7 +84,7 @@ const BrandMarquee: React.FC = () => {
         {/* =====================================
             ROW 2 — REVERSED
         ====================================== */}
-        <div className="flex w-max animate-marquee-right">
+        <div className="flex w-max animate-marquee-right transform-gpu will-change-transform">
           {rowTwo.map((brand, index) => (
             <div
               key={`row-two-${index}`}
@@ -100,9 +107,7 @@ const BrandMarquee: React.FC = () => {
       <div className="relative z-10 mt-20 flex justify-center">
         <button
           type="button"
-          onClick={() => {
-            router.push("/#contact");
-          }}
+          onClick={handleNavigate}
           className="group flex items-center gap-4 rounded-xl border border-white/15 bg-[#1a1a1a] px-7 py-4 shadow-2xl transition-all duration-300 hover:border-white hover:bg-white hover:text-[#131313] focus:outline-none"
         >
           <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white transition-colors duration-300 group-hover:bg-[#131313] group-hover:text-white">
@@ -120,19 +125,19 @@ const BrandMarquee: React.FC = () => {
       <style jsx>{`
         @keyframes marqueeLeft {
           from {
-            transform: translateX(0);
+            transform: translate3d(0, 0, 0);
           }
           to {
-            transform: translateX(-33.333%);
+            transform: translate3d(-33.333%, 0, 0);
           }
         }
 
         @keyframes marqueeRight {
           from {
-            transform: translateX(-33.333%);
+            transform: translate3d(-33.333%, 0, 0);
           }
           to {
-            transform: translateX(0);
+            transform: translate3d(0, 0, 0);
           }
         }
 

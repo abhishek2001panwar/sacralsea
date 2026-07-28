@@ -6,7 +6,6 @@ import {
   motion,
   useScroll,
   useTransform,
-  AnimatePresence,
 } from "framer-motion";
 import { ArrowUpRight, ArrowUp, Send, Sparkles } from "lucide-react";
 
@@ -80,28 +79,26 @@ const Footer: React.FC = () => {
   return (
     <footer
       ref={containerRef}
-      className="relative overflow-hidden bg-[#0a0a09] font-sans text-[#fbfaf7] pb-8 px-6 md:px-12 lg:px-24 selection:bg-[#c5a880] selection:text-[#0a0a09]"
+      className="relative overflow-hidden bg-[#131313] font-sans text-zinc-100p py-5 pb-8 px-6 md:px-12 lg:px-24 selection:bg-white selection:text-[#131313]"
     >
+      {/* Background Radial Glow */}
+
       {/* Background Motion Grid Overlay */}
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem]" />
 
-      {/* Ambient Gold Glow Spotlight */}
-      <div className="pointer-events-none absolute -bottom-20 left-1/2 -translate-x-1/2 h-[300px] w-[600px] rounded-full bg-[#c5a880]/10 blur-[140px]" />
-
-      <div className="relative z-10 mx-auto w-full max-w-8xl">
+      <div className="relative z-10 mx-auto w-full max-w-7xl">
         
         {/* TOP INTERACTIVE NEWSLETTER & SYSTEM STATUS BAR */}
-        <div className="mb-20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center border-b border-[#c5a880]/15 pb-10">
+        <div className="mb-20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center border-b border-white/10 pb-10">
           
           <div className="lg:col-span-6 space-y-3">
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-[#c5a880]" />
-              <span className="font-mono text-xs uppercase tracking-[0.3em] text-[#c5a880]">
+            <div className="flex items-center gap-2.5">
+              <Sparkles className="h-4 w-4 text-zinc-400" />
+              <span className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-400">
                 Stay Ahead
               </span>
             </div>
-            <h3 className="text-2xl sm:text-3xl font-extralight tracking-tight">
-              Receive our <span className="font-serif italic text-[#c5a880]">monthly dispatch</span> on digital craft.
+            <h3 className="text-2xl sm:text-3xl font-light tracking-tight text-white">
+              Receive our <span className="text-[#f5c563] font-normal">monthly dispatch</span> on digital craft.
             </h3>
           </div>
 
@@ -111,16 +108,16 @@ const Footer: React.FC = () => {
               <input
                 type="email"
                 placeholder="Enter your email address..."
-                className="w-full border-b border-[#c5a880]/30 bg-transparent py-4 text-sm text-[#fbfaf7] placeholder-[#a1a09d]/40 transition-colors focus:border-[#c5a880] focus:outline-none"
+                className="w-full border-b border-white/15 bg-transparent py-4 text-sm text-white placeholder-zinc-500 transition-colors focus:border-white focus:outline-none"
               />
               <button
                 type="submit"
-                className="group absolute right-0 flex items-center gap-2 rounded-full border border-[#c5a880]/40 bg-[#c5a880]/10 px-5 py-2.5 transition-all duration-500 hover:border-[#c5a880] hover:bg-[#c5a880]"
+                className="group absolute right-0 flex items-center gap-2 rounded-xl border border-white/15 bg-[#1a1a1a] px-5 py-2.5 transition-all duration-300 hover:border-white hover:bg-white hover:text-[#131313]"
               >
-                <span className="font-mono text-[11px] uppercase tracking-wider text-[#c5a880] transition-colors duration-500 group-hover:text-[#0a0a09]">
+                <span className="font-mono text-[11px] uppercase tracking-wider text-zinc-200 transition-colors group-hover:text-[#131313]">
                   Subscribe
                 </span>
-                <Send className="h-3.5 w-3.5 text-[#c5a880] transition-transform duration-500 group-hover:translate-x-0.5 group-hover:text-[#0a0a09]" />
+                <Send className="h-3.5 w-3.5 text-zinc-400 transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-[#131313]" />
               </button>
             </form>
           </div>
@@ -146,18 +143,18 @@ const Footer: React.FC = () => {
                   className="object-contain"
                 />
               </motion.div>
-              <p className="text-[#a1a09d] font-sans text-xs md:text-sm leading-relaxed max-w-sm tracking-wide">
+              <p className="text-zinc-400 font-sans text-xs md:text-sm leading-relaxed max-w-sm tracking-wide font-light">
                 We build brands, campaigns, and digital experiences for companies that refuse to be ordinary.
               </p>
             </div>
 
             {/* Live System Operational Indicator */}
-            <div className="flex items-center gap-2.5 rounded-full border border-[#c5a880]/20 bg-[#121210] px-4 py-2 w-fit">
+            <div className="flex items-center gap-2.5 rounded-full border border-white/10 bg-[#1a1a1a] px-4 py-2 w-fit">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c5a880] opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#c5a880]" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
               </span>
-              <span className="font-mono text-[10px] tracking-widest text-[#a1a09d] uppercase">
+              <span className="font-mono text-[10px] tracking-widest text-zinc-400 uppercase">
                 Systems Operational • 2026
               </span>
             </div>
@@ -166,11 +163,11 @@ const Footer: React.FC = () => {
           {/* Spacer */}
           <div className="hidden lg:block lg:col-span-2" />
 
-          {/* Navigation Links Columns with Hover Motion */}
+          {/* Navigation Links Columns */}
           <div className="lg:col-span-6 grid grid-cols-2 sm:grid-cols-3 gap-8">
             {sections.map((section, idx) => (
               <div key={idx} className="flex flex-col gap-6">
-                <h4 className="font-mono text-[10px] tracking-[0.35em] text-[#c5a880] font-semibold uppercase">
+                <h4 className="font-mono text-[10px] tracking-[0.25em] text-zinc-400 font-semibold uppercase">
                   {section.title}
                 </h4>
 
@@ -184,10 +181,10 @@ const Footer: React.FC = () => {
                     >
                       <a
                         href={link.href}
-                        className="text-[#a1a09d] font-sans text-xs md:text-sm transition-colors duration-300 group-hover:text-[#fbfaf7] tracking-wide flex items-center gap-1.5"
+                        className="text-zinc-400 font-sans text-xs md:text-sm transition-colors duration-300 group-hover:text-white tracking-wide flex items-center gap-1.5"
                       >
                         <span>{link.name}</span>
-                        <ArrowUpRight className="h-3 w-3 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:text-[#c5a880]" />
+                        <ArrowUpRight className="h-3 w-3 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:text-white" />
                       </a>
                     </motion.li>
                   ))}
@@ -198,13 +195,10 @@ const Footer: React.FC = () => {
 
         </div>
 
-        {/* GIANT KINETIC WATERMARK TYPOGRAPHY */}
-       
-
         {/* FOOTER SUB-BAR COPYRIGHT & SOCIALS */}
-        <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-6 pt-6">
+        <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-6 border-t border-white/10 pt-6">
           
-          <p className="font-mono text-[10px] tracking-widest text-[#a1a09d]/60 uppercase">
+          <p className="font-mono text-[10px] tracking-widest text-zinc-500 uppercase">
             © 2026 SacralSea. All rights reserved.
           </p>
 
@@ -215,19 +209,19 @@ const Footer: React.FC = () => {
                 key={index}
                 whileHover={{ y: -2 }}
                 href={social.href}
-                className="font-mono text-[10px] tracking-[0.2em] text-[#a1a09d] hover:text-[#c5a880] transition-colors duration-200"
+                className="font-mono text-[10px] tracking-[0.2em] text-zinc-400 hover:text-white transition-colors duration-200"
               >
                 {social.name}
               </motion.a>
             ))}
 
-            {/* Back To Top Kinetic Orbit Button */}
+            {/* Back To Top Orbit Button */}
             <button
               onClick={scrollToTop}
-              className="group ml-4 flex h-9 w-9 items-center justify-center rounded-full border border-[#c5a880]/30 bg-[#121210] transition-all duration-500 hover:border-[#c5a880] hover:bg-[#c5a880]"
+              className="group ml-4 flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-[#1a1a1a] transition-all duration-300 hover:border-white hover:bg-white"
               aria-label="Back to Top"
             >
-              <ArrowUp className="h-4 w-4 text-[#c5a880] transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:text-[#0a0a09]" />
+              <ArrowUp className="h-4 w-4 text-zinc-400 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:text-[#131313]" />
             </button>
           </div>
 

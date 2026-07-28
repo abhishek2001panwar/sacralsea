@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import React from "react";
+import { Sparkles, ArrowUpRight } from "lucide-react";
 
 const BrandMarquee: React.FC = () => {
   const brands = [
@@ -19,165 +20,108 @@ const BrandMarquee: React.FC = () => {
   ];
 
   const router = useRouter();
-  // Reverse the same brands for second row
   const reversedBrands = [...brands].reverse();
 
   // Duplicate for seamless looping
   const rowOne = [...brands, ...brands, ...brands];
-
-  const rowTwo = [
-    ...reversedBrands,
-    ...reversedBrands,
-    ...reversedBrands,
-  ];
+  const rowTwo = [...reversedBrands, ...reversedBrands, ...reversedBrands];
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#0d0d0c] py-24 text-[#fbfaf7] sm:py-32">
+    <section className="relative w-full overflow-hidden bg-[#131313] py-15 text-zinc-100  selection:bg-white selection:text-[#131313]">
+      {/* Background Radial Glow */}
+
+      {/* Grid Pattern Overlay */}
 
       {/* =========================================
           HEADER
       ========================================== */}
-
-      <div className="mx-auto mb-16 max-w-[1600px] px-5 sm:px-8 lg:px-12">
-
-        <div className="flex items-center gap-4">
-
-          <span className="h-px w-8 bg-[#c5a880]" />
-
-          <span className="text-[10px] uppercase tracking-[0.3em] text-[#c5a880]">
-            Brands and us
+      <div className="relative z-10 mx-auto mb-16 max-w-7xl px-6 lg:px-12">
+        <div className="flex items-center gap-2.5">
+          <Sparkles className="h-4 w-4 text-zinc-400" />
+          <span className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-400">
+            Brands and <span className="text-[#f5c563] font-normal">us</span>
           </span>
-
-          <span className="hidden h-px flex-1 bg-[#c5a880]/15 sm:block" />
-
+          <span className="hidden h-px flex-1 bg-white/10 sm:block ml-2" />
         </div>
-
       </div>
-
 
       {/* =========================================
           MARQUEE
       ========================================== */}
-
-      <div className="relative">
-
+      <div className="relative z-10">
         {/* Left Fade */}
-
-        <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-[#0d0d0c] to-transparent sm:w-40 lg:w-84" />
+        <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-[#131313] to-transparent sm:w-40 lg:w-84" />
 
         {/* Right Fade */}
-
-        <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-[#0d0d0c] to-transparent sm:w-40 lg:w-84" />
-
+        <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-[#131313] to-transparent sm:w-40 lg:w-84" />
 
         {/* =====================================
             ROW 1
         ====================================== */}
-
         <div className="mb-8 flex w-max animate-marquee-left">
-
           {rowOne.map((brand, index) => (
-
             <div
               key={`row-one-${index}`}
               className="group flex shrink-0 items-center"
             >
-
-              <span className="px-8 font-serif text-3xl font-light tracking-tight text-[#77736c] transition-colors duration-500 group-hover:text-[#c5a880] sm:px-12 sm:text-4xl md:text-5xl lg:px-16 lg:text-6xl">
-
+              <span className="px-8 font-serif text-3xl font-light tracking-tight text-zinc-500 transition-colors duration-500 group-hover:text-white sm:px-12 sm:text-4xl md:text-5xl lg:px-16 lg:text-6xl">
                 {brand}
-
               </span>
-
-              <span className="text-xs text-[#c5a880]/40 transition-transform duration-500 group-hover:rotate-45">
-
+              <span className="text-xs text-white/20 transition-transform duration-500 group-hover:rotate-45 group-hover:text-white">
                 ◆
-
               </span>
-
             </div>
-
           ))}
-
         </div>
-
 
         {/* =====================================
             ROW 2 — REVERSED
         ====================================== */}
-
         <div className="flex w-max animate-marquee-right">
-
           {rowTwo.map((brand, index) => (
-
             <div
               key={`row-two-${index}`}
               className="group flex shrink-0 items-center"
             >
-
-              <span className="px-8 font-serif text-3xl font-light tracking-tight text-[#77736c] transition-colors duration-500 group-hover:text-[#c5a880] sm:px-12 sm:text-4xl md:text-5xl lg:px-16 lg:text-6xl">
-
+              <span className="px-8 font-serif text-3xl font-light tracking-tight text-zinc-500 transition-colors duration-500 group-hover:text-white sm:px-12 sm:text-4xl md:text-5xl lg:px-16 lg:text-6xl">
                 {brand}
-
               </span>
-
-              <span className="text-xs text-[#c5a880]/40 transition-transform duration-500 group-hover:rotate-45">
-
+              <span className="text-xs text-white/20 transition-transform duration-500 group-hover:rotate-45 group-hover:text-white">
                 ◆
-
               </span>
-
             </div>
-
           ))}
-
         </div>
-
       </div>
-
 
       {/* =========================================
           CTA
       ========================================== */}
-
-      <div className="mt-20 flex justify-center">
-
-        <button onClick={() => {
-          router.push('/#contact');
-        }} className="group flex items-center gap-5">
-
-          <span className="flex h-12 w-12 items-center justify-center rounded-full border border-[#c5a880] text-[#c5a880] transition-all duration-500 group-hover:bg-[#c5a880] group-hover:text-[#0d0d0c]">
-
-            <span className="text-lg transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1">
-              ↗
-            </span>
-
-          </span>
-
-          <span className="relative text-[10px] uppercase tracking-[0.3em] text-[#c5a880]">
-
+      <div className="relative z-10 mt-20 flex justify-center">
+        <button
+          type="button"
+          onClick={() => {
+            router.push("/#contact");
+          }}
+          className="group flex items-center gap-4 rounded-xl border border-white/15 bg-[#1a1a1a] px-7 py-4 shadow-2xl transition-all duration-300 hover:border-white hover:bg-white hover:text-[#131313] focus:outline-none"
+        >
+          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white transition-colors duration-300 group-hover:bg-[#131313] group-hover:text-white">
+            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </div>
+          <span className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-200 transition-colors duration-300 group-hover:text-[#131313]">
             Understand us better
-
-            <span className="absolute -bottom-2 left-0 h-px w-0 bg-[#c5a880] transition-all duration-500 group-hover:w-full" />
-
           </span>
-
         </button>
-
       </div>
-
 
       {/* =========================================
           ANIMATIONS
       ========================================== */}
-
       <style jsx>{`
-
         @keyframes marqueeLeft {
           from {
             transform: translateX(0);
           }
-
           to {
             transform: translateX(-33.333%);
           }
@@ -187,7 +131,6 @@ const BrandMarquee: React.FC = () => {
           from {
             transform: translateX(-33.333%);
           }
-
           to {
             transform: translateX(0);
           }
@@ -205,9 +148,7 @@ const BrandMarquee: React.FC = () => {
         .animate-marquee-right:hover {
           animation-play-state: paused;
         }
-
       `}</style>
-
     </section>
   );
 };

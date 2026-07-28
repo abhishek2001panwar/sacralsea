@@ -65,14 +65,13 @@ const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
    ANIMATION VARIANTS
    ============================================================================ */
 
-// Container variant for word-by-word answer animation
 const wordContainerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.025,
-      delayChildren: 0.1,
+      staggerChildren: 0.02,
+      delayChildren: 0.05,
     },
   },
   exit: {
@@ -84,28 +83,27 @@ const wordContainerVariants = {
   },
 };
 
-// Individual word variant (slides in from left)
 const wordChildVariants = {
   hidden: {
     opacity: 0,
-    x: -12,
+    y: 4,
     filter: "blur(4px)",
   },
   visible: {
     opacity: 1,
-    x: 0,
+    y: 0,
     filter: "blur(0px)",
     transition: {
-      duration: 0.4,
+      duration: 0.35,
       ease: EASE,
     },
   },
   exit: {
     opacity: 0,
-    x: -8,
+    y: -4,
     filter: "blur(2px)",
     transition: {
-      duration: 0.2,
+      duration: 0.15,
     },
   },
 };
@@ -123,7 +121,7 @@ const WordByWordText = ({ text }: { text: string }) => {
       initial="hidden"
       animate="visible"
       exit="exit"
-      className="flex flex-wrap gap-x-[0.3em] gap-y-1 text-sm sm:text-base font-light leading-relaxed text-[#a1a09d]"
+      className="flex flex-wrap gap-x-[0.32em] gap-y-1 text-sm sm:text-base font-light leading-relaxed text-zinc-400"
     >
       {words.map((word, index) => (
         <motion.span
@@ -139,42 +137,41 @@ const WordByWordText = ({ text }: { text: string }) => {
 };
 
 /* ============================================================================
-   DYNAMIC MOTION GRAPHIC CANVAS (Per Active FAQ)
+   DYNAMIC MOTION GRAPHIC CANVAS
    ============================================================================ */
 
 const DynamicVisualCanvas = ({ activeType }: { activeType: FAQItem["visualType"] }) => {
   return (
-    <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-3xl border border-[#c5a880]/20 bg-[#121210]/90 backdrop-blur-xl p-8">
-      {/* Background Radial Glow */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(197,168,128,0.12)_0%,transparent_70%)]" />
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-[#1c1c1c] p-8 shadow-2xl">
+      {/* Subtle Background Glow */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
 
       {/* Grid Pattern Overlay */}
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:2rem_2rem]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:1.5rem_1.5rem]" />
 
       <AnimatePresence mode="wait">
         {activeType === "strategy" && (
           <motion.div
             key="strategy"
-            initial={{ opacity: 0, scale: 0.85 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.85 }}
-            transition={{ duration: 0.6, ease: EASE }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.5, ease: EASE }}
             className="relative flex items-center justify-center"
           >
-            {/* Concentric Rotating Strategy Rings */}
             <motion.div
               animate={{ rotate: 360 }}
-              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-              className="relative h-48 w-48 rounded-full border border-dashed border-[#c5a880]/40 flex items-center justify-center"
+              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+              className="relative h-48 w-48 rounded-full border border-dashed border-white/20 flex items-center justify-center"
             >
-              <div className="h-32 w-32 rounded-full border border-[#c5a880]/30" />
+              <div className="h-32 w-32 rounded-full border border-white/10" />
             </motion.div>
             <motion.div
-              animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.9, 0.5] }}
+              animate={{ scale: [1, 1.08, 1], opacity: [0.8, 1, 0.8] }}
               transition={{ duration: 3, repeat: Infinity }}
-              className="absolute h-16 w-16 rounded-full bg-[#c5a880]/10 border border-[#c5a880] flex items-center justify-center shadow-[0_0_25px_rgba(197,168,128,0.2)]"
+              className="absolute h-16 w-16 rounded-2xl bg-[#242424] border border-white/20 flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.05)]"
             >
-              <Layers className="h-7 w-7 text-[#c5a880]" />
+              <Layers className="h-7 w-7 text-white" />
             </motion.div>
           </motion.div>
         )}
@@ -182,35 +179,34 @@ const DynamicVisualCanvas = ({ activeType }: { activeType: FAQItem["visualType"]
         {activeType === "signals" && (
           <motion.div
             key="signals"
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.6, ease: EASE }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.5, ease: EASE }}
             className="flex flex-col items-center gap-4"
           >
-            {/* Radar Pulse Signals */}
             <div className="relative flex h-36 w-36 items-center justify-center">
               {[1, 2, 3].map((ring) => (
                 <motion.div
                   key={ring}
                   animate={{
-                    scale: [0.6, 1.5],
-                    opacity: [0.8, 0],
+                    scale: [0.6, 1.4],
+                    opacity: [0.6, 0],
                   }}
                   transition={{
-                    duration: 2.5,
+                    duration: 2.2,
                     repeat: Infinity,
-                    delay: ring * 0.6,
+                    delay: ring * 0.5,
                     ease: "easeOut",
                   }}
-                  className="absolute inset-0 rounded-full border border-[#c5a880]"
+                  className="absolute inset-0 rounded-full border border-white/20"
                 />
               ))}
-              <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-[#c5a880] text-[#0a0a09]">
+              <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-white text-[#131313] shadow-[0_0_20px_rgba(255,255,255,0.2)]">
                 <Compass className="h-7 w-7" />
               </div>
             </div>
-            <span className="font-mono text-xs uppercase tracking-widest text-[#c5a880]">
+            <span className="font-mono text-xs uppercase tracking-widest text-zinc-400">
               Diagnostic Radar
             </span>
           </motion.div>
@@ -222,30 +218,29 @@ const DynamicVisualCanvas = ({ activeType }: { activeType: FAQItem["visualType"]
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.6, ease: EASE }}
+            transition={{ duration: 0.5, ease: EASE }}
             className="w-full space-y-4 max-w-xs"
           >
-            {/* Project Task Timeline Motion */}
             <div className="flex items-center gap-3">
-              <div className="h-3 w-3 rounded-full bg-[#c5a880]" />
-              <div className="h-2 flex-1 rounded-full bg-[#c5a880]/20 overflow-hidden">
+              <div className="h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
+              <div className="h-1.5 flex-1 rounded-full bg-white/10 overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: "100%" }}
-                  transition={{ duration: 1.2, ease: EASE }}
-                  className="h-full bg-[#c5a880]"
+                  transition={{ duration: 1, ease: EASE }}
+                  className="h-full bg-white"
                 />
               </div>
-              <span className="font-mono text-[10px] text-[#c5a880]">100%</span>
+              <span className="font-mono text-[10px] text-zinc-400">100%</span>
             </div>
 
-            <div className="p-4 rounded-xl border border-[#c5a880]/30 bg-[#0a0a09]/80 space-y-2">
+            <div className="p-4 rounded-xl border border-white/10 bg-[#242424] space-y-2.5 shadow-lg">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-xs text-[#fbfaf7]">Single Sprint</span>
-                <Briefcase className="h-4 w-4 text-[#c5a880]" />
+                <span className="font-mono text-xs text-zinc-200">Single Sprint</span>
+                <Briefcase className="h-4 w-4 text-zinc-400" />
               </div>
-              <div className="h-1.5 w-3/4 rounded-full bg-[#c5a880]/20" />
-              <div className="h-1.5 w-1/2 rounded-full bg-[#c5a880]/10" />
+              <div className="h-1.5 w-3/4 rounded-full bg-white/20" />
+              <div className="h-1.5 w-1/2 rounded-full bg-white/10" />
             </div>
           </motion.div>
         )}
@@ -256,23 +251,22 @@ const DynamicVisualCanvas = ({ activeType }: { activeType: FAQItem["visualType"]
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.6, ease: EASE }}
+            transition={{ duration: 0.5, ease: EASE }}
             className="relative flex items-center justify-center"
           >
-            {/* Team Orbit Nodes */}
             <div className="relative flex h-40 w-40 items-center justify-center">
-              <Users className="h-8 w-8 text-[#c5a880] relative z-10" />
+              <Users className="h-8 w-8 text-white relative z-10" />
               {[0, 72, 144, 216, 288].map((deg, i) => (
                 <motion.div
                   key={i}
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                  transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
                   className="absolute h-full w-full"
                 >
                   <motion.div
-                    animate={{ scale: [1, 1.2, 1] }}
+                    animate={{ scale: [1, 1.25, 1] }}
                     transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-                    className="h-4 w-4 rounded-full border border-[#c5a880] bg-[#c5a880]/30 shadow-[0_0_10px_#c5a880]"
+                    className="h-3.5 w-3.5 rounded-full border border-white/40 bg-white/80 shadow-[0_0_8px_rgba(255,255,255,0.4)]"
                     style={{
                       position: "absolute",
                       top: "0%",
@@ -304,157 +298,156 @@ export default function FAQ() {
   };
 
   return (
-    <section className="relative min-h-screen bg-[#0a0a09] font-sans text-[#fbfaf7] py-20 lg:py-32 selection:bg-[#c5a880] selection:text-[#0a0a09]">
-      {/* Background Ambient Glow */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(197,168,128,0.06)_0%,transparent_60%)]" />
+    <section className="relative min-h-screen bg-[#131313] font-sans text-zinc-100 py-10 selection:bg-white selection:text-[#131313]">
+      
+      {/* Background Soft Glow */}
 
-      <div className="relative z-10 mx-auto w-full max-w-8xl px-6 lg:px-12">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 lg:px-12">
         
-        {/* HEADER SECTION - ON VIEW ANIMATIONS */}
+        {/* HEADER SECTION */}
         <motion.div 
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: EASE }}
+          transition={{ duration: 0.6, ease: EASE }}
           className="mb-16 lg:mb-20"
         >
           <motion.div 
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -10 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1, ease: EASE }}
-            className="flex items-center gap-3"
+            transition={{ duration: 0.5, delay: 0.1, ease: EASE }}
+            className="flex items-center gap-2.5"
           >
-            <Sparkles className="h-4 w-4 text-[#c5a880]" />
-            <span className="font-mono text-xs uppercase tracking-[0.35em] text-[#c5a880]">
+            <Sparkles className="h-4 w-4 text-zinc-400" />
+            <span className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-400">
               Most Asked, Always Answered
             </span>
           </motion.div>
           
           <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
-            className="mt-4 text-4xl font-extralight tracking-tight sm:text-6xl lg:text-7xl"
+            transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
+            className="mt-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl"
           >
-            Frequently Asked <span className="font-serif italic text-[#c5a880]">Questions</span>
+            Frequently Asked <span className="text-[#f5c563] font-normal">Questions</span>
           </motion.h2>
         </motion.div>
 
         {/* FAQ ACCORDION + MOTION GRAPHIC GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* ACCORDION LIST (LEFT COLUMN) */}
-          <div className="lg:col-span-7 space-y-4">
+          <div className="lg:col-span-7 space-y-3">
             {faqData.map((item, index) => {
               const isOpen = openId === item.id;
 
               return (
                 <motion.div
                   key={item.id}
-                  initial={{ opacity: 0, y: 25 }}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.6, delay: index * 0.1, ease: EASE }}
+                  transition={{ duration: 0.5, delay: index * 0.08, ease: EASE }}
                   className={`
-                    group relative overflow-hidden rounded-2xl border transition-colors duration-500
+                    group relative overflow-hidden rounded-xl border transition-all duration-300
                     ${
                       isOpen
-                        ? "border-[#c5a880]/60 bg-[#121210]/90 shadow-[0_0_30px_rgba(197,168,128,0.1)]"
-                        : "border-[#c5a880]/15 bg-[#121210]/30 hover:border-[#c5a880]/40"
+                        ? "border-white/20 bg-[#202020] shadow-[0_4px_25px_rgba(0,0,0,0.5)]"
+                        : "border-white/10 bg-[#1c1c1c] hover:border-white/20 hover:bg-[#222222]"
                     }
                   `}
                 >
                   {/* TRIGGER HEADER */}
                   <button
                     onClick={() => toggleAccordion(item.id)}
-                    className="flex w-full items-center justify-between p-6 sm:p-8 text-left outline-none cursor-pointer"
+                    className="flex w-full items-center justify-between p-6 text-left outline-none cursor-pointer"
                   >
-                    <div className="flex items-center gap-6 pr-4">
-                      {/* Dynamic Number Shifting */}
+                    <div className="flex items-center gap-5 pr-4">
+                      {/* Number Tag */}
                       <motion.span
                         animate={{
-                          color: isOpen ? "#c5a880" : "#a1a09d",
-                          scale: isOpen ? 1.1 : 1,
+                          color: isOpen ? "#ffffff" : "#71717a",
                         }}
-                        transition={{ duration: 0.4 }}
-                        className="font-mono text-base font-light tracking-wider"
+                        transition={{ duration: 0.3 }}
+                        className="font-mono text-sm font-medium tracking-wider"
                       >
                         {item.number}
                       </motion.span>
 
                       {/* Question Text */}
                       <h3
-                        className={`text-lg sm:text-xl font-light transition-colors duration-500 ${
-                          isOpen ? "text-[#fbfaf7]" : "text-[#a1a09d] group-hover:text-[#fbfaf7]"
+                        className={`text-base sm:text-lg font-medium transition-colors duration-300 ${
+                          isOpen ? "text-white" : "text-zinc-300 group-hover:text-white"
                         }`}
                       >
                         {item.question}
                       </h3>
                     </div>
 
-                    {/* ENHANCED CIRCULAR TOGGLE BUTTON WITH RIPPLE & ROTATION */}
+                    {/* CIRCULAR TOGGLE BUTTON */}
                     <motion.div
-                      whileHover={{ scale: 1.08 }}
-                      whileTap={{ scale: 0.94 }}
-                      className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
                     >
-                      {/* Expanding Background Circle Fill */}
+                      {/* Background Fill on Open */}
                       <motion.div
                         initial={false}
                         animate={{
                           scale: isOpen ? 1 : 0,
                           opacity: isOpen ? 1 : 0,
                         }}
-                        transition={{ duration: 0.4, ease: EASE }}
-                        className="absolute inset-0 rounded-full bg-[#c5a880] shadow-[0_0_15px_rgba(197,168,128,0.4)]"
+                        transition={{ duration: 0.3, ease: EASE }}
+                        className="absolute inset-0 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.3)]"
                       />
 
-                      {/* Static Outline Circle */}
+                      {/* Outline Ring */}
                       <motion.div
                         animate={{
-                          borderColor: isOpen ? "#c5a880" : "rgba(197, 168, 128, 0.3)",
+                          borderColor: isOpen ? "transparent" : "rgba(255, 255, 255, 0.15)",
                         }}
-                        transition={{ duration: 0.3 }}
-                        className="absolute inset-0 rounded-full border group-hover:border-[#c5a880]"
+                        transition={{ duration: 0.2 }}
+                        className="absolute inset-0 rounded-full border group-hover:border-white/30"
                       />
 
-                      {/* Animated Plus / Cross Icon */}
+                      {/* Plus / Rotate Icon */}
                       <motion.div
                         animate={{
                           rotate: isOpen ? 135 : 0,
-                          color: isOpen ? "#0a0a09" : "#c5a880",
+                          color: isOpen ? "#131313" : "#a1a1aa",
                         }}
-                        transition={{ duration: 0.5, ease: EASE }}
+                        transition={{ duration: 0.4, ease: EASE }}
                         className="relative z-10"
                       >
-                        <Plus className="h-5 w-5" />
+                        <Plus className="h-4 w-4" />
                       </motion.div>
                     </motion.div>
                   </button>
 
-                  {/* KINETIC DRAWING ACCENT LINE */}
+                  {/* ACCENT LINE DIVIDER */}
                   {isOpen && (
                     <motion.div
                       initial={{ scaleX: 0 }}
                       animate={{ scaleX: 1 }}
-                      transition={{ duration: 0.6, ease: EASE }}
-                      className="h-[1px] w-full origin-left bg-gradient-to-r from-transparent via-[#c5a880]/50 to-transparent"
+                      transition={{ duration: 0.4, ease: EASE }}
+                      className="h-[1px] w-full origin-left bg-gradient-to-r from-transparent via-white/20 to-transparent"
                     />
                   )}
 
-                  {/* EXPANDABLE ANSWER BODY WITH WORD-BY-WORD ANIMATION */}
+                  {/* EXPANDABLE ANSWER BODY */}
                   <AnimatePresence initial={false}>
                     {isOpen && (
                       <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.5, ease: EASE }}
+                        transition={{ duration: 0.4, ease: EASE }}
                         className="overflow-hidden"
                       >
-                        <div className="p-6 sm:p-8 pt-4 sm:pt-4">
+                        <div className="p-6 pt-3">
                           <WordByWordText text={item.answer} />
                         </div>
                       </motion.div>
@@ -467,31 +460,31 @@ export default function FAQ() {
 
           {/* DYNAMIC MOTION GRAPHIC DISPLAY (RIGHT COLUMN) */}
           <motion.div 
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
-            className="hidden lg:block lg:col-span-5 sticky top-28 h-[420px]"
+            transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
+            className="hidden lg:block lg:col-span-5 sticky top-28 h-[400px]"
           >
             <DynamicVisualCanvas activeType={activeFAQ.visualType} />
           </motion.div>
 
         </div>
 
-        {/* BOTTOM HUD HELP */}
+        {/* BOTTOM HELP FOOTER */}
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4, ease: EASE }}
-          className="mt-16 border-t border-[#c5a880]/15 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs uppercase tracking-widest text-[#a1a09d]/60"
+          transition={{ duration: 0.5, delay: 0.3, ease: EASE }}
+          className="mt-16 border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs tracking-wider text-zinc-500"
         >
           <span>Still have questions?</span>
           <motion.a
             whileHover={{ x: 3 }}
             transition={{ duration: 0.2 }}
             href="#contact"
-            className="flex items-center gap-1.5 text-[#c5a880] hover:underline"
+            className="flex items-center gap-1.5 text-zinc-300 hover:text-white transition-colors"
           >
             <span>Speak directly with our strategy team</span>
             <ArrowUpRight className="h-3.5 w-3.5" />

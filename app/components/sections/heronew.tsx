@@ -1,259 +1,112 @@
-// 'use client';
-
-// import { motion, useScroll, useTransform } from 'framer-motion';
-// import { useRef } from 'react';
-
-// export default function CinematicHero() {
-//   const containerRef = useRef<HTMLDivElement>(null);
-
-//   // Track scroll progress
-//   const { scrollYProgress } = useScroll({
-//     target: containerRef,
-//     offset: ['start start', 'end end'],
-//   });
-
-//   // --- TRANSITION CONTROLS ---
-//   // Phase 1 (Intro) fades OUT between 0% and 35% scroll
-//   const phase1Opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-//   const phase1Scale = useTransform(scrollYProgress, [0, 0.3], [1, 0.92]);
-
-//   // Video Background fades IN between 35% and 60% scroll
-//   const videoOpacity = useTransform(scrollYProgress, [0.35, 0.6], [0, 1]);
-
-//   // Phase 2 (Video Content) fades IN between 50% and 75% scroll
-//   const phase2Opacity = useTransform(scrollYProgress, [0.5, 0.75], [0, 1]);
-//   const phase2Y = useTransform(scrollYProgress, [0.5, 0.75], [40, 0]);
-
-//   return (
-//     <div ref={containerRef} className="relative h-[280vh] bg-[#080808] text-white font-sans selection:bg-[#c5a880] selection:text-black">
-      
-//       {/* Sticky Fullscreen Viewport */}
-//       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
-
-//         {/* ========================================== */}
-//         {/* VIDEO BACKGROUND (FADES IN ON SCROLL ONLY) */}
-//         {/* ========================================== */}
-//         <motion.div 
-//           style={{ opacity: videoOpacity }}
-//           className="absolute inset-0 z-0 pointer-events-none"
-//         >
-//           <video
-//             autoPlay
-//             loop
-//             muted
-//             playsInline
-//             className="w-full h-full object-cover brightness-90 contrast-105"
-//           >
-//             {/* Replace with your video or GIF */}
-//             <source src="https://player.vimeo.com/progressive_redirect/playback/1020697798/rendition/720p/file.mp4?loc=external&log_user=0&signature=cd45f23683db91c40f08a3f4a31ba153f1e93eac3d4f98cb3ca4b651b8830d04" type="video/mp4" />
-//           </video>
-//           {/* Subtle top/bottom gradient overlay for readability */}
-//           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-black/80" />
-//         </motion.div>
-
-
-//         {/* ========================================== */}
-//         {/* PHASE 1: RICH INTRO SECTION (INITIAL VIEW) */}
-//         {/* ========================================== */}
-//         <motion.div
-//           style={{ opacity: phase1Opacity, scale: phase1Scale }}
-//           className="relative z-10 w-full max-w-6xl px-6 flex flex-col items-center justify-between h-[80vh]"
-//         >
-//           {/* Ambient Glow behind Intro */}
-//           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#c5a880]/10 rounded-full blur-[140px] pointer-events-none" />
-
-//           {/* Top Pill Accent */}
-//           <motion.div
-//             initial={{ opacity: 0, y: -10 }}
-//             animate={{ opacity: 1, y: 0 }}
-//             transition={{ duration: 0.8 }}
-//             className="inline-flex items-center space-x-3 px-5 py-2 rounded-full border border-[#c5a880]/30 bg-[#c5a880]/5 backdrop-blur-md"
-//           >
-//             <span className="w-2 h-2 rounded-full bg-[#c5a880] animate-pulse" />
-//             <span className="text-[#c5a880] text-xs uppercase tracking-[0.3em] font-medium">
-//               You found us!
-//             </span>
-//           </motion.div>
-
-//           {/* Center Main Copy */}
-//           <div className="text-center space-y-6 my-auto">
-//             <motion.h1
-//               initial={{ opacity: 0, y: 20 }}
-//               animate={{ opacity: 1, y: 0 }}
-//               transition={{ duration: 1, delay: 0.2 }}
-//               className="text-4xl sm:text-7xl md:text-8xl font-extralight tracking-tight text-neutral-100 leading-[1.05]"
-//             >
-//               Together, we'll take it <br />
-//               <span className="font-serif italic text-[#c5a880] font-normal">
-//                 from here.
-//               </span>
-//             </motion.h1>
-            
-//             <motion.p 
-//               initial={{ opacity: 0 }}
-//               animate={{ opacity: 0.6 }}
-//               transition={{ delay: 0.5, duration: 0.8 }}
-//               className="text-sm md:text-base text-neutral-400 font-light tracking-wide max-w-lg mx-auto"
-//             >
-//               Crafting bespoke digital experiences, brand identity, and scalable code for visionary teams.
-//             </motion.p>
-//           </div>
-
-//           {/* Bottom Grid Pillars (Fills up the empty hero space beautifully) */}
-//           <motion.div
-//             initial={{ opacity: 0, y: 20 }}
-//             animate={{ opacity: 1, y: 0 }}
-//             transition={{ delay: 0.8, duration: 0.8 }}
-//             className="w-full grid grid-cols-3 gap-4 border-t border-white/10 pt-6 text-center text-xs text-neutral-400 uppercase tracking-widest"
-//           >
-//             <div>[ Design ]</div>
-//             <div>[ Development ]</div>
-//             <div>[ Strategy ]</div>
-//           </motion.div>
-
-//           {/* Scroll Cue */}
-//           <div className="absolute -bottom-8 flex flex-col items-center space-y-2">
-//             <span className="text-[10px] uppercase tracking-[0.3em] text-[#c5a880]/70 font-mono">
-//               Scroll Down
-//             </span>
-//             <div className="w-[1px] h-8 bg-gradient-to-b from-[#c5a880] to-transparent animate-pulse" />
-//           </div>
-//         </motion.div>
-
-
-//         {/* ========================================== */}
-//         {/* PHASE 2: VIDEO REVEAL SECTION (ON SCROLL) */}
-//         {/* ========================================== */}
-//         <motion.div
-//           style={{ opacity: phase2Opacity, y: phase2Y }}
-//           className="absolute z-10 text-center px-6 max-w-5xl flex flex-col items-center justify-center space-y-8"
-//         >
-//           {/* Section Tag */}
-//           <div className="space-y-2">
-//             <span className="text-[#c5a880] text-xs md:text-sm font-mono uppercase tracking-[0.4em] block">
-//               You arrived
-//             </span>
-//             <span className="text-white/80 text-xl md:text-3xl font-serif italic block">
-//               On the dot.
-//             </span>
-//           </div>
-
-//           {/* Bold Impact Heading */}
-//           <h2 className="text-4xl sm:text-6xl md:text-8xl font-black uppercase tracking-tighter text-white leading-none drop-shadow-2xl">
-//             Get Full-Stack <br />
-//             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#c5a880] to-[#c5a880]">
-//               Agency Services
-//             </span>
-//           </h2>
-
-//           {/* Clean Call to Action */}
-//           <motion.div 
-//             whileHover={{ scale: 1.05 }}
-//             whileTap={{ scale: 0.98 }}
-//             className="pt-6"
-//           >
-//             <a
-//               href="#contact"
-//               className="inline-flex items-center space-x-3 bg-[#c5a880] text-black font-semibold text-sm sm:text-base px-10 py-4 rounded-full shadow-[0_0_40px_rgba(197,168,128,0.4)] hover:shadow-[0_0_60px_rgba(197,168,128,0.7)] transition-all duration-300"
-//             >
-//               <span>Explore Services</span>
-//               <span className="text-lg">→</span>
-//             </a>
-//           </motion.div>
-//         </motion.div>
-
-//       </div>
-//     </div>
-//   );
-// }
-
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { motion, useScroll, useTransform, Variants } from 'framer-motion';
+import { ArrowUpRight, Sparkles } from 'lucide-react';
 import { useRef } from 'react';
 
-const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+// High-end agency quintic ease curve
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+// Parent Container — Controls sequence timing and character stagger
+const sentenceContainer: Variants = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.025, // Delay between each letter
+      delayChildren: 0.2,    // Initial wait before animation begins
+    },
+  },
+};
+
+// Child Character Variant — Smooth mask reveal with blur & scale
+const letterVariant: Variants = {
+  hidden: {
+    y: '110%',
+    opacity: 0,
+    scale: 0.9,
+    filter: 'blur(10px)',
+  },
+  visible: {
+    y: '0%',
+    opacity: 1,
+    scale: 1,
+    filter: 'blur(0px)',
+    transition: {
+      duration: 0.9,
+      ease: EASE,
+    },
+  },
+};
+
+interface SmoothWordProps {
+  word: string;
+  isYellow?: boolean;
+}
+
+// Word Wrapper Component — Uses overflow mask to clip letters cleanly
+const SmoothWord: React.FC<SmoothWordProps> = ({ word, isYellow = false }) => {
+  return (
+    <span className="inline-block whitespace-nowrap overflow-hidden py-1">
+      <span className="inline-flex">
+        {word.split('').map((char, index) => (
+          <motion.span
+            key={index}
+            variants={letterVariant}
+            className={`inline-block transform-gpu will-change-transform ${
+              isYellow ? 'text-[#f5c563] font-normal' : ''
+            }`}
+          >
+            {char}
+          </motion.span>
+        ))}
+      </span>
+    </span>
+  );
+};
 
 export default function CinematicHero() {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Track scroll progress within the container
+  // Track scroll progress within container
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
   });
 
-  // =========================================================================
   // STRICT SCROLL TIMING MAP (Prevents overlapping/ghosting)
-  // =========================================================================
-  
-  // PHASE 1 INTRO TEXT:
   const phase1Opacity = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 1, 0]);
   const phase1Y = useTransform(scrollYProgress, [0, 0.3], [0, -40]);
 
-  // VIDEO BACKGROUND:
   const videoOpacity = useTransform(scrollYProgress, [0.3, 0.5], [0, 1]);
 
-  // PHASE 2 VIDEO TEXT:
   const phase2Opacity = useTransform(scrollYProgress, [0.5, 0.7], [0, 1]);
   const phase2Y = useTransform(scrollYProgress, [0.5, 0.7], [40, 0]);
 
-  // =========================================================================
-  // WORD-BY-WORD REVEAL ANIMATION VARIANTS
-  // =========================================================================
-  const sentenceContainer = {
-    hidden: { opacity: 1 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.12,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const wordVariant = {
-    hidden: { opacity: 0, y: 25, filter: 'blur(8px)' },
-    visible: {
-      opacity: 1,
-      y: 0,
-      filter: 'blur(0px)',
-      transition: {
-        duration: 0.8,
-        ease: EASE,
-      },
-    },
-  };
-
-  const line1Words = ['Together,', "we'll", 'take', 'it'];
-  const line2Words = ['from', 'here.'];
-
   return (
-    <div ref={containerRef} className="relative h-[280vh] bg-[#050505] text-white font-sans selection:bg-[#c5a880] selection:text-black">
+    <div ref={containerRef} className="relative h-[280vh] bg-[#131313] text-zinc-100 font-sans selection:bg-white selection:text-[#131313]">
       
       {/* Sticky Fullscreen Wrapper */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
 
-        {/* ==================================================== */}
-        {/* CINEMATIC GRID BACKGROUND LAYER                      */}
-        {/* ==================================================== */}
-        <div 
-          className="absolute inset-0 z-0 pointer-events-none opacity-[0.15]"
+        {/* Background Radial Glow */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(255,255,255,0.02),transparent_100%)] z-1" />
+
+        {/* CINEMATIC GRID BACKGROUND LAYER */}
+        {/* <div 
+          className="absolute inset-0 z-0 pointer-events-none opacity-[0.05]"
           style={{
             backgroundImage: `
-              linear-gradient(to right, #c5a880 1px, transparent 1px),
-              linear-gradient(to bottom, #c5a880 1px, transparent 1px)
+              linear-gradient(to right, #ffffff 1px, transparent 1px),
+              linear-gradient(to bottom, #ffffff 1px, transparent 1px)
             `,
-            backgroundSize: '80px 80px',
+            backgroundSize: '2rem 2rem',
             maskImage: 'radial-gradient(circle at center, black 40%, transparent 85%)',
             WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 85%)',
           }}
-        />
+        /> */}
 
-        {/* ==================================================== */}
-        {/* VIDEO BACKGROUND (Fades in ONLY after Phase 1 hides) */}
-        {/* ==================================================== */}
+        {/* VIDEO BACKGROUND */}
         <motion.div 
           style={{ opacity: videoOpacity }}
           className="absolute inset-0 z-0 pointer-events-none"
@@ -265,18 +118,13 @@ export default function CinematicHero() {
             playsInline
             className="w-full h-full object-cover brightness-95 contrast-105"
           >
-            {/* Replace with your MP4 or GIF path */}
             <source src="https://player.vimeo.com/progressive_redirect/playback/1020697798/rendition/720p/file.mp4?loc=external&log_user=0&signature=cd45f23683db91c40f08a3f4a31ba153f1e93eac3d4f98cb3ca4b651b8830d04" type="video/mp4" />
           </video>
 
-          {/* Gradient overlay to maximize contrast for Phase 2 text */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/80" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#131313]/70 via-[#131313]/30 to-[#131313]/90" />
         </motion.div>
 
-
-        {/* ==================================================== */}
-        {/* PHASE 1: STATIC INTRO (Completely hides on scroll)    */}
-        {/* ==================================================== */}
+        {/* PHASE 1: STATIC INTRO */}
         <motion.div
           style={{ 
             opacity: phase1Opacity, 
@@ -285,79 +133,62 @@ export default function CinematicHero() {
           }}
           className="relative z-10 w-full max-w-5xl px-6 flex-col items-center justify-between h-[75vh]"
         >
-          {/* Background Subtle Accent Glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-[#c5a880]/10 rounded-full blur-[150px] pointer-events-none" />
-
           {/* Top Pill Badge */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="inline-flex items-center space-x-3 px-4 py-1.5 rounded-full border border-[#c5a880]/30 bg-[#c5a880]/5 backdrop-blur-md"
+            transition={{ duration: 0.8, ease: EASE }}
+            className="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full border border-white/10 bg-[#1a1a1a] shadow-xl"
           >
-            <span className="w-2 h-2 rounded-full bg-[#c5a880] animate-pulse" />
-            <span className="text-[#c5a880] text-xs uppercase tracking-[0.3em] font-medium">
+            <Sparkles className="h-3.5 w-3.5 text-zinc-400" />
+            <span className="text-zinc-400 text-xs uppercase tracking-[0.25em] font-mono">
               You found us!
             </span>
           </motion.div>
 
-          {/* Word-by-Word Animated Heading */}
+          {/* ULTRA-SMOOTH MASKED LETTER ANIMATED HEADING */}
           <div className="text-center space-y-6 my-auto max-w-4xl">
             <motion.h1
               variants={sentenceContainer}
               initial="hidden"
               animate="visible"
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extralight tracking-tight text-neutral-100 leading-[1.08] flex flex-col items-center justify-center gap-y-2"
+              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight text-white leading-[1.08] flex flex-col items-center justify-center gap-y-1 sm:gap-y-2 select-none"
             >
               {/* First Line */}
-              <div className="flex flex-wrap justify-center gap-x-[0.3em]">
-                {line1Words.map((word, idx) => (
-                  <motion.span key={idx} variants={wordVariant} className="inline-block">
-                    {word}
-                  </motion.span>
-                ))}
+              <div className="flex flex-wrap justify-center gap-x-[0.28em]">
+                <SmoothWord word="Together," />
+                <SmoothWord word="we'll" />
+                <SmoothWord word="take" />
+                <SmoothWord word="it" />
               </div>
 
               {/* Second Line */}
-              <div className="flex flex-wrap justify-center gap-x-[0.3em]">
-                {line2Words.map((word, idx) => (
-                  <motion.span 
-                    key={idx} 
-                    variants={wordVariant} 
-                    className="inline-block font-serif italic font-light text-[#c5a880]"
-                  >
-                    {word}
-                  </motion.span>
-                ))}
+              <div className="flex flex-wrap justify-center gap-x-[0.28em]">
+                <SmoothWord word="from" isYellow={true} />
+                <SmoothWord word="here." isYellow={true} />
               </div>
             </motion.h1>
 
             <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.5 }}
-              transition={{ delay: 1.2, duration: 0.8 }}
-              className="text-xs sm:text-sm md:text-base text-neutral-300 font-extralight tracking-wider max-w-md mx-auto"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.1, duration: 0.8, ease: EASE }}
+              className="text-xs sm:text-sm md:text-base text-zinc-400 font-light tracking-wide max-w-md mx-auto"
             >
               Crafting high-end digital experiences, visual identity, and modern applications.
             </motion.p>
           </div>
 
-          {/* Minimalist Bottom Pillars */}
-        
-
           {/* Scroll Prompt */}
           <div className="absolute -bottom-10 flex flex-col items-center space-y-2">
-            <span className="text-[10px] uppercase tracking-[0.3em] text-[#c5a880]/70 font-mono">
+            <span className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 font-mono">
               Scroll Down
             </span>
-            <div className="w-[1px] h-8 bg-gradient-to-b from-[#c5a880] to-transparent animate-pulse" />
+            <div className="w-[1px] h-8 bg-gradient-to-b from-white/40 to-transparent animate-pulse" />
           </div>
         </motion.div>
 
-
-        {/* ==================================================== */}
-        {/* PHASE 2: VIDEO CONTENT (Appears when Video appears)  */}
-        {/* ==================================================== */}
+        {/* PHASE 2: VIDEO CONTENT */}
         <motion.div
           style={{ 
             opacity: phase2Opacity, 
@@ -368,10 +199,10 @@ export default function CinematicHero() {
         >
           {/* Subheading Badges */}
           <div className="space-y-2">
-            <span className="text-[#c5a880] text-xs sm:text-sm font-mono uppercase tracking-[0.4em] block">
+            <span className="text-zinc-400 text-xs sm:text-sm font-mono uppercase tracking-[0.4em] block">
               You arrived
             </span>
-            <span className="text-white/90 text-2xl sm:text-4xl font-serif italic font-light block">
+            <span className="text-white text-2xl sm:text-4xl font-serif italic font-light block">
               On the dot.
             </span>
           </div>
@@ -379,23 +210,23 @@ export default function CinematicHero() {
           {/* Hero Action Headline */}
           <h2 className="text-4xl sm:text-6xl md:text-8xl font-black uppercase tracking-tight text-white leading-none drop-shadow-2xl">
             Get Full-Stack <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#c5a880] to-[#c5a880]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#f5c563] to-white">
               Agency Services
             </span>
           </h2>
 
           {/* CTA Button */}
           <motion.div 
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className="pt-4"
           >
-            <button className="group relative inline-flex items-center gap-4 rounded-full border border-[#c5a880] bg-[#c5a880]/10 px-7 py-3 transition-all duration-500 hover:bg-[#c5a880]">
-              <span className="font-mono text-xs uppercase tracking-[0.25em] text-[#c5a880] transition-colors duration-500 group-hover:text-[#0d0d0c]">
+            <button className="group flex items-center gap-4 rounded-xl border border-white/15 bg-[#1a1a1a] px-7 py-4 shadow-2xl transition-all duration-300 hover:border-white hover:bg-white hover:text-[#131313] focus:outline-none">
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-200 transition-colors duration-300 group-hover:text-[#131313]">
                 Get In Touch
               </span>
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#c5a880] text-[#0d0d0c] transition-transform duration-500 group-hover:scale-110">
-                <ArrowUpRight className="h-3.5 w-3.5" />
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white transition-colors duration-300 group-hover:bg-[#131313] group-hover:text-white">
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </div>
             </button>
           </motion.div>

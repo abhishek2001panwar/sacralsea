@@ -24,14 +24,14 @@ function EditorialText({
   wordDelay = 0.04,
   startDelay = 0,
   italicWords = [],
-  goldWords = [],
+  yellowWords = [],
 }: {
   text: string;
   className?: string;
   wordDelay?: number;
   startDelay?: number;
   italicWords?: string[];
-  goldWords?: string[];
+  yellowWords?: string[];
 }) {
   const words = text.split(" ");
 
@@ -69,7 +69,7 @@ function EditorialText({
       {words.map((word, index) => {
         const cleanWord = word.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, "");
         const isItalic = italicWords.includes(cleanWord);
-        const isGold = goldWords.includes(cleanWord);
+        const isYellow = yellowWords.includes(cleanWord);
 
         return (
           <motion.span
@@ -77,11 +77,7 @@ function EditorialText({
             variants={wordVariants}
             className={`inline-block ${
               isItalic ? "font-serif italic tracking-normal font-normal" : ""
-            } ${
-              isGold
-                ? "text-transparent bg-clip-text bg-gradient-to-r from-[#f3e5ce] via-[#c5a880] to-[#997a51]"
-                : ""
-            }`}
+            } ${isYellow ? "text-[#f5c563] font-normal" : ""}`}
           >
             {word}
           </motion.span>
@@ -92,9 +88,9 @@ function EditorialText({
 }
 
 /* ============================================================================
-   AMBEINT LUXURY CANVAS (FAINT NOISE & GRAIN)
+   AMBIENT CANVAS (FAINT PARTICLES)
    ============================================================================ */
-function LuxuryGrainCanvas() {
+function AmbientGrainCanvas() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -115,14 +111,13 @@ function LuxuryGrainCanvas() {
 
     window.addEventListener("resize", handleResize);
 
-    // Dynamic Nodes
     const stars = Array.from({ length: 24 }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
       vx: (Math.random() - 0.5) * 0.15,
       vy: (Math.random() - 0.5) * 0.15,
       radius: Math.random() * 1.5 + 0.5,
-      alpha: Math.random() * 0.5 + 0.1,
+      alpha: Math.random() * 0.3 + 0.1,
     }));
 
     const render = () => {
@@ -137,7 +132,7 @@ function LuxuryGrainCanvas() {
 
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(197, 168, 128, ${star.alpha})`;
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
         ctx.fill();
       });
 
@@ -155,7 +150,7 @@ function LuxuryGrainCanvas() {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none absolute inset-0 h-full w-full opacity-40"
+      className="pointer-events-none absolute inset-0 h-full w-full opacity-30"
     />
   );
 }
@@ -194,21 +189,20 @@ function MagneticButton({ href, label }: { href: string; label: string }) {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ x: springX, y: springY }}
-      className="group relative inline-flex items-center gap-6 overflow-hidden rounded-full border border-[#c5a880]/30 bg-[#0d0d0c]/80 px-10 py-5 text-lg font-light text-[#fbfaf7] backdrop-blur-xl transition-all duration-700 hover:border-[#c5a880] hover:shadow-[0_0_50px_rgba(197,168,128,0.25)]"
+      className="group relative inline-flex items-center gap-4 overflow-hidden rounded-xl border border-white/15 bg-[#1a1a1a] px-8 py-4 shadow-2xl transition-all duration-300 hover:border-white hover:bg-white hover:text-[#131313]"
     >
-      {/* Background Hover Sweep */}
-      <span className="absolute inset-0 z-0 bg-gradient-to-r from-[#c5a880] via-[#e6c594] to-[#c5a880] opacity-0 transition-opacity duration-700 group-hover:opacity-10" />
-
-      <span className="relative z-10 font-sans tracking-wide">{label}</span>
-      <span className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full border border-[#c5a880]/40 bg-[#c5a880]/10 text-[#c5a880] transition-transform duration-500 group-hover:rotate-45 group-hover:bg-[#c5a880] group-hover:text-[#0a0a09]">
-        <ArrowUpRight className="h-5 w-5" />
+      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white transition-colors duration-300 group-hover:bg-[#131313] group-hover:text-white">
+        <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+      </div>
+      <span className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-200 transition-colors duration-300 group-hover:text-[#131313]">
+        {label}
       </span>
     </motion.a>
   );
 }
 
 /* ============================================================================
-   MAIN LUXURY WHY COLLABORATE SECTION
+   MAIN WHY COLLABORATE SECTION
    ============================================================================ */
 export default function UltraPremiumWhyCollaborate() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -233,32 +227,33 @@ export default function UltraPremiumWhyCollaborate() {
     <section
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      className="relative w-full overflow-hidden bg-[#050505] py-36 lg:py-56 font-sans text-[#fbfaf7] selection:bg-[#c5a880] selection:text-[#050505]"
+      className="relative w-full overflow-hidden bg-[#131313] py-20 font-sans text-zinc-100 selection:bg-white selection:text-[#131313]"
     >
-      {/* Luxury Stars Canvas */}
-      <LuxuryGrainCanvas />
+      {/* Background Radial Glow */}
 
-      {/* Radial Cursor Glow Light */}
+      {/* Grid Pattern Overlay */}
+
+      {/* Ambient Canvas */}
+      <AmbientGrainCanvas />
+
+      {/* Cursor Light Glow */}
       <motion.div
-        className="pointer-events-none absolute -inset-px opacity-25 transition-opacity duration-500"
+        className="pointer-events-none absolute -inset-px opacity-20 transition-opacity duration-500"
         style={{
           background: useTransform(
             [mouseX, mouseY],
             ([x, y]) =>
-              `radial-gradient(900px circle at ${x}px ${y}px, rgba(197, 168, 128, 0.15), transparent 80%)`
+              `radial-gradient(800px circle at ${x}px ${y}px, rgba(255, 255, 255, 0.03), transparent 80%)`
           ),
         }}
       />
 
-      {/* Cinematic Watermark Typography */}
+      {/* Watermark Typography */}
       <div className="pointer-events-none absolute inset-0 flex items-center opacity-[0.015] select-none font-bold text-[16vw] uppercase leading-none tracking-tighter">
         <motion.div style={{ x: tickerX }} className="whitespace-nowrap">
           COLLABORATE AGILITY STRATEGY IMPACT CREATIVITY
         </motion.div>
       </div>
-
-      {/* Ambient Radial Accent Lighting */}
-      <div className="pointer-events-none absolute -left-40 top-1/3 h-[600px] w-[600px] rounded-full bg-[#c5a880]/5 blur-[160px]" />
 
       {/* MAIN TEXT CONTAINER */}
       <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-12">
@@ -268,32 +263,30 @@ export default function UltraPremiumWhyCollaborate() {
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.2, ease: EASE }}
-          className="mb-12 h-[1px] w-24 bg-gradient-to-r from-[#c5a880] to-transparent origin-left"
+          className="mb-12 h-[1px] w-24 bg-gradient-to-r from-white/30 to-transparent origin-left"
         />
 
         {/* 1. Main Headline */}
-        <h2 className="text-5xl sm:text-7xl lg:text-8xl font-extralight tracking-tight leading-[1.02]">
+        <h2 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight leading-[1.02] text-white">
           <EditorialText
             text="Why collaborate?"
             wordDelay={0.12}
-            italicWords={["collaborate?"]}
-            goldWords={["collaborate?"]}
+            yellowWords={["collaborate?"]}
           />
         </h2>
 
         {/* 2. Primary Statement */}
-        <div className="mt-14 text-2xl sm:text-4xl lg:text-5xl font-extralight leading-[1.2] tracking-tight text-[#f2f0eb]">
+        <div className="mt-14 text-2xl sm:text-4xl lg:text-5xl font-light leading-[1.2] tracking-tight text-zinc-100">
           <EditorialText
             text="We are what happens when a bunch of passionate folks come together to form a full-stack agency."
             wordDelay={0.04}
             startDelay={0.25}
             italicWords={["passionate", "folks"]}
-            goldWords={["full-stack"]}
           />
         </div>
 
         {/* 3. Secondary Narrative Lines */}
-        <div className="mt-12 space-y-4 max-w-4xl text-lg sm:text-2xl lg:text-3xl font-light leading-relaxed text-[#8e8d88]">
+        <div className="mt-12 space-y-4 max-w-4xl text-lg sm:text-2xl lg:text-3xl font-light leading-relaxed text-zinc-400">
           <div>
             <EditorialText
               text="Ever since we started, we have worked, built, and grown alongside brands."
@@ -309,7 +302,6 @@ export default function UltraPremiumWhyCollaborate() {
               wordDelay={0.03}
               startDelay={0.95}
               italicWords={["start,", "transform,", "grow"]}
-              goldWords={["with", "you."]}
             />
           </div>
         </div>
@@ -327,8 +319,8 @@ export default function UltraPremiumWhyCollaborate() {
       </div>
 
       {/* Top and Bottom Fade Gradient Mask */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#050505] to-transparent z-20" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#050505] to-transparent z-20" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#131313] to-transparent z-20" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#131313] to-transparent z-20" />
     </section>
   );
 }

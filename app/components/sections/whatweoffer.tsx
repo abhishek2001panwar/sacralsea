@@ -58,11 +58,10 @@ const services: ServiceItem[] = [
   },
 ];
 
-// Ultra-smooth, fluid easing curve
 const ULTRA_SMOOTH_EASE: [number, number, number, number] = [0.25, 1, 0.5, 1];
 
 /* ============================================================================
-   WORD-BY-WORD SCROLL REVEAL COMPONENT FOR HEADERS & PARAGRAPHS
+   WORD-BY-WORD SCROLL REVEAL COMPONENT
    ============================================================================ */
 
 interface WordByWordRevealProps {
@@ -122,7 +121,7 @@ const WordByWordReveal: React.FC<WordByWordRevealProps> = ({
 };
 
 /* ============================================================================
-   SLOW & SMOOTH LETTER-BY-LETTER REVEAL COMPONENT (HOVER/ACTIVE CARDS)
+   LETTER-BY-LETTER REVEAL COMPONENT
    ============================================================================ */
 
 interface KineticLetterProps {
@@ -199,7 +198,7 @@ const LetterByLetterReveal: React.FC<KineticLetterProps> = ({
 };
 
 /* ============================================================================
-   GRAPHICS COMPONENTS WITH ENHANCED GLOWS
+   GRAPHICS COMPONENTS
    ============================================================================ */
 
 const IdeaGraphic = ({ isActive }: { isActive: boolean }) => (
@@ -208,12 +207,9 @@ const IdeaGraphic = ({ isActive }: { isActive: boolean }) => (
       animate={{
         scale: isActive ? [1, 1.3, 1] : [1, 1.1, 1],
         rotate: [0, 180, 360],
-        borderRadius: isActive
-          ? ["40% 60% 70% 30% / 40% 50% 60% 50%", "60% 40% 30% 70% / 50% 30% 70% 40%", "40% 60% 70% 30% / 40% 50% 60% 50%"]
-          : "50%",
       }}
       transition={{ duration: isActive ? 8 : 16, repeat: Infinity, ease: "easeInOut" }}
-      className="absolute h-40 w-40 bg-gradient-to-tr from-[#c5a880]/40 via-[#c5a880]/15 to-transparent blur-2xl"
+      className="absolute h-40 w-40 rounded-full border border-white/20 bg-white/5 blur-2xl"
     />
 
     <motion.div
@@ -222,7 +218,7 @@ const IdeaGraphic = ({ isActive }: { isActive: boolean }) => (
         opacity: isActive ? 0.9 : 0.3,
       }}
       transition={{ duration: 1.2, ease: ULTRA_SMOOTH_EASE }}
-      className="absolute h-44 w-44 rounded-full border border-[#c5a880]/40 bg-[#c5a880]/[0.03] backdrop-blur-sm"
+      className="absolute h-44 w-44 rounded-full border border-white/20 bg-white/[0.02] backdrop-blur-sm"
     />
 
     {[0, 72, 144, 216, 288].map((angle, i) => {
@@ -245,7 +241,7 @@ const IdeaGraphic = ({ isActive }: { isActive: boolean }) => (
             ease: "easeInOut",
             delay: i * 0.3,
           }}
-          className="absolute h-1.5 w-1.5 rounded-full bg-[#c5a880] shadow-[0_0_12px_#c5a880]"
+          className="absolute h-1.5 w-1.5 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.8)]"
         />
       );
     })}
@@ -254,11 +250,11 @@ const IdeaGraphic = ({ isActive }: { isActive: boolean }) => (
       animate={{
         scale: isActive ? [1, 1.3, 1] : 1,
         boxShadow: isActive
-          ? "0 0 40px 10px rgba(197, 168, 128, 0.7)"
-          : "0 0 15px 2px rgba(197, 168, 128, 0.3)",
+          ? "0 0 30px 8px rgba(255, 255, 255, 0.4)"
+          : "0 0 15px 2px rgba(255, 255, 255, 0.2)",
       }}
       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-      className="relative h-6 w-6 rounded-full border border-[#fbfaf7]/80 bg-[#c5a880]"
+      className="relative h-6 w-6 rounded-full border border-white/80 bg-white"
     />
   </div>
 );
@@ -278,7 +274,7 @@ const WaveGraphic = ({ isActive }: { isActive: boolean }) => (
           ease: "easeInOut",
           delay: i * 0.15,
         }}
-        className="mx-1.5 h-36 w-1.5 rounded-full bg-gradient-to-b from-[#c5a880]/20 via-[#c5a880] to-[#c5a880]/20 shadow-[0_0_10px_rgba(197,168,128,0.2)]"
+        className="mx-1.5 h-36 w-1.5 rounded-full bg-gradient-to-b from-white/20 via-white to-white/20 shadow-[0_0_10px_rgba(255,255,255,0.2)]"
       />
     ))}
   </div>
@@ -292,14 +288,14 @@ const MatrixGraphic = ({ isActive }: { isActive: boolean }) => (
         scale: isActive ? 1.15 : 1,
       }}
       transition={{ duration: 1.4, ease: ULTRA_SMOOTH_EASE }}
-      className="relative h-40 w-40 border border-[#c5a880]/50 bg-[#c5a880]/10 backdrop-blur-md shadow-[0_0_30px_rgba(197,168,128,0.1)]"
+      className="relative h-40 w-40 border border-white/30 bg-white/5 backdrop-blur-md shadow-2xl"
     >
       <motion.div
         animate={{ rotate: isActive ? -180 : 0 }}
         transition={{ duration: 2, ease: "easeInOut" }}
-        className="absolute inset-4 border border-[#c5a880]/30"
+        className="absolute inset-4 border border-white/20"
       />
-      <div className="absolute inset-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 bg-[#c5a880] shadow-[0_0_20px_#c5a880]" />
+      <div className="absolute inset-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 bg-white shadow-[0_0_20px_rgba(255,255,255,0.8)]" />
     </motion.div>
   </div>
 );
@@ -309,7 +305,7 @@ const RadarGraphic = ({ isActive }: { isActive: boolean }) => (
     {[1, 2, 3].map((ring) => (
       <div
         key={ring}
-        className="absolute rounded-full border border-[#c5a880]/30"
+        className="absolute rounded-full border border-white/15"
         style={{
           width: `${ring * 33}%`,
           height: `${ring * 33}%`,
@@ -319,11 +315,11 @@ const RadarGraphic = ({ isActive }: { isActive: boolean }) => (
     <motion.div
       animate={{ rotate: 360 }}
       transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-      className={`absolute inset-0 rounded-full bg-[conic-gradient(from_0deg,transparent_0_300deg,rgba(197,168,128,0.35)_360deg)] transition-opacity duration-700 ${
+      className={`absolute inset-0 rounded-full bg-[conic-gradient(from_0deg,transparent_0_300deg,rgba(255,255,255,0.25)_360deg)] transition-opacity duration-700 ${
         isActive ? "opacity-100" : "opacity-30"
       }`}
     />
-    <div className="h-3.5 w-3.5 rounded-full bg-[#c5a880] shadow-[0_0_25px_#c5a880]" />
+    <div className="h-3.5 w-3.5 rounded-full bg-white shadow-[0_0_25px_rgba(255,255,255,0.8)]" />
   </div>
 );
 
@@ -335,7 +331,6 @@ export default function WhatWeOffer() {
   const [active, setActive] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Header Frame Scroll Detection Ref
   const headerRef = useRef<HTMLDivElement>(null);
   const isHeaderInView = useInView(headerRef, { once: true, margin: "-100px" });
 
@@ -357,50 +352,50 @@ export default function WhatWeOffer() {
     <section
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      className="relative w-full overflow-hidden bg-[#0a0a09] font-sans text-[#fbfaf7] py-24 selection:bg-[#c5a880] selection:text-[#0a0a09]"
+      className="relative w-full overflow-hidden bg-[#131313] font-sans text-zinc-100 py-10 selection:bg-white selection:text-[#131313]"
     >
-      {/* Background Motion Grid */}
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+      {/* Background Radial Glow */}
 
-      {/* Global Dynamic Glow */}
+      {/* Grid Pattern Overlay */}
+
+      {/* Dynamic Cursor Glow */}
       <motion.div
         className="pointer-events-none absolute -inset-px z-10 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
         style={{
-          background: `radial-gradient(800px circle at ${mouseX}px ${mouseY}px, rgba(197, 168, 128, 0.06), transparent 80%)`,
+          background: `radial-gradient(800px circle at ${mouseX}px ${mouseY}px, rgba(255, 255, 255, 0.03), transparent 80%)`,
         }}
       />
 
-      {/* SECTION HEADER WITH SCROLL IN-VIEW WORD-BY-WORD REVEAL */}
-      <div ref={headerRef} className="mx-auto max-w-[1600px] px-6 pb-16 lg:px-12">
+      {/* SECTION HEADER */}
+      <div ref={headerRef} className="mx-auto max-w-7xl px-6 pb-16 lg:px-12">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
               animate={isHeaderInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
               transition={{ duration: 0.6, ease: ULTRA_SMOOTH_EASE }}
-              className="mb-4 flex items-center gap-3"
+              className="mb-3 flex items-center gap-2.5"
             >
-              <span className="h-px w-8 bg-[#c5a880]" />
-              <span className="font-mono text-xs uppercase tracking-[0.35em] text-[#c5a880]">
+              <Sparkles className="h-4 w-4 text-zinc-400" />
+              <span className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-400">
                 Capabilities & Practice
               </span>
             </motion.div>
 
-            {/* Word-By-Word Reveal Heading */}
-            <h2 className="text-4xl font-extralight tracking-tight sm:text-6xl lg:text-7xl">
+            {/* Heading with Yellow Accent on "Offer" only */}
+            <h2 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
               <WordByWordReveal
                 text="What We Offer"
                 isInView={isHeaderInView}
                 delayOffset={0.1}
                 wordStagger={0.08}
                 highlightWord="Offer"
-                highlightClassName="font-serif italic text-[#c5a880]"
+                highlightClassName="text-[#f5c563] font-normal"
               />
             </h2>
           </div>
 
-          {/* Word-By-Word Reveal Side Paragraph */}
-          <p className="max-w-md text-sm font-light leading-relaxed text-[#a1a09d] sm:text-base">
+          <p className="max-w-md text-sm font-light leading-relaxed text-zinc-400 sm:text-base">
             <WordByWordReveal
               text="Engineered brand experiences designed to elevate market presence through strategy, motion design, and scalable technology."
               isInView={isHeaderInView}
@@ -412,7 +407,7 @@ export default function WhatWeOffer() {
       </div>
 
       {/* CARDS GRID */}
-      <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-6 px-6 md:grid-cols-2 lg:px-12">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-6 md:grid-cols-2 lg:px-12">
         {services.map((service, index) => {
           const isActive = active === index;
 
@@ -430,23 +425,23 @@ export default function WhatWeOffer() {
                 whileHover={{ y: -6 }}
                 transition={{ duration: 0.5, ease: ULTRA_SMOOTH_EASE }}
                 className={`
-                  group relative min-h-[580px] overflow-hidden rounded-2xl border transition-all duration-700 lg:min-h-[640px]
+                  group relative min-h-[580px] overflow-hidden rounded-2xl border transition-all duration-500 lg:min-h-[640px]
                   ${
                     isActive
-                      ? "border-[#c5a880]/50 bg-[#121210] shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(197,168,128,0.15)] ring-1 ring-[#c5a880]/30"
-                      : "border-[#ffffff]/10 bg-[#0e0e0d] hover:border-[#c5a880]/30"
+                      ? "border-white/20 bg-[#202020] shadow-[0_4px_30px_rgba(0,0,0,0.6)]"
+                      : "border-white/5 bg-[#1a1a1a] hover:border-white/10"
                   }
                 `}
               >
-                {/* Tech Frame Corner Accents */}
-                <div className="pointer-events-none absolute top-4 left-4 h-2 w-2 border-t border-l border-[#c5a880]/40 transition-all duration-500 group-hover:border-[#c5a880]" />
-                <div className="pointer-events-none absolute top-4 right-4 h-2 w-2 border-t border-r border-[#c5a880]/40 transition-all duration-500 group-hover:border-[#c5a880]" />
-                <div className="pointer-events-none absolute bottom-4 left-4 h-2 w-2 border-b border-l border-[#c5a880]/40 transition-all duration-500 group-hover:border-[#c5a880]" />
-                <div className="pointer-events-none absolute bottom-4 right-4 h-2 w-2 border-b border-r border-[#c5a880]/40 transition-all duration-500 group-hover:border-[#c5a880]" />
+                {/* Frame Corner Accents */}
+                <div className="pointer-events-none absolute top-4 left-4 h-2 w-2 border-t border-l border-white/20 transition-all duration-500 group-hover:border-white/50" />
+                <div className="pointer-events-none absolute top-4 right-4 h-2 w-2 border-t border-r border-white/20 transition-all duration-500 group-hover:border-white/50" />
+                <div className="pointer-events-none absolute bottom-4 left-4 h-2 w-2 border-b border-l border-white/20 transition-all duration-500 group-hover:border-white/50" />
+                <div className="pointer-events-none absolute bottom-4 right-4 h-2 w-2 border-b border-r border-white/20 transition-all duration-500 group-hover:border-white/50" />
 
-                {/* Inner Ambient Glow */}
+                {/* Inner Glow */}
                 <div
-                  className={`pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(197,168,128,0.12)_0%,transparent_70%)] transition-opacity duration-700 ${
+                  className={`pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.04)_0%,transparent_70%)] transition-opacity duration-700 ${
                     isActive ? "opacity-100" : "opacity-0"
                   }`}
                 />
@@ -459,15 +454,14 @@ export default function WhatWeOffer() {
                   {service.shape === "radar" && <RadarGraphic isActive={isActive} />}
                 </div>
 
-                {/* Card Top Header */}
+                {/* Card Header */}
                 <div className="relative z-20 flex items-center justify-between p-8 sm:p-10">
-                  <span className="font-mono text-xs tracking-[0.3em] text-[#c5a880]">
+                  <span className="font-mono text-xs tracking-[0.3em] text-zinc-400">
                     {service.id}
                   </span>
 
-                  {/* SUBHEADING Letter-by-Letter Animation */}
-                  <div className="flex items-center gap-2 rounded-full border border-[#c5a880]/20 bg-[#0a0a09]/60 px-3.5 py-1 backdrop-blur-md">
-                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#a1a09d]">
+                  <div className="flex items-center gap-2 rounded-full border border-white/10 bg-[#131313]/60 px-3.5 py-1 backdrop-blur-md">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-400">
                       <LetterByLetterReveal
                         text={service.subtitle}
                         isActive={isActive}
@@ -479,11 +473,10 @@ export default function WhatWeOffer() {
                   </div>
                 </div>
 
-                {/* Card Bottom Content */}
+                {/* Card Content */}
                 <div className="absolute bottom-0 left-0 right-0 z-20 p-8 sm:p-10 lg:p-12">
                   <div className="flex items-center justify-between">
-                    {/* HEADING Letter-by-Letter Animation */}
-                    <h3 className="text-4xl font-light tracking-tight text-[#fbfaf7] sm:text-6xl lg:text-6xl">
+                    <h3 className="text-4xl font-light tracking-tight text-white sm:text-5xl lg:text-5xl">
                       <LetterByLetterReveal
                         text={service.title}
                         isActive={isActive}
@@ -494,12 +487,12 @@ export default function WhatWeOffer() {
                     </h3>
 
                     {/* Arrow Button */}
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#c5a880]/30 bg-[#0a0a09]/80 text-[#c5a880] transition-all duration-500 group-hover:border-[#c5a880] group-hover:bg-[#c5a880] group-hover:text-[#0a0a09]">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-[#131313] text-white transition-all duration-500 group-hover:border-white group-hover:bg-white group-hover:text-[#131313]">
                       <ArrowUpRight className="h-5 w-5 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </div>
                   </div>
 
-                  {/* Accordion Expand Details */}
+                  {/* Accordion Details */}
                   <AnimatePresence>
                     {isActive && (
                       <motion.div
@@ -509,8 +502,7 @@ export default function WhatWeOffer() {
                         transition={{ duration: 0.6, ease: ULTRA_SMOOTH_EASE }}
                         className="overflow-hidden"
                       >
-                        {/* PARAGRAPH Letter-by-Letter Animation */}
-                        <div className="pt-4 max-w-md text-sm leading-relaxed text-[#a1a09d] sm:text-base">
+                        <div className="pt-4 max-w-md text-sm leading-relaxed text-zinc-400 sm:text-base">
                           <LetterByLetterReveal
                             text={service.description}
                             isActive={isActive}
@@ -524,7 +516,7 @@ export default function WhatWeOffer() {
                           {service.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="rounded-full border border-[#c5a880]/30 bg-[#c5a880]/10 px-3.5 py-1 font-mono text-[10px] uppercase tracking-wider text-[#c5a880]"
+                              className="rounded-full border border-white/10 bg-[#222222] px-3.5 py-1 font-mono text-[10px] uppercase tracking-wider text-zinc-300"
                             >
                               {tag}
                             </span>
@@ -540,7 +532,7 @@ export default function WhatWeOffer() {
                   initial={false}
                   animate={{ scaleX: isActive ? 1 : 0 }}
                   transition={{ duration: 0.8, ease: ULTRA_SMOOTH_EASE }}
-                  className="absolute bottom-0 left-0 right-0 h-[2px] origin-left bg-gradient-to-r from-[#c5a880] via-[#fbfaf7] to-[#c5a880]"
+                  className="absolute bottom-0 left-0 right-0 h-[1px] origin-left bg-gradient-to-r from-transparent via-white/40 to-transparent"
                 />
               </motion.div>
             </Link>
@@ -549,21 +541,21 @@ export default function WhatWeOffer() {
       </div>
 
       {/* FOOTER CTA */}
-      <div className="mx-auto flex max-w-[1600px] justify-between items-center px-6 pt-16 lg:px-12">
-        <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-[#a1a09d]/60 uppercase tracking-widest">
-          <Sparkles className="h-3.5 w-3.5 text-[#c5a880]" />
+      <div className="mx-auto flex max-w-7xl justify-between items-center px-6 pt-16 lg:px-12">
+        <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-zinc-500 uppercase tracking-widest">
+          <Sparkles className="h-3.5 w-3.5 text-zinc-400" />
           <span>Interactive Service Suite</span>
         </div>
 
         <Link href="/services">
           <button
             type="button"
-            className="group flex items-center gap-4 rounded-full border border-[#c5a880]/30 bg-[#121210] px-7 py-4 transition-all duration-500 hover:border-[#c5a880] hover:bg-[#c5a880] focus:outline-none focus:ring-2 focus:ring-[#c5a880]"
+            className="group flex items-center gap-4 rounded-xl border border-white/15 bg-[#1a1a1a] px-7 py-4 transition-all duration-300 hover:border-white hover:bg-white hover:text-[#131313] focus:outline-none"
           >
-            <span className="font-mono text-xs uppercase tracking-[0.25em] text-[#c5a880] transition-colors duration-500 group-hover:text-[#0a0a09]">
+            <span className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-200 transition-colors duration-300 group-hover:text-[#131313]">
               Explore All Practice Areas
             </span>
-            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#c5a880]/20 text-[#c5a880] transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:bg-[#0a0a09] group-hover:text-[#c5a880]">
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white transition-colors duration-300 group-hover:bg-[#131313] group-hover:text-white">
               <ArrowUpRight className="h-4 w-4" />
             </div>
           </button>

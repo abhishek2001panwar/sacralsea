@@ -91,7 +91,6 @@ const stats: StatData[] = [
   },
 ];
 
-/* Custom Bezier Curve for Smooth Motions */
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 /* ============================================================================
@@ -154,7 +153,7 @@ const StatVisualizer = ({ type, isHovered }: { type: StatData["vizType"]; isHove
               scaleY: isHovered ? [h, h * 1.3, h] : h,
             }}
             transition={{ duration: 0.8, repeat: isHovered ? Infinity : 0, delay: i * 0.1 }}
-            className="w-1.5 h-full origin-bottom rounded-full bg-[#c5a880]/50"
+            className="w-1.5 h-full origin-bottom rounded-full bg-white/40"
           />
         ))}
       </div>
@@ -172,7 +171,7 @@ const StatVisualizer = ({ type, isHovered }: { type: StatData["vizType"]; isHove
               opacity: isHovered ? [0.4, 1, 0.4] : 0.3,
             }}
             transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.15 }}
-            className="w-1 h-5 rounded-full bg-[#c5a880]"
+            className="w-1 h-5 rounded-full bg-white"
           />
         ))}
       </div>
@@ -187,9 +186,9 @@ const StatVisualizer = ({ type, isHovered }: { type: StatData["vizType"]; isHove
           rotate: isHovered ? 180 : 0,
         }}
         transition={{ duration: 1.5, ease: "easeInOut" }}
-        className="relative flex items-center justify-center h-7 w-7 rounded-full border border-[#c5a880]/30 bg-[#c5a880]/5"
+        className="relative flex items-center justify-center h-7 w-7 rounded-full border border-white/20 bg-white/5"
       >
-        <div className="h-2 w-2 rounded-full bg-[#c5a880] shadow-[0_0_12px_#c5a880]" />
+        <div className="h-2 w-2 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.8)]" />
       </motion.div>
     );
   }
@@ -204,7 +203,7 @@ const StatVisualizer = ({ type, isHovered }: { type: StatData["vizType"]; isHove
             opacity: isHovered ? 1 : 0.4,
           }}
           transition={{ duration: 1, repeat: Infinity, delay: i * 0.1 }}
-          className="bg-[#c5a880] rounded-sm"
+          className="bg-white rounded-sm"
         />
       ))}
     </div>
@@ -226,28 +225,28 @@ const StatCard = ({ stat }: { stat: StatData }) => {
       transition={{ duration: 0.6, ease: EASE }}
       className={`
         relative group overflow-hidden rounded-2xl p-8 lg:p-10
-        border border-white/10 bg-[#0d0d0c]/80 backdrop-blur-md
+        border border-white/5 bg-[#1a1a1a] shadow-2xl
         transition-colors duration-500
-        hover:border-[#c5a880]/40 hover:bg-[#141311]
+        hover:border-white/20 hover:bg-[#202020]
       `}
     >
-      {/* Dynamic Background Hover Spotlight Glow */}
+      {/* Background Hover Spotlight Glow */}
       <div
-        className={`pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-700 group-hover:opacity-100 bg-[radial-gradient(400px_circle_at_center,rgba(197,168,128,0.12),transparent_80%)]`}
+        className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-700 group-hover:opacity-100 bg-[radial-gradient(400px_circle_at_center,rgba(255,255,255,0.04),transparent_80%)]"
       />
 
-      {/* Top Bar: Visualizer Icon Only */}
+      {/* Visualizer Icon */}
       <div className="relative z-10 flex items-center justify-between mb-8">
         <StatVisualizer type={stat.vizType} isHovered={isHovered} />
       </div>
 
-      {/* Center Value Counter — Slide in from Left on View */}
+      {/* Counter Value */}
       <motion.div
         initial={{ opacity: 0, x: -24 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.7, ease: EASE }}
-        className="relative z-10 text-5xl lg:text-6xl font-light text-[#fbfaf7] group-hover:text-[#c5a880] transition-colors duration-500"
+        className="relative z-10 text-5xl lg:text-6xl font-light text-white transition-colors duration-500"
       >
         <AnimatedNumber
           value={stat.value}
@@ -257,23 +256,23 @@ const StatCard = ({ stat }: { stat: StatData }) => {
         />
       </motion.div>
 
-      {/* Description Label — Slide in from Left on View with Delay */}
+      {/* Description Label */}
       <motion.p
         initial={{ opacity: 0, x: -20 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
-        className="relative z-10 mt-4 text-sm lg:text-base font-normal leading-relaxed text-[#a1a09d] group-hover:text-[#fbfaf7] transition-colors duration-500"
+        className="relative z-10 mt-4 text-sm lg:text-base font-normal leading-relaxed text-zinc-400 group-hover:text-zinc-200 transition-colors duration-500"
       >
         {stat.label}
       </motion.p>
 
-      {/* Bottom Subtle Accent Line */}
+      {/* Bottom Accent Line */}
       <motion.div
         initial={false}
         animate={{ scaleX: isHovered ? 1 : 0 }}
         transition={{ duration: 0.8, ease: EASE }}
-        className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#c5a880] to-transparent origin-center"
+        className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent origin-center"
       />
     </motion.div>
   );
@@ -292,16 +291,16 @@ export default function PerformanceStats() {
     offset: ["start end", "end start"],
   });
 
-  // Alternating Column Parallax Shift (Column 1 & 3 move Down, Column 2 moves Up)
+  // Parallax Shifts
   const col1Y = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
   const col2Y = useTransform(scrollYProgress, [0, 1], ["10%", "-10%"]);
   const col3Y = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
 
-  // Watermark Background Text Horizontal Scroll
+  // Watermark Horizontal Scroll
   const tickerX1 = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
   const tickerX2 = useTransform(scrollYProgress, [0, 1], ["-20%", "10%"]);
 
-  // Splitting stats into 3 distinct columns
+  // Split stats into 3 columns
   const col1Stats = [stats[0], stats[3], stats[6]];
   const col2Stats = [stats[1], stats[4], stats[7]];
   const col3Stats = [stats[2], stats[5], stats[8]];
@@ -309,10 +308,13 @@ export default function PerformanceStats() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full overflow-hidden bg-[#0a0a09] py-20 font-sans text-[#fbfaf7] selection:bg-[#c5a880] selection:text-[#0a0a09]"
+      className="relative w-full overflow-hidden bg-[#131313] py-5 font-sans text-zinc-100 selection:bg-white selection:text-[#131313]"
     >
-      {/* Background Animated Watermark Typography */}
-      <div className="pointer-events-none absolute inset-0 flex flex-col justify-center space-y-12 opacity-[0.03] select-none font-bold text-9xl uppercase tracking-tighter">
+      {/* Background Radial Glow */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(255,255,255,0.02),transparent_100%)]" />
+
+      {/* Watermark Background Typography */}
+      <div className="pointer-events-none absolute inset-0 flex flex-col justify-center space-y-12 opacity-[0.02] select-none font-bold text-9xl uppercase tracking-tighter">
         <motion.div style={{ x: tickerX1 }} className="whitespace-nowrap">
           PERFORMANCE GROWTH DATA RESULTS IMPACT
         </motion.div>
@@ -322,18 +324,18 @@ export default function PerformanceStats() {
       </div>
 
       {/* Grid Pattern Overlay */}
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
+      {/* <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:2rem_2rem]" /> */}
 
-      {/* Main Heading Section — Slide in from Left on View */}
+      {/* Main Heading Section */}
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-12 mb-20 lg:mb-32 overflow-hidden">
         <motion.h2
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: EASE }}
-          className="text-4xl sm:text-6xl lg:text-7xl font-extralight tracking-tight"
+          className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-white"
         >
-          Real Impact, <span className="font-serif italic text-[#c5a880]">Quantified</span>
+          Real Impact, <span className="text-[#f5c563] font-normal">Quantified</span>
         </motion.h2>
       </div>
 
@@ -341,21 +343,21 @@ export default function PerformanceStats() {
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           
-          {/* COLUMN 1 — Moves Down on Scroll */}
+          {/* COLUMN 1 */}
           <motion.div style={{ y: col1Y }} className="flex flex-col gap-6 lg:gap-8">
             {col1Stats.map((stat) => (
               <StatCard key={stat.id} stat={stat} />
             ))}
           </motion.div>
 
-          {/* COLUMN 2 — Moves Up on Scroll */}
+          {/* COLUMN 2 */}
           <motion.div style={{ y: col2Y }} className="flex flex-col gap-6 lg:gap-8 md:mt-12 lg:mt-16">
             {col2Stats.map((stat) => (
               <StatCard key={stat.id} stat={stat} />
             ))}
           </motion.div>
 
-          {/* COLUMN 3 — Moves Down on Scroll */}
+          {/* COLUMN 3 */}
           <motion.div style={{ y: col3Y }} className="flex flex-col gap-6 lg:gap-8 md:col-span-2 lg:col-span-1">
             {col3Stats.map((stat) => (
               <StatCard key={stat.id} stat={stat} />
@@ -365,9 +367,9 @@ export default function PerformanceStats() {
         </div>
       </div>
 
-      {/* Gradient Top & Bottom Vignette Borders */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#0a0a09] to-transparent z-20" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#0a0a09] to-transparent z-20" />
+      {/* Vignette Top & Bottom Borders */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#131313] to-transparent z-20" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#131313] to-transparent z-20" />
     </section>
   );
 }

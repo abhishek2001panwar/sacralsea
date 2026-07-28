@@ -291,9 +291,9 @@ export default function InteractiveContactSection() {
             </span>
           </div>
 
-          <div className="relative text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-tight">
+          <div className="relative text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight leading-tight">
             <motion.div style={{ opacity: heading1Opacity }}>
-              Give us a <span className="text-[#f5c563] font-normal">hint,</span>
+              Give us a <span className="text-[#f5c563] font-serif italic">hint,</span>
             </motion.div>
             <motion.div
               style={{ opacity: heading2Opacity, y: heading2Y }}

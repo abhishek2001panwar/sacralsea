@@ -330,9 +330,9 @@ export default function FAQ() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
-            className="mt-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl"
+            className="mt-4 text-4xl font-regular tracking-tight text-white sm:text-5xl lg:text-6xl"
           >
-            Frequently Asked <span className="text-[#f5c563] font-normal">Questions</span>
+            Frequently Asked <span className="text-[#f5c563] font-serif">Questions</span>
           </motion.h2>
         </motion.div>
 

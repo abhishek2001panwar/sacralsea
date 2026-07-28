@@ -359,12 +359,12 @@ export default function WhatWeOffer() {
       {/* Grid Pattern Overlay */}
 
       {/* Dynamic Cursor Glow */}
-      <motion.div
+      {/* <motion.div
         className="pointer-events-none absolute -inset-px z-10 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
         style={{
           background: `radial-gradient(800px circle at ${mouseX}px ${mouseY}px, rgba(255, 255, 255, 0.03), transparent 80%)`,
         }}
-      />
+      /> */}
 
       {/* SECTION HEADER */}
       <div ref={headerRef} className="mx-auto max-w-7xl px-6 pb-16 lg:px-12">
@@ -383,7 +383,7 @@ export default function WhatWeOffer() {
             </motion.div>
 
             {/* Heading with Yellow Accent on "Offer" only */}
-            <h2 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h2 className="text-4xl font-normal  tracking-tight text-white sm:text-5xl lg:text-6xl">
               <WordByWordReveal
                 text="What We Offer"
                 isInView={isHeaderInView}

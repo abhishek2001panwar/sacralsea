@@ -452,13 +452,13 @@ export default function Testimonial() {
             animate={isHeaderInView ? "visible" : "hidden"}
             className="mt-4 space-y-3"
           >
-            <h2 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl flex flex-wrap gap-x-[0.3em] overflow-hidden py-1">
+            <h2 className="text-4xl font-normal tracking-tight text-white sm:text-5xl lg:text-6xl flex flex-wrap gap-x-[0.3em] overflow-hidden py-1">
               <motion.span variants={headerItemVariants} className="inline-block transform-gpu">
                 Client
               </motion.span>
               <motion.span
                 variants={headerItemVariants}
-                className="inline-block text-[#f5c563] font-normal transform-gpu"
+                className="inline-block text-[#f5c563] font-serif italic transform-gpu"
               >
                 Perspectives
               </motion.span>

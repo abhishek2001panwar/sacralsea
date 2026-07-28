@@ -333,9 +333,9 @@ export default function PerformanceStats() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: EASE }}
-          className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-white"
+          className="text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-white"
         >
-          Real Impact, <span className="text-[#f5c563] font-normal">Quantified</span>
+          Real Impact, <span className="text-[#f5c563] font-serif italic">Quantified</span>
         </motion.h2>
       </div>
 

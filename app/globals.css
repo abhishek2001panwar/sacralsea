@@ -20,7 +20,7 @@
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+ 
   smooth-scroll-behavior: smooth;
 }
 
@@ -63,9 +63,10 @@ html.lenis, html.lenis body {
 }
 
 @theme {
-  --font-rockwell: "RockwellCustom", serif;
-  --font-helvetica: "HelveticaCustom" , serif;
+  --font-rockwell: "Rockwell", serif;
+  --font-helvetica: "MyHelvetica", Arial, sans-serif;
 }
+
 .helvetica-section {
-  font-family: "MyHelvetica", Arial, sans-serif;
+  font-family: "MyHelvetica";
 }

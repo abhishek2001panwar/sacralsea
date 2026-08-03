@@ -49,7 +49,7 @@ const SmoothWord: React.FC<SmoothWordProps> = ({ word, isYellow = false }) => {
       <motion.span
         variants={wordVariant}
         className={`inline-block transform-gpu will-change-transform ${
-          isYellow ? 'text-[#f5c563] font-normal' : ''
+          isYellow ? 'text-[#f5c563] font-light' : ''
         }`}
       >
         {word}
@@ -58,7 +58,7 @@ const SmoothWord: React.FC<SmoothWordProps> = ({ word, isYellow = false }) => {
   );
 };
 
-export default function CinematicHero() {
+export default function CinematicHeroRockwell() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Track scroll progress within container
@@ -77,8 +77,10 @@ export default function CinematicHero() {
   const phase2Y = useTransform(scrollYProgress, [0.5, 0.7], [40, 0]);
 
   return (
-    <div ref={containerRef} className="relative h-[280vh] bg-[#131313] text-zinc-100 font-sans selection:bg-white selection:text-[#131313]">
-      
+<div
+  ref={containerRef}
+  className="relative h-[280vh] bg-[#131313] text-zinc-100 font-rockwell selection:bg-white selection:text-[#131313]"
+>      
       {/* Sticky Fullscreen Wrapper */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
 
@@ -121,8 +123,8 @@ export default function CinematicHero() {
             className="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full border border-white/10 bg-[#1a1a1a] shadow-xl"
           >
             <Sparkles className="h-3.5 w-3.5 text-zinc-400" />
-            <span className="text-zinc-400 text-xs uppercase tracking-[0.25em] font-mono">
-              You found us! default font family
+            <span className="text-zinc-400 text-xs uppercase tracking-[0.25em] f">
+              You found us! Rockwell font-family
             </span>
           </motion.div>
 
@@ -132,7 +134,7 @@ export default function CinematicHero() {
               variants={sentenceContainer}
               initial="hidden"
               animate="visible"
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight text-white leading-[1.08] flex flex-col items-center justify-center gap-y-1 sm:gap-y-2 select-none"
+              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl  tracking-tight text-white leading-[1.08] flex flex-col items-center justify-center gap-y-1 sm:gap-y-2 select-none"
             >
               {/* First Line */}
               <div className="flex flex-wrap justify-center gap-x-[0.28em]">
@@ -161,7 +163,7 @@ export default function CinematicHero() {
 
           {/* Scroll Prompt */}
           <div className="absolute -bottom-10 flex flex-col items-center space-y-2">
-            <span className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 font-mono">
+            <span className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 f">
               Scroll Down
             </span>
             <div className="w-[1px] h-8 bg-gradient-to-b from-white/40 to-transparent animate-pulse" />
@@ -179,16 +181,16 @@ export default function CinematicHero() {
         >
           {/* Subheading Badges */}
           <div className="space-y-2">
-            <span className="text-zinc-400 text-xs sm:text-sm font-mono uppercase tracking-[0.4em] block">
+            <span className="text-zinc-400 text-xs sm:text-sm f uppercase tracking-[0.4em] block">
               You arrived
             </span>
-            <span className="text-white text-2xl sm:text-4xl font-serif italic font-light block">
+            <span className="text-white text-2xl sm:text-4xl  italic font-light block">
               On the dot.
             </span>
           </div>
 
           {/* Hero Action Headline */}
-          <h2 className="text-4xl sm:text-6xl md:text-8xl  uppercase tracking-tight text-white leading-none drop-shadow-2xl">
+          <h2 className="text-4xl sm:text-6xl md:text-8xl uppercase tracking-tight text-white leading-none drop-shadow-2xl">
             Get  Full-Stack <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#f5c563] to-white">
               Agency Services
@@ -202,7 +204,7 @@ export default function CinematicHero() {
             className="pt-4"
           >
             <button className="group flex items-center gap-4 rounded-xl border border-white/15 bg-[#1a1a1a] px-7 py-4 shadow-2xl transition-all duration-300 hover:border-white hover:bg-white hover:text-[#131313] focus:outline-none">
-              <span className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-200 transition-colors duration-300 group-hover:text-[#131313]">
+              <span className="f text-xs uppercase tracking-[0.2em] text-zinc-200 transition-colors duration-300 group-hover:text-[#131313]">
                 Get In Touch
               </span>
               <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white transition-colors duration-300 group-hover:bg-[#131313] group-hover:text-white">

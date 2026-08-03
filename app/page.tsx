@@ -20,6 +20,8 @@ import HeroNewSection from './components/sections/heronew'
 import SideScroller from './components/sidescroll'
 import WhatWeOfferHelvetica from './components/sections/WhatWeOfferHelvetica'
 import WhatWeOfferRockwell from './components/sections/WhatWeOfferRockwell'
+import CinematicHeroRockwell from './components/sections/CinematicHeroRockwell'
+import CinematicHeroHelvetica from './components/sections/CinematicHeroHelvetica'
 
 function page() {
   return (
@@ -29,11 +31,13 @@ function page() {
       
       <Navbar />
       <HeroNewSection />
+      <CinematicHeroRockwell />
+      <CinematicHeroHelvetica />
       <WhyCollaborate />
       <BrandMarquee />
       <WhatWeOffer />
-       <WhatWeOfferRockwell />
-      <WhatWeOfferHelvetica />
+       {/* <WhatWeOfferRockwell />
+      <WhatWeOfferHelvetica /> */}
       <PerformanceStats />
       <Testiminial />
       <InteractiveContactSection />

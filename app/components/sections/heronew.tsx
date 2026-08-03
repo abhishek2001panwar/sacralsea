@@ -143,7 +143,7 @@ export default function CinematicHero() {
               </div>
 
               {/* Second Line */}
-              <div className="flex flex-wrap justify-center font-serif gap-x-[0.28em]">
+              <div className="flex flex-wrap justify-center  gap-x-[0.28em]">
                 <SmoothWord word="from" isYellow={true} />
                 <SmoothWord word="here." isYellow={true} />
               </div>

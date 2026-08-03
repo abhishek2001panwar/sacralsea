@@ -329,7 +329,7 @@ export default function WhatWeOffer() {
               className="mb-3 flex items-center gap-2.5"
             >
               <Sparkles className="h-4 w-4 text-zinc-400" />
-              <span className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-400">
+              <span className=" text-xs uppercase tracking-[0.25em] text-zinc-400">
                 Capabilities & Practice ( default )
               </span>
             </motion.div>

@@ -58,11 +58,9 @@ const services: ServiceItem[] = [
   },
 ];
 
-const ULTRA_SMOOTH_EASE: [number, number, number, number] = [0.25, 1, 0.5, 1];
-
-/* ============================================================================
-   OPTIMIZED WORD-BY-WORD SCROLL REVEAL COMPONENT
-   ============================================================================ */
+const ULTRA_SMOOTH_EASE: [number, number, number, number] = [
+  0.25, 1, 0.5, 1,
+];
 
 interface WordByWordRevealProps {
   text: string;
@@ -88,26 +86,46 @@ const WordByWordReveal: React.FC<WordByWordRevealProps> = ({
   const words = text.split(" ");
 
   return (
-    <span className={`inline-flex flex-wrap gap-x-[0.25em] gap-y-[0.1em] ${className}`}>
+    <span
+      className={`inline-flex flex-wrap gap-x-[0.25em] gap-y-[0.1em] ${className}`}
+    >
       {words.map((word, index) => {
         const isHighlighted =
-          highlightWord && word.toLowerCase().includes(highlightWord.toLowerCase());
+          highlightWord &&
+          word.toLowerCase().includes(highlightWord.toLowerCase());
 
         return (
-          <span key={index} className="inline-block overflow-hidden py-1">
+          <span
+            key={index}
+            className="inline-block overflow-hidden py-1"
+          >
             <motion.span
-              initial={{ opacity: 0, y: "100%", filter: "blur(8px)" }}
+              initial={{
+                opacity: 0,
+                y: "100%",
+                filter: "blur(8px)",
+              }}
               animate={
                 isInView
-                  ? { opacity: 1, y: "0%", filter: "blur(0px)" }
-                  : { opacity: 0, y: "100%", filter: "blur(8px)" }
+                  ? {
+                      opacity: 1,
+                      y: "0%",
+                      filter: "blur(0px)",
+                    }
+                  : {
+                      opacity: 0,
+                      y: "100%",
+                      filter: "blur(8px)",
+                    }
               }
               transition={{
                 duration: 0.8,
                 ease: ULTRA_SMOOTH_EASE,
                 delay: delayOffset + index * wordStagger,
               }}
-              className={`inline-block transform-gpu will-change-transform ${wordClassName} ${
+              className={`inline-block transform-gpu will-change-transform ${
+                wordClassName
+              } ${
                 isHighlighted ? highlightClassName : ""
               }`}
             >
@@ -119,10 +137,6 @@ const WordByWordReveal: React.FC<WordByWordRevealProps> = ({
     </span>
   );
 };
-
-/* ============================================================================
-   OPTIMIZED FAST TEXT REVEAL (HOVER/ACTIVE CARDS)
-   ============================================================================ */
 
 interface KineticTextProps {
   text: string;
@@ -144,11 +158,20 @@ const KineticTextReveal: React.FC<KineticTextProps> = ({
   const words = text.split(" ");
 
   return (
-    <span className={`inline-flex flex-wrap gap-x-[0.28em] ${className}`}>
+    <span
+      className={`inline-flex flex-wrap gap-x-[0.28em] ${className}`}
+    >
       {words.map((word, index) => (
-        <span key={index} className="inline-block overflow-hidden py-0.5">
+        <span
+          key={index}
+          className="inline-block overflow-hidden py-0.5"
+        >
           <motion.span
-            initial={{ opacity: 0.5, y: 0, filter: "blur(0px)" }}
+            initial={{
+              opacity: 0.5,
+              y: 0,
+              filter: "blur(0px)",
+            }}
             animate={
               isActive
                 ? {
@@ -163,7 +186,7 @@ const KineticTextReveal: React.FC<KineticTextProps> = ({
                   }
             }
             transition={{
-              duration: duration,
+              duration,
               ease: ULTRA_SMOOTH_EASE,
               delay: delayOffset + index * wordStagger,
             }}
@@ -177,18 +200,22 @@ const KineticTextReveal: React.FC<KineticTextProps> = ({
   );
 };
 
-/* ============================================================================
-   GRAPHICS COMPONENTS (GPU ACCELERATED)
-   ============================================================================ */
-
-const IdeaGraphic = ({ isActive }: { isActive: boolean }) => (
+const IdeaGraphic = ({
+  isActive,
+}: {
+  isActive: boolean;
+}) => (
   <div className="relative flex h-64 w-64 items-center justify-center transform-gpu will-change-transform">
     <motion.div
       animate={{
         scale: isActive ? [1, 1.3, 1] : [1, 1.1, 1],
         rotate: [0, 180, 360],
       }}
-      transition={{ duration: isActive ? 8 : 16, repeat: Infinity, ease: "easeInOut" }}
+      transition={{
+        duration: isActive ? 8 : 16,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
       className="absolute h-40 w-40 rounded-full border border-white/20 bg-white/5 blur-2xl"
     />
 
@@ -197,7 +224,10 @@ const IdeaGraphic = ({ isActive }: { isActive: boolean }) => (
         scale: isActive ? 1.25 : 0.9,
         opacity: isActive ? 0.9 : 0.3,
       }}
-      transition={{ duration: 1.2, ease: ULTRA_SMOOTH_EASE }}
+      transition={{
+        duration: 1.2,
+        ease: ULTRA_SMOOTH_EASE,
+      }}
       className="absolute h-44 w-44 rounded-full border border-white/20 bg-white/[0.02] backdrop-blur-sm"
     />
 
@@ -210,10 +240,18 @@ const IdeaGraphic = ({ isActive }: { isActive: boolean }) => (
         <motion.div
           key={i}
           animate={{
-            x: isActive ? [startX, 0, startX] : startX,
-            y: isActive ? [startY, 0, startY] : startY,
-            opacity: isActive ? [0.3, 1, 0.3] : 0.4,
-            scale: isActive ? [1, 1.8, 1] : 1,
+            x: isActive
+              ? [startX, 0, startX]
+              : startX,
+            y: isActive
+              ? [startY, 0, startY]
+              : startY,
+            opacity: isActive
+              ? [0.3, 1, 0.3]
+              : 0.4,
+            scale: isActive
+              ? [1, 1.8, 1]
+              : 1,
           }}
           transition={{
             duration: 6 + i,
@@ -228,25 +266,39 @@ const IdeaGraphic = ({ isActive }: { isActive: boolean }) => (
 
     <motion.div
       animate={{
-        scale: isActive ? [1, 1.3, 1] : 1,
+        scale: isActive
+          ? [1, 1.3, 1]
+          : 1,
         boxShadow: isActive
           ? "0 0 30px 8px rgba(255, 255, 255, 0.4)"
           : "0 0 15px 2px rgba(255, 255, 255, 0.2)",
       }}
-      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+      transition={{
+        duration: 3,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
       className="relative h-6 w-6 rounded-full border border-white/80 bg-white"
     />
   </div>
 );
 
-const WaveGraphic = ({ isActive }: { isActive: boolean }) => (
+const WaveGraphic = ({
+  isActive,
+}: {
+  isActive: boolean;
+}) => (
   <div className="relative flex h-64 w-80 items-center justify-center overflow-hidden transform-gpu will-change-transform">
     {[...Array(9)].map((_, i) => (
       <motion.div
         key={i}
         animate={{
-          scaleY: isActive ? [0.3, 1.3, 0.3] : 0.4,
-          opacity: isActive ? 0.9 : 0.25,
+          scaleY: isActive
+            ? [0.3, 1.3, 0.3]
+            : 0.4,
+          opacity: isActive
+            ? 0.9
+            : 0.25,
         }}
         transition={{
           duration: 2.5,
@@ -260,27 +312,44 @@ const WaveGraphic = ({ isActive }: { isActive: boolean }) => (
   </div>
 );
 
-const MatrixGraphic = ({ isActive }: { isActive: boolean }) => (
+const MatrixGraphic = ({
+  isActive,
+}: {
+  isActive: boolean;
+}) => (
   <div className="relative flex h-64 w-64 items-center justify-center transform-gpu will-change-transform">
     <motion.div
       animate={{
         rotate: isActive ? 135 : 45,
         scale: isActive ? 1.15 : 1,
       }}
-      transition={{ duration: 1.4, ease: ULTRA_SMOOTH_EASE }}
+      transition={{
+        duration: 1.4,
+        ease: ULTRA_SMOOTH_EASE,
+      }}
       className="relative h-40 w-40 border border-white/30 bg-white/5 backdrop-blur-md shadow-2xl"
     >
       <motion.div
-        animate={{ rotate: isActive ? -180 : 0 }}
-        transition={{ duration: 2, ease: "easeInOut" }}
+        animate={{
+          rotate: isActive ? -180 : 0,
+        }}
+        transition={{
+          duration: 2,
+          ease: "easeInOut",
+        }}
         className="absolute inset-4 border border-white/20"
       />
+
       <div className="absolute inset-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 bg-white shadow-[0_0_20px_rgba(255,255,255,0.8)]" />
     </motion.div>
   </div>
 );
 
-const RadarGraphic = ({ isActive }: { isActive: boolean }) => (
+const RadarGraphic = ({
+  isActive,
+}: {
+  isActive: boolean;
+}) => (
   <div className="relative flex h-64 w-64 items-center justify-center transform-gpu will-change-transform">
     {[1, 2, 3].map((ring) => (
       <div
@@ -292,49 +361,81 @@ const RadarGraphic = ({ isActive }: { isActive: boolean }) => (
         }}
       />
     ))}
+
     <motion.div
-      animate={{ rotate: 360 }}
-      transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+      animate={{
+        rotate: 360,
+      }}
+      transition={{
+        duration: 10,
+        repeat: Infinity,
+        ease: "linear",
+      }}
       className={`absolute inset-0 rounded-full bg-[conic-gradient(from_0deg,transparent_0_300deg,rgba(255,255,255,0.25)_360deg)] transition-opacity duration-700 ${
-        isActive ? "opacity-100" : "opacity-30"
+        isActive
+          ? "opacity-100"
+          : "opacity-30"
       }`}
     />
+
     <div className="h-3.5 w-3.5 rounded-full bg-white shadow-[0_0_25px_rgba(255,255,255,0.8)]" />
   </div>
 );
 
-/* ============================================================================
-   MAIN COMPONENT
-   ============================================================================ */
-
-export default function WhatWeOffer() {
+export default function WhatWeOfferRockwell() {
   const [active, setActive] = useState<number | null>(null);
 
   const headerRef = useRef<HTMLDivElement>(null);
-  const isHeaderInView = useInView(headerRef, { once: true, margin: "-100px" });
+
+  const isHeaderInView = useInView(
+    headerRef,
+    {
+      once: true,
+      margin: "-100px",
+    }
+  );
 
   return (
-    <section
-      className="relative w-full overflow-hidden bg-[#131313] font-sans text-zinc-100 py-10 selection:bg-white selection:text-[#131313]"
-    >
-   
+   <section
+  className="relative w-full overflow-hidden bg-[#131313] font-rockwell text-zinc-100 py-10"
+>
       {/* SECTION HEADER */}
-      <div ref={headerRef} className="relative z-10 mx-auto max-w-7xl px-6 pb-16 lg:px-12">
+
+      <div
+        ref={headerRef}
+        className="relative z-10 mx-auto max-w-7xl px-6 pb-16 lg:px-12"
+      >
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={isHeaderInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-              transition={{ duration: 0.6, ease: ULTRA_SMOOTH_EASE }}
+            <motion.div
+              initial={{
+                opacity: 0,
+                x: -20,
+              }}
+              animate={
+                isHeaderInView
+                  ? {
+                      opacity: 1,
+                      x: 0,
+                    }
+                  : {
+                      opacity: 0,
+                      x: -20,
+                    }
+              }
+              transition={{
+                duration: 0.6,
+                ease: ULTRA_SMOOTH_EASE,
+              }}
               className="mb-3 flex items-center gap-2.5"
             >
               <Sparkles className="h-4 w-4 text-zinc-400" />
+
               <span className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-400">
-                Capabilities & Practice ( default )
+                Capabilities & Practice (Rockwell font family)
               </span>
             </motion.div>
 
-            {/* Heading with Yellow Accent on "Offer" only */}
             <h2 className="text-4xl font-normal tracking-tight text-white sm:text-5xl lg:text-6xl">
               <WordByWordReveal
                 text="What We Offer"
@@ -359,6 +460,7 @@ export default function WhatWeOffer() {
       </div>
 
       {/* CARDS GRID */}
+
       <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-6 px-6 md:grid-cols-2 lg:px-12">
         {services.map((service, index) => {
           const isActive = active === index;
@@ -374,8 +476,13 @@ export default function WhatWeOffer() {
               onBlur={() => setActive(null)}
             >
               <motion.div
-                whileHover={{ y: -6 }}
-                transition={{ duration: 0.5, ease: ULTRA_SMOOTH_EASE }}
+                whileHover={{
+                  y: -6,
+                }}
+                transition={{
+                  duration: 0.5,
+                  ease: ULTRA_SMOOTH_EASE,
+                }}
                 className={`
                   group relative min-h-[580px] overflow-hidden rounded-2xl border transition-all duration-500 lg:min-h-[640px] transform-gpu will-change-transform
                   ${
@@ -385,28 +492,42 @@ export default function WhatWeOffer() {
                   }
                 `}
               >
-                {/* Frame Corner Accents */}
                 <div className="pointer-events-none absolute top-4 left-4 h-2 w-2 border-t border-l border-white/20 transition-all duration-500 group-hover:border-white/50" />
+
                 <div className="pointer-events-none absolute top-4 right-4 h-2 w-2 border-t border-r border-white/20 transition-all duration-500 group-hover:border-white/50" />
+
                 <div className="pointer-events-none absolute bottom-4 left-4 h-2 w-2 border-b border-l border-white/20 transition-all duration-500 group-hover:border-white/50" />
+
                 <div className="pointer-events-none absolute bottom-4 right-4 h-2 w-2 border-b border-r border-white/20 transition-all duration-500 group-hover:border-white/50" />
 
-                {/* Inner Glow */}
                 <div
                   className={`pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.04)_0%,transparent_70%)] transition-opacity duration-700 ${
-                    isActive ? "opacity-100" : "opacity-0"
+                    isActive
+                      ? "opacity-100"
+                      : "opacity-0"
                   }`}
                 />
 
-                {/* Backdrop Graphic */}
                 <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-40 transition-opacity duration-700 group-hover:opacity-100">
-                  {service.shape === "idea" && <IdeaGraphic isActive={isActive} />}
-                  {service.shape === "wave" && <WaveGraphic isActive={isActive} />}
-                  {service.shape === "matrix" && <MatrixGraphic isActive={isActive} />}
-                  {service.shape === "radar" && <RadarGraphic isActive={isActive} />}
+                  {service.shape === "idea" && (
+                    <IdeaGraphic isActive={isActive} />
+                  )}
+
+                  {service.shape === "wave" && (
+                    <WaveGraphic isActive={isActive} />
+                  )}
+
+                  {service.shape === "matrix" && (
+                    <MatrixGraphic isActive={isActive} />
+                  )}
+
+                  {service.shape === "radar" && (
+                    <RadarGraphic isActive={isActive} />
+                  )}
                 </div>
 
-                {/* Card Header */}
+                {/* CARD HEADER */}
+
                 <div className="relative z-20 flex items-center justify-between p-8 sm:p-10">
                   <span className="font-mono text-xs tracking-[0.3em] text-zinc-400">
                     {service.id}
@@ -424,7 +545,8 @@ export default function WhatWeOffer() {
                   </div>
                 </div>
 
-                {/* Card Content */}
+                {/* CARD CONTENT */}
+
                 <div className="absolute bottom-0 left-0 right-0 z-20 p-8 sm:p-10 lg:p-12">
                   <div className="flex items-center justify-between">
                     <h3 className="text-4xl font-light tracking-tight text-white sm:text-5xl lg:text-5xl">
@@ -436,23 +558,33 @@ export default function WhatWeOffer() {
                       />
                     </h3>
 
-                    {/* Arrow Button */}
                     <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-[#131313] text-white transition-all duration-500 group-hover:border-white group-hover:bg-white group-hover:text-[#131313]">
                       <ArrowUpRight className="h-5 w-5 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </div>
                   </div>
 
-                  {/* Accordion Details */}
                   <AnimatePresence>
                     {isActive && (
                       <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.5, ease: ULTRA_SMOOTH_EASE }}
+                        initial={{
+                          height: 0,
+                          opacity: 0,
+                        }}
+                        animate={{
+                          height: "auto",
+                          opacity: 1,
+                        }}
+                        exit={{
+                          height: 0,
+                          opacity: 0,
+                        }}
+                        transition={{
+                          duration: 0.5,
+                          ease: ULTRA_SMOOTH_EASE,
+                        }}
                         className="overflow-hidden"
                       >
-                        <div className="pt-4 max-w-md text-sm leading-relaxed text-zinc-400 sm:text-base">
+                        <div className="max-w-md pt-4 text-sm leading-relaxed text-zinc-400 sm:text-base">
                           <KineticTextReveal
                             text={service.description}
                             isActive={isActive}
@@ -476,11 +608,15 @@ export default function WhatWeOffer() {
                   </AnimatePresence>
                 </div>
 
-                {/* Bottom Line Accent */}
                 <motion.div
                   initial={false}
-                  animate={{ scaleX: isActive ? 1 : 0 }}
-                  transition={{ duration: 0.6, ease: ULTRA_SMOOTH_EASE }}
+                  animate={{
+                    scaleX: isActive ? 1 : 0,
+                  }}
+                  transition={{
+                    duration: 0.6,
+                    ease: ULTRA_SMOOTH_EASE,
+                  }}
                   className="absolute bottom-0 left-0 right-0 h-[1px] origin-left bg-gradient-to-r from-transparent via-white/40 to-transparent"
                 />
               </motion.div>
@@ -490,6 +626,7 @@ export default function WhatWeOffer() {
       </div>
 
       {/* FOOTER CTA */}
+
       <div className="relative z-10 mx-auto flex max-w-7xl justify-between items-center px-6 pt-16 lg:px-12">
         <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-zinc-500 uppercase tracking-widest">
           <Sparkles className="h-3.5 w-3.5 text-zinc-400" />
@@ -504,6 +641,7 @@ export default function WhatWeOffer() {
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-200 transition-colors duration-300 group-hover:text-[#131313]">
               Explore All Practice Areas
             </span>
+
             <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white transition-colors duration-300 group-hover:bg-[#131313] group-hover:text-white">
               <ArrowUpRight className="h-4 w-4" />
             </div>

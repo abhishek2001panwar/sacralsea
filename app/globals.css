@@ -46,3 +46,26 @@ html.lenis, html.lenis body {
 .lenis.lenis-smooth iframe {
   pointer-events: none;
 }
+
+@font-face {
+  font-family: "Rockwell";
+  src: url("/fonts/Rockwell.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "MyHelvetica";
+  src: url("/fonts/helvetica-light-587ebe5a59211.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-rockwell: "RockwellCustom", serif;
+  --font-helvetica: "HelveticaCustom" , serif;
+}
+.helvetica-section {
+  font-family: "MyHelvetica", Arial, sans-serif;
+}

@@ -18,6 +18,8 @@ import InteractiveContactSection from './components/sections/contact'
 import FAQ from './components/sections/faq'
 import HeroNewSection from './components/sections/heronew'
 import SideScroller from './components/sidescroll'
+import WhatWeOfferHelvetica from './components/sections/WhatWeOfferHelvetica'
+import WhatWeOfferRockwell from './components/sections/WhatWeOfferRockwell'
 
 function page() {
   return (
@@ -30,6 +32,8 @@ function page() {
       <WhyCollaborate />
       <BrandMarquee />
       <WhatWeOffer />
+       <WhatWeOfferRockwell />
+      <WhatWeOfferHelvetica />
       <PerformanceStats />
       <Testiminial />
       <InteractiveContactSection />

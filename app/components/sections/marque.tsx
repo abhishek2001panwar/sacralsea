@@ -67,17 +67,17 @@ const BrandMarquee: React.FC = () => {
         ====================================== */}
         <div className="mb-8 flex w-max animate-marquee-left transform-gpu will-change-transform">
           {rowOne.map((brand, index) => (
-            <div
+            <h1
               key={`row-one-${index}`}
               className="group flex shrink-0 items-center"
             >
-              <span className="px-8 font-serif text-3xl font-light tracking-tight text-zinc-500 transition-colors duration-500 group-hover:text-white sm:px-12 sm:text-4xl md:text-5xl lg:px-16 lg:text-6xl">
+              <span className="px-8  text-3xl font-light tracking-tight text-zinc-500 transition-colors duration-500 group-hover:text-white sm:px-12 sm:text-4xl md:text-5xl lg:px-16 lg:text-6xl">
                 {brand}
               </span>
               <span className="text-xs text-white/20 transition-transform duration-500 group-hover:rotate-45 group-hover:text-white">
                 ◆
               </span>
-            </div>
+            </h1>
           ))}
         </div>
 
@@ -86,17 +86,17 @@ const BrandMarquee: React.FC = () => {
         ====================================== */}
         <div className="flex w-max animate-marquee-right transform-gpu will-change-transform">
           {rowTwo.map((brand, index) => (
-            <div
+            <h1
               key={`row-two-${index}`}
               className="group flex shrink-0 items-center"
             >
-              <span className="px-8 font-serif text-3xl font-light tracking-tight text-zinc-500 transition-colors duration-500 group-hover:text-white sm:px-12 sm:text-4xl md:text-5xl lg:px-16 lg:text-6xl">
+              <span className="px-8  text-3xl font-light tracking-tight text-zinc-500 transition-colors duration-500 group-hover:text-white sm:px-12 sm:text-4xl md:text-5xl lg:px-16 lg:text-6xl">
                 {brand}
               </span>
               <span className="text-xs text-white/20 transition-transform duration-500 group-hover:rotate-45 group-hover:text-white">
                 ◆
               </span>
-            </div>
+            </h1>
           ))}
         </div>
       </div>

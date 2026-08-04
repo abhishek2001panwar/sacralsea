@@ -127,9 +127,9 @@ function WordByWordText({
       className={`inline-flex flex-wrap gap-x-[0.28em] gap-y-[0.1em] ${className}`}
     >
       {words.map((word, index) => (
-        <motion.span key={index} variants={wordVariants} className="inline-block transform-gpu">
+        <motion.p key={index} variants={wordVariants} className="font-light inline-block transform-gpu">
           {word}
-        </motion.span>
+        </motion.p>
       ))}
     </motion.span>
   );
@@ -312,10 +312,10 @@ function InteractiveCard({
         {/* Author & Highlight Footer */}
         <div className="relative z-10 mt-6 sm:mt-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-white/10 pt-6 sm:pt-8 transition-colors duration-500">
           <div>
-            <div className="flex items-center gap-2 text-base sm:text-lg font-medium text-white">
+            <h1 className="flex items-center gap-2 text-base sm:text-lg font-medium text-white">
               <span>{item.author}</span>
               <CheckCircle2 className="h-4 w-4 text-zinc-400" />
-            </div>
+            </h1>
             <div className="text-xs sm:text-sm font-light text-zinc-400">
               {item.role},{" "}
               <span className="text-zinc-200">
@@ -427,7 +427,7 @@ export default function Testimonial() {
               initial={{ opacity: 0, x: -20 }}
               animate={isHeaderInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
               transition={{ duration: 0.6, ease: EASE }}
-              className="flex items-center gap-2.5"
+              className="flex items-center gap-2"
             >
               <Sparkles className="h-4 w-4 text-zinc-400" />
               <span className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-400">

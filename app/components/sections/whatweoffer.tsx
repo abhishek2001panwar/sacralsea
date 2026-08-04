@@ -330,7 +330,7 @@ export default function WhatWeOffer() {
             >
               <Sparkles className="h-4 w-4 text-zinc-400" />
               <span className=" text-xs uppercase tracking-[0.25em] text-zinc-400">
-                Capabilities & Practice ( default )
+                Capabilities & Practice 
               </span>
             </motion.div>
 

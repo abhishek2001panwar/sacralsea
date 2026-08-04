@@ -46,14 +46,14 @@ interface SmoothWordProps {
 const SmoothWord: React.FC<SmoothWordProps> = ({ word, isYellow = false }) => {
   return (
     <span className="inline-block overflow-hidden py-1">
-      <motion.span
+      <motion.h1
         variants={wordVariant}
         className={`inline-block transform-gpu will-change-transform ${
           isYellow ? 'text-[#f5c563] font-normal' : ''
         }`}
       >
         {word}
-      </motion.span>
+      </motion.h1>
     </span>
   );
 };
@@ -122,7 +122,7 @@ export default function CinematicHero() {
           >
             <Sparkles className="h-3.5 w-3.5 text-zinc-400" />
             <span className="text-zinc-400 text-xs uppercase tracking-[0.25em] font-mono">
-              You found us! default font family
+              You found us! 
             </span>
           </motion.div>
 
@@ -132,7 +132,7 @@ export default function CinematicHero() {
               variants={sentenceContainer}
               initial="hidden"
               animate="visible"
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight text-white leading-[1.08] flex flex-col items-center justify-center gap-y-1 sm:gap-y-2 select-none"
+              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl  tracking-tight text-white leading-[1.08] flex flex-col items-center justify-center gap-y-1 sm:gap-y-2 select-none"
             >
               {/* First Line */}
               <div className="flex flex-wrap justify-center gap-x-[0.28em]">

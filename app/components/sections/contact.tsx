@@ -248,7 +248,7 @@ export default function InteractiveContactSection() {
     <section
       ref={containerRef}
       id="contact"
-      className="relative min-h-[200vh] bg-[#131313] font-sans text-zinc-100 selection:bg-white selection:text-[#131313]"
+      className="relative min-h-[200vh] bg-[#131313]  text-zinc-100 selection:bg-white selection:text-[#131313]"
     >
       {/* Sticky Viewport Container */}
       <div className="sticky top-0 min-h-screen w-full overflow-hidden px-6 py-12 lg:px-12 lg:py-20 flex flex-col justify-between">
@@ -258,21 +258,21 @@ export default function InteractiveContactSection() {
         <div className="relative z-20 mx-auto w-full max-w-7xl pt-2 lg:pt-4">
           <div className="flex items-center gap-2 mb-3">
             <Sparkles className="h-4 w-4 text-zinc-400" />
-            <span className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-400">
+            <span className=" text-xs uppercase tracking-[0.25em] text-zinc-400">
               Start a Conversation
             </span>
           </div>
 
-          <div className="relative text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight leading-tight">
-            <motion.div style={{ opacity: heading1Opacity }}>
-              Give us a <span className="text-[#f5c563] font-serif italic">hint,</span>
-            </motion.div>
-            <motion.div
+          <div className="relative text-4xl sm:text-5xl lg:text-6xl  tracking-tight leading-tight">
+            <motion.h1 style={{ opacity: heading1Opacity }}>
+              Give us a <span className="text-[#f5c563]  italic">hint,</span>
+            </motion.h1>
+            <motion.h1
               style={{ opacity: heading2Opacity, y: heading2Y }}
               className="text-zinc-500 font-normal"
             >
-              and we'll <span className="text-white underline decoration-white/20">contact you.</span>
-            </motion.div>
+              and we'll <span className="text-white  underline decoration-white/20">contact you.</span>
+            </motion.h1>
           </div>
         </div>
 
@@ -289,9 +289,9 @@ export default function InteractiveContactSection() {
                     {/* Step 1: Services Multi-Select */}
                     <div>
                       <div className="flex items-center justify-between mb-4">
-                        <label className="block font-mono text-xs uppercase tracking-widest text-zinc-400">
+                        <h1 className="block font-sans text-xs uppercase tracking-widest text-zinc-400">
                           01 / Select Practice Area
-                        </label>
+                        </h1>
                       </div>
 
                       <div className="flex flex-wrap gap-2.5">
@@ -305,7 +305,7 @@ export default function InteractiveContactSection() {
                               type="button"
                               onClick={() => toggleService(item.id)}
                               className={`
-                                group flex items-center gap-2.5 rounded-xl border px-4 py-3 font-mono text-xs uppercase tracking-wider transition-all duration-300 outline-none
+                                group flex items-center gap-2.5 rounded-xl border px-4 py-3  text-xs uppercase tracking-wider transition-all duration-300 outline-none
                                 ${
                                   isSelected
                                     ? "border-white bg-white text-[#131313]"
@@ -325,9 +325,9 @@ export default function InteractiveContactSection() {
                     {/* Step 2: Clean Inputs */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
                       <div className="relative">
-                        <label className="block font-mono text-[10px] uppercase tracking-widest text-zinc-400 mb-2">
+                        <h1 className="block  text-[10px] uppercase tracking-widest text-zinc-400 mb-2">
                           02 / Work Email
-                        </label>
+                        </h1>
                         <input
                           type="email"
                           required
@@ -339,9 +339,9 @@ export default function InteractiveContactSection() {
                       </div>
 
                       <div className="relative">
-                        <label className="block font-mono text-[10px] uppercase tracking-widest text-zinc-400 mb-2">
+                        <h1 className="block font-mono text-[10px] uppercase tracking-widest text-zinc-400 mb-2">
                           03 / Phone Number
-                        </label>
+                        </h1>
                         <input
                           type="tel"
                           placeholder="+1 (555) 000-0000"
@@ -354,9 +354,9 @@ export default function InteractiveContactSection() {
 
                     {/* Step 3: Project Scope */}
                     <div>
-                      <label className="block font-mono text-[10px] uppercase tracking-widest text-zinc-400 mb-2">
+                      <h1 className="block font-mono text-[10px] uppercase tracking-widest text-zinc-400 mb-2">
                         04 / Tell us about your goal
-                      </label>
+                      </h1>
                       <input
                         type="text"
                         placeholder="e.g. Preparing for series A launch next quarter..."

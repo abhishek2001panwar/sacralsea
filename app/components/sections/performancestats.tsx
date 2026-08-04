@@ -241,12 +241,12 @@ const StatCard = memo(function StatCard({ stat }: { stat: StatData }) {
       </div>
 
       {/* Counter Value */}
-      <motion.div
+      <motion.h1
         initial={{ opacity: 0, x: -24 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.7, ease: EASE }}
-        className="relative z-10 text-5xl lg:text-6xl font-light text-white transition-colors duration-500"
+        className="relative z-10 text-5xl  lg:text-6xl font-light text-white transition-colors duration-500"
       >
         <AnimatedNumber
           value={stat.value}
@@ -254,7 +254,7 @@ const StatCard = memo(function StatCard({ stat }: { stat: StatData }) {
           prefix={stat.prefix}
           suffix={stat.suffix}
         />
-      </motion.div>
+      </motion.h1>
 
       {/* Description Label */}
       <motion.p

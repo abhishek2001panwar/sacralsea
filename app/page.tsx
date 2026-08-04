@@ -31,8 +31,8 @@ function page() {
       
       <Navbar />
       <HeroNewSection />
-      <CinematicHeroRockwell />
-      <CinematicHeroHelvetica />
+      {/* <CinematicHeroRockwell />
+      <CinematicHeroHelvetica /> */}
       <WhyCollaborate />
       <BrandMarquee />
       <WhatWeOffer />

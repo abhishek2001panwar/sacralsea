@@ -70,3 +70,10 @@ html.lenis, html.lenis body {
 .helvetica-section {
   font-family: "MyHelvetica";
 }
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Rockwell";
+}
+
+p , div{
+  font-family: "MyHelvetica" , Arial, sans-serif;
+}

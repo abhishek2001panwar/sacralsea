@@ -13,13 +13,13 @@ const sentenceContainer: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.08, // Stagger pacing per word
-      delayChildren: 0.2,    // Initial delay before start
+      staggerChildren: 0.08,
+      delayChildren: 0.2,
     },
   },
 };
 
-// Word Mask Variant — Smooth upward slide out of a overflow mask
+// Word Mask Variant — Smooth upward slide out of an overflow mask
 const wordVariant: Variants = {
   hidden: {
     y: '100%',
@@ -67,26 +67,54 @@ export default function CinematicHero() {
     offset: ['start start', 'end end'],
   });
 
-  // STRICT SCROLL TIMING MAP (Prevents overlapping/ghosting)
-  const phase1Opacity = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 1, 0]);
-  const phase1Y = useTransform(scrollYProgress, [0, 0.3], [0, -40]);
+  // ================= SCROLL TIMING CONTROLS =================
 
-  const videoOpacity = useTransform(scrollYProgress, [0.3, 0.5], [0, 1]);
+  // Phase 1 (Static Intro): [0 -> 0.22]
+  const phase1Opacity = useTransform(scrollYProgress, [0, 0.18, 0.24], [1, 1, 0]);
+  const phase1Y = useTransform(scrollYProgress, [0, 0.24], [0, -40]);
 
-  const phase2Opacity = useTransform(scrollYProgress, [0.5, 0.7], [0, 1]);
-  const phase2Y = useTransform(scrollYProgress, [0.5, 0.7], [40, 0]);
+  // Video Background: Fades in during Frame 1 transition
+  const videoOpacity = useTransform(scrollYProgress, [0.18, 0.3], [0, 1]);
+
+  // Frame 1: "You arrived" (0.26 -> 0.46)
+  const frame1Opacity = useTransform(scrollYProgress, [0.24, 0.3, 0.44, 0.48], [0, 1, 1, 0]);
+  const frame1Scale = useTransform(scrollYProgress, [0.24, 0.48], [0.95, 1.05]);
+
+  // Frame 2: "On the dot" + Clock Zoom (0.48 -> 0.72)
+  const frame2Opacity = useTransform(scrollYProgress, [0.48, 0.53, 0.68, 0.73], [0, 1, 1, 0]);
+  const clockScale = useTransform(scrollYProgress, [0.48, 0.72], [0.8, 1.6]);
+  const bigHandRotation = useTransform(scrollYProgress, [0.48, 0.65], [0, 360]); // Big hand completes rotation to land on small hand
+
+  // Frame 3: "Get Full-Stack Agency Services" (0.74 -> 1.0)
+  const frame3Opacity = useTransform(scrollYProgress, [0.73, 0.8], [0, 1]);
+  const frame3Y = useTransform(scrollYProgress, [0.73, 0.82], [40, 0]);
+
+  // Flash highlight on bright background for Frame 3
+  const flashBrightness = useTransform(
+    scrollYProgress,
+    [0.72, 0.76, 0.86],
+    [0, 0.85, 0.1]
+  );
 
   return (
-    <div ref={containerRef} className="relative h-[280vh] bg-[#131313] text-zinc-100 font-sans selection:bg-white selection:text-[#131313]">
-      
+    <div
+      ref={containerRef}
+      className="relative h-[420vh] bg-[#131313] text-zinc-100 font-sans selection:bg-white selection:text-[#131313]"
+    >
       {/* Sticky Fullscreen Wrapper */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
 
         {/* Background Radial Glow */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(255,255,255,0.02),transparent_100%)] z-1" />
 
-        {/* VIDEO BACKGROUND */}
-        <motion.div 
+        {/* Frame 3 Bright Flash Burst */}
+        <motion.div
+          style={{ opacity: flashBrightness }}
+          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/20 via-white/80 to-white/20 mix-blend-screen z-20 transform-gpu"
+        />
+
+        {/* VIDEO BACKGROUND (Motion light strobes) */}
+        <motion.div
           style={{ opacity: videoOpacity }}
           className="absolute inset-0 z-0 pointer-events-none transform-gpu will-change-transform"
         >
@@ -98,18 +126,20 @@ export default function CinematicHero() {
             preload="none"
             className="w-full h-full object-cover brightness-95 contrast-105"
           >
-            <source src="https://player.vimeo.com/progressive_redirect/playback/1020697798/rendition/720p/file.mp4?loc=external&log_user=0&signature=cd45f23683db91c40f08a3f4a31ba153f1e93eac3d4f98cb3ca4b651b8830d04" type="video/mp4" />
+            <source
+              src="https://player.vimeo.com/progressive_redirect/playback/1020697798/rendition/720p/file.mp4?loc=external&log_user=0&signature=cd45f23683db91c40f08a3f4a31ba153f1e93eac3d4f98cb3ca4b651b8830d04"
+              type="video/mp4"
+            />
           </video>
-
           <div className="absolute inset-0 bg-gradient-to-b from-[#131313]/70 via-[#131313]/30 to-[#131313]/90" />
         </motion.div>
 
-        {/* PHASE 1: STATIC INTRO */}
+        {/* ================= STATIC BANNER / PHASE 1 ================= */}
         <motion.div
-          style={{ 
-            opacity: phase1Opacity, 
+          style={{
+            opacity: phase1Opacity,
             y: phase1Y,
-            display: useTransform(scrollYProgress, (v) => (v >= 0.35 ? 'none' : 'flex'))
+            display: useTransform(scrollYProgress, (v) => (v >= 0.25 ? 'none' : 'flex')),
           }}
           className="relative z-10 w-full max-w-5xl px-6 flex-col items-center justify-between h-[75vh] transform-gpu will-change-transform"
         >
@@ -120,30 +150,30 @@ export default function CinematicHero() {
             transition={{ duration: 0.8, ease: EASE }}
             className="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full border border-white/10 bg-[#1a1a1a] shadow-xl"
           >
-            <Sparkles className="h-3.5 w-3.5 text-zinc-400" />
+           
             <span className="text-zinc-400 text-xs uppercase tracking-[0.25em] font-mono">
-              You found us! 
+              You found us!
             </span>
           </motion.div>
 
-          {/* ULTRA-SMOOTH MASKED WORD ANIMATED HEADING */}
+          {/* Masked Headline: "Together, we'll take it from here." */}
           <div className="text-center space-y-6 my-auto max-w-4xl">
             <motion.h1
               variants={sentenceContainer}
               initial="hidden"
               animate="visible"
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl  tracking-tight text-white leading-[1.08] flex flex-col items-center justify-center gap-y-1 sm:gap-y-2 select-none"
+              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white leading-[1.08] flex flex-col items-center justify-center gap-y-1 sm:gap-y-2 select-none"
             >
-              {/* First Line */}
+              {/* Line 1 */}
               <div className="flex flex-wrap justify-center gap-x-[0.28em]">
                 <SmoothWord word="Together," />
+              </div>
+
+              {/* Line 2 */}
+              <div className="flex flex-wrap justify-center gap-x-[0.28em]">
                 <SmoothWord word="we'll" />
                 <SmoothWord word="take" />
                 <SmoothWord word="it" />
-              </div>
-
-              {/* Second Line */}
-              <div className="flex flex-wrap justify-center  gap-x-[0.28em]">
                 <SmoothWord word="from" isYellow={true} />
                 <SmoothWord word="here." isYellow={true} />
               </div>
@@ -168,35 +198,84 @@ export default function CinematicHero() {
           </div>
         </motion.div>
 
-        {/* PHASE 2: VIDEO CONTENT */}
+        {/* ================= FRAME 1: YOU ARRIVED ================= */}
         <motion.div
-          style={{ 
-            opacity: phase2Opacity, 
-            y: phase2Y,
-            display: useTransform(scrollYProgress, (v) => (v < 0.35 ? 'none' : 'flex'))
+          style={{
+            opacity: frame1Opacity,
+            scale: frame1Scale,
+            display: useTransform(scrollYProgress, (v) => (v < 0.23 || v > 0.49 ? 'none' : 'flex')),
+          }}
+          className="absolute z-10 text-center px-6 max-w-4xl flex flex-col items-center justify-center space-y-3 transform-gpu will-change-transform"
+        >
+          <span className="text-xs font-mono uppercase tracking-[0.35em] text-[#f5c563]">
+            Phase 01
+          </span>
+          <h2 className="text-5xl sm:text-7xl md:text-9xl uppercase tracking-tighter text-white font-medium drop-shadow-2xl">
+            You arrived
+          </h2>
+        </motion.div>
+
+        {/* ================= FRAME 2: CLOCK & "ON THE DOT" ================= */}
+        <motion.div
+          style={{
+            opacity: frame2Opacity,
+            display: useTransform(scrollYProgress, (v) => (v < 0.47 || v > 0.74 ? 'none' : 'flex')),
+          }}
+          className="absolute z-10 text-center px-6 max-w-4xl flex flex-col items-center justify-center space-y-6 transform-gpu will-change-transform"
+        >
+          {/* Zooming Clock Graphic with Bigger Hand landing on Smaller Hand */}
+          <motion.div
+            style={{ scale: clockScale }}
+            className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full border border-white/20 bg-black/40 backdrop-blur-md flex items-center justify-center shadow-2xl"
+          >
+            {/* Hour Marks */}
+            <div className="absolute top-2 w-[1px] h-2 bg-white/40" />
+            <div className="absolute bottom-2 w-[1px] h-2 bg-white/40" />
+            <div className="absolute left-2 h-[1px] w-2 bg-white/40" />
+            <div className="absolute right-2 h-[1px] w-2 bg-white/40" />
+
+            {/* Small Hand (Fixed at 12 o'clock) */}
+            <div className="absolute top-1/2 left-1/2 w-[2px] h-8 bg-zinc-300 -translate-x-1/2 -translate-y-full origin-bottom rounded-full" />
+
+            {/* Bigger Hand (Rotates and lands directly on top of the smaller hand) */}
+            <motion.div
+              style={{ rotate: bigHandRotation }}
+              className="absolute top-1/2 left-1/2 w-[2px] h-12 bg-[#f5c563] -translate-x-1/2 -translate-y-full origin-bottom rounded-full shadow-[0_0_10px_#f5c563]"
+            />
+
+            {/* Center Pin */}
+            <div className="relative z-10 w-2.5 h-2.5 rounded-full bg-white ring-4 ring-black/40" />
+          </motion.div>
+
+          <h3 className="text-3xl sm:text-5xl md:text-6xl font-serif italic font-light text-white tracking-wide">
+            ‘On the dot’
+          </h3>
+        </motion.div>
+
+        {/* ================= FRAME 3: FULL-STACK AGENCY SERVICES ================= */}
+        <motion.div
+          style={{
+            opacity: frame3Opacity,
+            y: frame3Y,
+            display: useTransform(scrollYProgress, (v) => (v < 0.72 ? 'none' : 'flex')),
           }}
           className="absolute z-10 text-center px-6 max-w-5xl flex-col items-center justify-center space-y-8 transform-gpu will-change-transform"
         >
-          {/* Subheading Badges */}
           <div className="space-y-2">
             <span className="text-zinc-400 text-xs sm:text-sm font-mono uppercase tracking-[0.4em] block">
-              You arrived
-            </span>
-            <span className="text-white text-2xl sm:text-4xl font-serif italic font-light block">
-              On the dot.
+              Everything in sync
             </span>
           </div>
 
-          {/* Hero Action Headline */}
-          <h2 className="text-4xl sm:text-6xl md:text-8xl  uppercase tracking-tight text-white leading-none drop-shadow-2xl">
-            Get  Full-Stack <br />
+          <h2 className="text-4xl sm:text-6xl md:text-8xl uppercase tracking-tight text-white leading-none drop-shadow-2xl font-bold">
+            Get Full-Stack <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#f5c563] to-white">
               Agency Services
             </span>
           </h2>
 
           {/* CTA Button */}
-          <motion.div 
+          <motion.div
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className="pt-4"

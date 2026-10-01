@@ -18,43 +18,43 @@ interface ServiceItem {
 const services: ServiceItem[] = [
   {
     id: "01",
-    title: "IDEA",
+    title: "STRATEGY",
     subtitle: "Brand Direction & Vision",
     description:
-      "We turn raw thoughts into meaningful brand directions, positioning your business at the intersection of cultural relevance and commercial impact.",
+      "Strategies aren’t decoration. They’re the bones. We get them right and make them impossible to ignore. Be known for something that truly resonates with your brand.",
     tags: ["Strategy", "Positioning", "Brand Architecture"],
     shape: "idea",
-    href: "/services/brand-direction",
+    href: "/services",
   },
   {
     id: "02",
     title: "CONTENT",
     subtitle: "Narrative & Production",
     description:
-      "We create stories and content frameworks that make brands impossible to ignore, driving organic reach and deep audience resonance.",
+      "If the ideas rule, content bleeds it out. It won’t be pretty. It won’t be perfect. But just honest enough to stick. And when it’s real, we assure you, people won’t forget.",
     tags: ["Storytelling", "Film & Motion", "Copywriting"],
     shape: "wave",
-    href: "/services/narrative-production",
+    href: "/services",
   },
   {
     id: "03",
     title: "DESIGN",
     subtitle: "Identity & Digital Experience",
     description:
-      "We shape cohesive visual identities and digital interfaces that give brands a distinctive point of view across every physical and digital touchpoint.",
+      "Here, lines don’t beg. Colours don’t shout. Everything sits where it should, and hits harder because of it. Good design doesn’t ask for attention. It takes it… and stays.",
     tags: ["Visual Identity", "UI/UX Design", "Design Systems"],
     shape: "matrix",
-    href: "/services/digital-experience",
+    href: "/services",
   },
   {
     id: "04",
     title: "PERFORMANCE",
     subtitle: "Growth & Analytics",
     description:
-      "We combine high-end creative execution with data rigor to build scalable campaigns that deliver measurable business outcomes.",
+      "We don’t just chase good ideas. We push them through the right channels, put them in front of the right eyes. Because if it doesn’t land, it’s just another pretty thought no one remembers.",
     tags: ["Conversion", "Paid Media", "Growth Optimization"],
     shape: "radar",
-    href: "/services/growth-analytics",
+    href: "/services",
   },
 ];
 

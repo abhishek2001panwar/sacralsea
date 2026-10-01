@@ -46,10 +46,10 @@ export default function Navbar() {
   };
 
   const menuItems = [
-    { href: '/#services', label: 'Services', number: '01' },
-    { href: '/#industries', label: 'Industries', number: '02' },
-    { href: '/#work', label: 'Work', number: '03' },
-    { href: '/about', label: 'About', number: '04' },
+    { href: '/services', label: 'Services', number: '01' },
+    { href: '/industries', label: 'Industries', number: '02' },
+    { href: '/work', label: 'Work', number: '03' },
+    { href: '/resources', label: 'Resources', number: '04' },
   ];
 
   return (
@@ -65,7 +65,7 @@ export default function Navbar() {
             : 'bg-transparent border-b border-transparent'
         }`}
       >
-        <nav className="h-16 px-6 sm:px-8 lg:px-12 flex items-center justify-between">
+        <nav className="h-24 px-6 sm:px-8 lg:px-12 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 z-50">
             <Image 
@@ -92,7 +92,7 @@ export default function Navbar() {
 
           {/* Desktop CTA Button */}
           <Link
-            href="/#contact"
+            href="/contact"
             className="hidden md:block"
           >
             <button className="group flex items-center gap-4 rounded-xl border border-white/15 bg-[#1a1a1a] px-5 py-2.5 shadow-2xl transition-all duration-300 hover:border-white hover:bg-white hover:text-[#131313] focus:outline-none">
@@ -180,7 +180,7 @@ export default function Navbar() {
                 transition={{ delay: 0.3, duration: 0.3 }}
                 className="pt-2"
               >
-                <Link href="/#contact" onClick={() => setIsOpen(false)}>
+                <Link href="/contact" onClick={() => setIsOpen(false)}>
                   <button className="group w-full flex items-center justify-center gap-3 rounded-xl border border-white/20 bg-white px-5 py-4 text-[#131313] shadow-2xl transition-all duration-300 active:scale-98">
                     <span className="font-mono text-xs uppercase tracking-[0.2em] font-medium">
                       Start A Project

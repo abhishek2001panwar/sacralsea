@@ -77,3 +77,48 @@ h1, h2, h3, h4, h5, h6 {
 p , div{
   font-family: "MyHelvetica" , Arial, sans-serif;
 }
+
+/* ========================================================= */
+/* PREMIUM WEBKIT SCROLLBAR (AGENCY MINIMALIST)             */
+/* ========================================================= */
+
+/* 1. Track width (Slim & modern) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* 2. Track background (Blends into #131313) */
+::-webkit-scrollbar-track {
+  background: #131313;
+}
+
+/* 3. Scrollbar Thumb (Muted Zinc default) */
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  border: 1px solid rgba(19, 19, 19, 0.8); /* Clean inset feel */
+  transition: background 0.3s ease;
+}
+
+/* 4. Hover state (Signature Gold / Amber glow) */
+::-webkit-scrollbar-thumb:hover {
+  background: #f5c563;
+  box-shadow: 0 0 10px rgba(245, 197, 99, 0.5);
+}
+
+/* 5. Active Click & Drag */
+::-webkit-scrollbar-thumb:active {
+  background: #e5b34e;
+}
+
+/* 6. Corner join (if both horizontal and vertical exist) */
+::-webkit-scrollbar-corner {
+  background: #131313;
+}
+
+/* Firefox fallback so it matches Webkit styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) #131313;
+}

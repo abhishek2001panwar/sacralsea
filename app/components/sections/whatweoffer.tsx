@@ -2,8 +2,8 @@
 
 import React, { useState, useRef } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence, useInView } from "framer-motion";
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { motion, AnimatePresence, useInView, useScroll, useTransform } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 
 interface ServiceItem {
   id: string;
@@ -189,7 +189,7 @@ const IdeaGraphic = ({ isActive }: { isActive: boolean }) => (
         rotate: [0, 180, 360],
       }}
       transition={{ duration: isActive ? 8 : 16, repeat: Infinity, ease: "easeInOut" }}
-      className="absolute h-40 w-40 rounded-full border border-white/20 bg-white/5 blur-2xl"
+      className="absolute h-40 w-40 rounded-full border border-white/20 bg-[#f5c563]/10 blur-2xl"
     />
 
     <motion.div
@@ -230,7 +230,7 @@ const IdeaGraphic = ({ isActive }: { isActive: boolean }) => (
       animate={{
         scale: isActive ? [1, 1.3, 1] : 1,
         boxShadow: isActive
-          ? "0 0 30px 8px rgba(255, 255, 255, 0.4)"
+          ? "0 0 30px 8px rgba(245, 197, 99, 0.4)"
           : "0 0 15px 2px rgba(255, 255, 255, 0.2)",
       }}
       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
@@ -254,7 +254,7 @@ const WaveGraphic = ({ isActive }: { isActive: boolean }) => (
           ease: "easeInOut",
           delay: i * 0.15,
         }}
-        className="mx-1.5 h-36 w-1.5 rounded-full bg-gradient-to-b from-white/20 via-white to-white/20 shadow-[0_0_10px_rgba(255,255,255,0.2)]"
+        className="mx-1.5 h-36 w-1.5 rounded-full bg-gradient-to-b from-[#f5c563]/30 via-white to-white/20 shadow-[0_0_10px_rgba(255,255,255,0.2)]"
       />
     ))}
   </div>
@@ -295,7 +295,7 @@ const RadarGraphic = ({ isActive }: { isActive: boolean }) => (
     <motion.div
       animate={{ rotate: 360 }}
       transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-      className={`absolute inset-0 rounded-full bg-[conic-gradient(from_0deg,transparent_0_300deg,rgba(255,255,255,0.25)_360deg)] transition-opacity duration-700 ${
+      className={`absolute inset-0 rounded-full bg-[conic-gradient(from_0deg,transparent_0_300deg,rgba(245,197,99,0.25)_360deg)] transition-opacity duration-700 ${
         isActive ? "opacity-100" : "opacity-30"
       }`}
     />
@@ -304,37 +304,139 @@ const RadarGraphic = ({ isActive }: { isActive: boolean }) => (
 );
 
 /* ============================================================================
+   BACKGROUND SCROLL + LOOP PARTICLES & MOTIFS
+   ============================================================================ */
+
+function BackgroundScrollElements({
+  containerRef,
+}: {
+  containerRef: React.RefObject<HTMLElement | null>;
+}) {
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  // Smooth scroll transformations
+  const rotateClockwise = useTransform(scrollYProgress, [0, 1], [0, 180]);
+  const rotateCounter = useTransform(scrollYProgress, [0, 1], [0, -180]);
+  const floatUp = useTransform(scrollYProgress, [0, 1], [50, -120]);
+  const floatDown = useTransform(scrollYProgress, [0, 1], [-80, 80]);
+
+  return (
+    <div className="pointer-events-none absolute inset-0 z-[2] overflow-hidden">
+      {/* 1. SCROLL-DRIVEN GEOMETRIC CONCENTRIC RINGS (Top Left) */}
+      <motion.div
+        style={{ y: floatDown, rotate: rotateClockwise }}
+        className="absolute -left-16 top-20 h-80 w-80 rounded-full border border-white/[0.08] transform-gpu will-change-transform"
+      >
+        <div className="absolute inset-6 rounded-full border border-dashed border-[#f5c563]/20" />
+        <div className="absolute inset-16 rounded-full border border-white/[0.05]" />
+        <div className="absolute left-1/2 top-2 h-2 w-2 -translate-x-1/2 rounded-full bg-[#f5c563]/60 shadow-[0_0_8px_rgba(245,197,99,0.8)]" />
+      </motion.div>
+
+      {/* 2. SCROLL-DRIVEN ROTATING RETICLE CROSSHAIR (Bottom Right) */}
+      <motion.div
+        style={{ y: floatUp, rotate: rotateCounter }}
+        className="absolute -right-16 bottom-24 h-72 w-72 rounded-full border border-white/[0.08] transform-gpu will-change-transform"
+      >
+        <div className="absolute inset-8 rounded-full border border-white/[0.04]" />
+        <div className="absolute left-1/2 top-0 h-full w-[1px] -translate-x-1/2 bg-gradient-to-b from-transparent via-[#f5c563]/30 to-transparent" />
+        <div className="absolute top-1/2 left-0 h-[1px] w-full -translate-y-1/2 bg-gradient-to-r from-transparent via-[#f5c563]/30 to-transparent" />
+        <div className="absolute right-3 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-white/70 shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
+      </motion.div>
+
+      {/* 3. FLOATING AMBIENT GLOW ORBS */}
+      <motion.div
+        animate={{
+          x: [0, 35, -25, 0],
+          y: [0, -30, 20, 0],
+          scale: [1, 1.2, 1],
+          opacity: [0.35, 0.65, 0.35],
+        }}
+        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute left-[12%] top-[30%] h-48 w-48 rounded-full bg-[#f5c563]/10 blur-3xl transform-gpu"
+      />
+
+      <motion.div
+        animate={{
+          x: [0, -30, 20, 0],
+          y: [0, 40, -15, 0],
+          scale: [1, 1.25, 1],
+          opacity: [0.2, 0.5, 0.2],
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        className="absolute right-[15%] top-[55%] h-56 w-56 rounded-full bg-white/[0.05] blur-3xl transform-gpu"
+      />
+
+      {/* 4. LOOPING STARBURSTS & MARKERS */}
+      <motion.div
+        animate={{
+          rotate: [0, 90, 180, 270, 360],
+          opacity: [0.25, 0.85, 0.25],
+          scale: [0.9, 1.3, 0.9],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute left-[24%] top-[14%] font-mono text-base text-[#f5c563]/60 select-none"
+      >
+        ✦
+      </motion.div>
+
+      <motion.div
+        animate={{
+          rotate: [360, 270, 180, 90, 0],
+          opacity: [0.2, 0.75, 0.2],
+          scale: [1, 1.35, 1],
+        }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute right-[22%] top-[40%] font-mono text-sm text-white/50 select-none"
+      >
+        +
+      </motion.div>
+
+      <motion.div
+        animate={{
+          opacity: [0.3, 0.9, 0.3],
+          scale: [0.85, 1.2, 0.85],
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        className="absolute left-[8%] bottom-[20%] font-mono text-lg text-[#f5c563]/50 select-none"
+      >
+        ✦
+      </motion.div>
+    </div>
+  );
+}
+
+/* ============================================================================
    MAIN COMPONENT
    ============================================================================ */
 
 export default function WhatWeOffer() {
   const [active, setActive] = useState<number | null>(null);
 
+  // 1. Ref bound to the root <section> element
+  const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const isHeaderInView = useInView(headerRef, { once: true, margin: "-100px" });
 
   return (
     <section
-      className="relative w-full overflow-hidden bg-[#131313] font-sans text-zinc-100 py-10 selection:bg-white selection:text-[#131313]"
+      ref={sectionRef}
+      className="relative w-full overflow-hidden py-24 lg:py-32 font-sans text-zinc-100 selection:bg-white selection:text-[#131313] bg-gradient-to-b from-[#131313] via-[#1a1711] to-[#131313]"
     >
-   
-      {/* SECTION HEADER */}
+      {/* AMBIENT GLOWS (z-[1]) */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[450px] bg-[radial-gradient(ellipse_70%_100%_at_50%_0%,rgba(245,197,99,0.14)_0%,transparent_70%)] z-[1]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,rgba(245,197,99,0.08)_0%,transparent_75%)] z-[1]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[450px] bg-[radial-gradient(ellipse_70%_100%_at_50%_100%,rgba(245,197,99,0.12)_0%,transparent_70%)] z-[1]" />
+
+      {/* SCROLL & LOOP PARTICLES (z-[2]) */}
+      <BackgroundScrollElements containerRef={sectionRef} />
+
+      {/* SECTION HEADER (z-10) */}
       <div ref={headerRef} className="relative z-10 mx-auto max-w-7xl px-6 pb-16 lg:px-12">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={isHeaderInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-              transition={{ duration: 0.6, ease: ULTRA_SMOOTH_EASE }}
-              className="mb-3 flex items-center gap-2.5"
-            >
-              <Sparkles className="h-4 w-4 text-zinc-400" />
-              <span className=" text-xs uppercase tracking-[0.25em] text-zinc-400">
-                Capabilities & Practice 
-              </span>
-            </motion.div>
-
-            {/* Heading with Yellow Accent on "Offer" only */}
             <h2 className="text-4xl font-normal tracking-tight text-white sm:text-5xl lg:text-6xl">
               <WordByWordReveal
                 text="What We Offer"
@@ -342,7 +444,7 @@ export default function WhatWeOffer() {
                 delayOffset={0.1}
                 wordStagger={0.08}
                 highlightWord="Offer"
-                highlightClassName="text-[#f5c563] font-normal"
+                highlightClassName="text-[#f5c563] font-normal font-serif"
               />
             </h2>
           </div>
@@ -358,7 +460,7 @@ export default function WhatWeOffer() {
         </div>
       </div>
 
-      {/* CARDS GRID */}
+      {/* CARDS GRID (z-10) */}
       <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-6 px-6 md:grid-cols-2 lg:px-12">
         {services.map((service, index) => {
           const isActive = active === index;
@@ -377,23 +479,17 @@ export default function WhatWeOffer() {
                 whileHover={{ y: -6 }}
                 transition={{ duration: 0.5, ease: ULTRA_SMOOTH_EASE }}
                 className={`
-                  group relative min-h-[580px] overflow-hidden rounded-2xl border transition-all duration-500 lg:min-h-[640px] transform-gpu will-change-transform
+                  group relative min-h-[580px] overflow-hidden rounded-2xl transition-all duration-500 lg:min-h-[640px] transform-gpu will-change-transform
                   ${
                     isActive
-                      ? "border-white/20 bg-[#202020] shadow-[0_4px_30px_rgba(0,0,0,0.6)]"
-                      : "border-white/5 bg-[#1a1a1a] hover:border-white/10"
+                      ? "bg-[#1f1d17]/95 shadow-[0_12px_45px_rgba(0,0,0,0.65)]"
+                      : "bg-[#161512]/90 hover:bg-[#1a1813]"
                   }
                 `}
               >
-                {/* Frame Corner Accents */}
-                <div className="pointer-events-none absolute top-4 left-4 h-2 w-2 border-t border-l border-white/20 transition-all duration-500 group-hover:border-white/50" />
-                <div className="pointer-events-none absolute top-4 right-4 h-2 w-2 border-t border-r border-white/20 transition-all duration-500 group-hover:border-white/50" />
-                <div className="pointer-events-none absolute bottom-4 left-4 h-2 w-2 border-b border-l border-white/20 transition-all duration-500 group-hover:border-white/50" />
-                <div className="pointer-events-none absolute bottom-4 right-4 h-2 w-2 border-b border-r border-white/20 transition-all duration-500 group-hover:border-white/50" />
-
-                {/* Inner Glow */}
+                {/* Inner Ambient Glow */}
                 <div
-                  className={`pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.04)_0%,transparent_70%)] transition-opacity duration-700 ${
+                  className={`pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(245,197,99,0.06)_0%,transparent_70%)] transition-opacity duration-700 ${
                     isActive ? "opacity-100" : "opacity-0"
                   }`}
                 />
@@ -412,7 +508,7 @@ export default function WhatWeOffer() {
                     {service.id}
                   </span>
 
-                  <div className="flex items-center gap-2 rounded-full border border-white/10 bg-[#131313]/60 px-3.5 py-1 backdrop-blur-md">
+                  <div className="flex items-center gap-2 rounded-full bg-[#131313]/60 px-3.5 py-1 backdrop-blur-md">
                     <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-400">
                       <KineticTextReveal
                         text={service.subtitle}
@@ -437,7 +533,7 @@ export default function WhatWeOffer() {
                     </h3>
 
                     {/* Arrow Button */}
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-[#131313] text-white transition-all duration-500 group-hover:border-white group-hover:bg-white group-hover:text-[#131313]">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#131313] text-white transition-all duration-500 group-hover:bg-[#f5c563] group-hover:text-[#131313]">
                       <ArrowUpRight className="h-5 w-5 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </div>
                   </div>
@@ -465,7 +561,7 @@ export default function WhatWeOffer() {
                           {service.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="rounded-full border border-white/10 bg-[#222222] px-3.5 py-1 font-mono text-[10px] uppercase tracking-wider text-zinc-300"
+                              className="rounded-full bg-[#24211a] px-3.5 py-1 font-mono text-[10px] uppercase tracking-wider text-zinc-300"
                             >
                               {tag}
                             </span>
@@ -475,31 +571,18 @@ export default function WhatWeOffer() {
                     )}
                   </AnimatePresence>
                 </div>
-
-                {/* Bottom Line Accent */}
-                <motion.div
-                  initial={false}
-                  animate={{ scaleX: isActive ? 1 : 0 }}
-                  transition={{ duration: 0.6, ease: ULTRA_SMOOTH_EASE }}
-                  className="absolute bottom-0 left-0 right-0 h-[1px] origin-left bg-gradient-to-r from-transparent via-white/40 to-transparent"
-                />
               </motion.div>
             </Link>
           );
         })}
       </div>
 
-      {/* FOOTER CTA */}
-      <div className="relative z-10 mx-auto flex max-w-7xl justify-between items-center px-6 pt-16 lg:px-12">
-        <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-zinc-500 uppercase tracking-widest">
-          <Sparkles className="h-3.5 w-3.5 text-zinc-400" />
-          <span>Interactive Service Suite</span>
-        </div>
-
+      {/* FOOTER CTA (z-10) */}
+      <div className="relative z-10 mx-auto flex max-w-7xl justify-end items-center px-6 pt-16 lg:px-12">
         <Link href="/services">
           <button
             type="button"
-            className="group flex items-center gap-4 rounded-xl border border-white/15 bg-[#1a1a1a] px-7 py-4 transition-all duration-300 hover:border-white hover:bg-white hover:text-[#131313] focus:outline-none"
+            className="group flex items-center gap-4 rounded-xl bg-[#1e1c16] px-7 py-4 transition-all duration-300 hover:bg-[#f5c563] hover:text-[#131313] focus:outline-none"
           >
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-200 transition-colors duration-300 group-hover:text-[#131313]">
               Explore All Practice Areas

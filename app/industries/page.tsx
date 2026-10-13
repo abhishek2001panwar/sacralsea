@@ -167,11 +167,7 @@ export default function IndustriesSaaSTechPage() {
 
   {/* Scroll Motion Indicator */}
   <div className="flex flex-col items-center space-y-2 opacity-60 z-10">
-    <span className="text-[10px] uppercase tracking-[0.3em] font-mono text-zinc-500">
-      Scroll
-    </span>
-    <div className="w-[1px] h-6 bg-gradient-to-b from-[#f5c563] to-transparent animate-pulse" />
-  </div>
+   </div>
 </section>
 
       {/* ========================================================= */}

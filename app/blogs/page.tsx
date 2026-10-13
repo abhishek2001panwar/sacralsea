@@ -38,7 +38,6 @@ export default function BlogListingPage() {
       <section className="relative pt-28 pb-16 px-6 sm:px-10 lg:px-14 max-w-6xl mx-auto border-b border-white/10">
         <div className="flex flex-col items-center text-center space-y-6">
           <div className="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full border border-white/10 bg-[#1a1a1a] shadow-xl">
-            <Sparkles className="h-3.5 w-3.5 text-[#f5c563]" />
             <span className="text-zinc-400 text-xs uppercase tracking-[0.25em] font-mono">
               Insights &amp; Playbooks
             </span>

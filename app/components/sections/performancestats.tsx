@@ -308,7 +308,7 @@ export default function PerformanceStats() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full overflow-hidden bg-[#131313] py-5 font-sans text-zinc-100 selection:bg-white selection:text-[#131313]"
+      className="relative w-full overflow-hidden bg-[#131313] py-16 font-sans text-zinc-100 selection:bg-white selection:text-[#131313]"
     >
       {/* Background Radial Glow */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(255,255,255,0.02),transparent_100%)] z-1" />

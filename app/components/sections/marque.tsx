@@ -44,7 +44,6 @@ const BrandMarquee: React.FC = () => {
       ========================================== */}
       <div className="relative z-10 mx-auto mb-16 max-w-7xl px-6 lg:px-12">
         <div className="flex items-center gap-2.5">
-          <Sparkles className="h-4 w-4 text-zinc-400" />
           <span className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-400">
             Brands and <span className="text-[#f5c563] font-normal">us</span>
           </span>

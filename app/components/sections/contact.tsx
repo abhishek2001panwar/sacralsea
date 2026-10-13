@@ -257,7 +257,6 @@ export default function InteractiveContactSection() {
         {/* SECTION HEADER TYPOGRAPHY */}
         <div className="relative z-20 mx-auto w-full max-w-7xl pt-2 lg:pt-4">
           <div className="flex items-center gap-2 mb-3">
-            <Sparkles className="h-4 w-4 text-zinc-400" />
             <span className=" text-xs uppercase tracking-[0.25em] text-zinc-400">
               Start a Conversation
             </span>

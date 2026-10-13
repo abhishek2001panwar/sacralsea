@@ -414,11 +414,20 @@ export default function Testimonial() {
   return (
     <section
       ref={containerRef}
-      className="relative h-[400vh] bg-[#131313] font-sans text-zinc-100 selection:bg-white selection:text-[#131313]"
+      className="relative py-16 h-[400vh] bg-[#131313] font-sans text-zinc-100 selection:bg-white selection:text-[#131313]"
     >
       {/* Sticky Viewport Area */}
       <div className="sticky top-0 flex h-screen w-full flex-col justify-between overflow-hidden px-4 sm:px-6 lg:px-12">
         
+{/* VERY LIGHT YELLOWISH AMBIENT GLOW (BORDERLESS) */}
+      {/* Top Edge Ambient */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[450px] bg-[radial-gradient(ellipse_70%_100%_at_50%_0%,rgba(245,197,99,0.14)_0%,transparent_70%)] z-[1]" />
+
+      {/* Center Body Ambient */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,rgba(245,197,99,0.08)_0%,transparent_75%)] z-[1]" />
+
+      {/* Bottom Edge Ambient */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[450px] bg-[radial-gradient(ellipse_70%_100%_at_50%_100%,rgba(245,197,99,0.12)_0%,transparent_70%)] z-[1]" />
       
         {/* TOP HEADER BAR */}
         <div ref={headerRef} className="relative z-20 mx-auto w-full max-w-7xl pt-12 sm:pt-16 lg:pt-20">
@@ -429,7 +438,7 @@ export default function Testimonial() {
               transition={{ duration: 0.6, ease: EASE }}
               className="flex items-center gap-2"
             >
-              <Sparkles className="h-4 w-4 text-zinc-400" />
+             
               <span className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-400">
                 Testimonials & Impact
               </span>
@@ -476,7 +485,7 @@ export default function Testimonial() {
         </div>
 
         {/* CENTER CARDS CONTAINER */}
-        <div className="relative z-10 my-auto w-full py-4 sm:py-6 [perspective:1200px]">
+        <div className="relative z-10 my-auto w-full py-4 sm:py-10 [perspective:1200px]">
           <motion.div
             style={{ x: xTransform }}
             className="flex w-[400%] items-center transform-gpu will-change-transform"

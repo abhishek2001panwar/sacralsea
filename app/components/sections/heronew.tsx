@@ -189,13 +189,7 @@ export default function CinematicHero() {
             </motion.p>
           </div>
 
-          {/* Scroll Prompt */}
-          <div className="absolute -bottom-10 flex flex-col items-center space-y-2">
-            <span className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 font-mono">
-              Scroll Down
-            </span>
-            <div className="w-[1px] h-8 bg-gradient-to-b from-white/40 to-transparent animate-pulse" />
-          </div>
+         
         </motion.div>
 
         {/* ================= FRAME 1: YOU ARRIVED ================= */}

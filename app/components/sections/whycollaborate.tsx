@@ -245,7 +245,8 @@ export default function UltraPremiumWhyCollaborate() {
       onMouseMove={handleMouseMove}
       className="relative w-full overflow-hidden bg-[#131313] py-20 font-sans text-zinc-100 selection:bg-white selection:text-[#131313]"
     >
-      {/* Ambient Canvas */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_55%_at_50%_40%,rgba(245,197,99,0.06)_0%,transparent_105%)] z-[1]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(245,197,99,0.03)_0%,transparent_60%)] z-[1]" />
       <AmbientGrainCanvas />
 
       {/* Cursor Light Glow */}

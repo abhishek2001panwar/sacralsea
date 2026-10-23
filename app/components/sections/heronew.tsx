@@ -161,7 +161,7 @@ export default function CinematicHero() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8, ease: EASE }}
-              className="text-xl sm:text-2xl md:text-3xl text-zinc-300 font-light tracking-tight leading-snug"
+              className="text-xl sm:text-2xl md:text-4xl text-zinc-300 font-light tracking-tight leading-snug"
             >
               Together, we&apos;ll take it{' '}
               <span className="text-[#f5c563] font-normal">from here.</span>

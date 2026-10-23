@@ -2,8 +2,18 @@
 
 import React, { useState } from 'react';
 import { motion, Variants } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import Navbar from '../components/Navbar';
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+
+const INITIAL_FORM = {
+  firstName: '',
+  lastName: '',
+  companyName: '',
+  email: '',
+  role: '',
+  challenge: '',
+};
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -29,21 +39,50 @@ const cardVariant: Variants = {
 };
 
 export default function MarketingAssessmentPage() {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    companyName: '',
-    email: '',
-    role: '',
-    challenge: '',
-  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+
+  const [formData, setFormData] = useState(INITIAL_FORM);
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+ const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setStatus('loading');
+    setErrorMessage('');
+
+    try {
+      // Strapi accepts { data: payload }
+      const res = await fetch(`${STRAPI_URL}/api/leads`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: formData,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(
+          errorData.error?.message || 'Failed to submit proposal request.'
+        );
+      }
+
+      setStatus('success');
+      setFormData(INITIAL_FORM);
+    } catch (err: any) {
+      setStatus('error');
+      setErrorMessage(err.message || 'Something went wrong. Please try again.');
+    }
   };
 
   const discoveryPoints = [
@@ -489,145 +528,165 @@ export default function MarketingAssessmentPage() {
           {/* Subtle Ambient Inner Glow */}
           <div className="pointer-events-none absolute -top-12 -right-12 h-44 w-44 rounded-full bg-[#f5c563]/10 blur-3xl" />
 
-          <form onSubmit={handleSubmit} className="relative z-10 space-y-6">
-            
-            {/* Row 1: First Name & Last Name */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div className="space-y-2">
-                <label className="text-[11px] font-mono uppercase tracking-[0.2em] text-zinc-400 block">
-                  First Name <span className="text-[#f5c563]">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  placeholder="Jane"
-                  className="w-full h-12 px-4 rounded-xl bg-[#0e0e0e]/80 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#f5c563]/80 focus:ring-1 focus:ring-[#f5c563]/40 transition-all duration-300"
-                />
-              </div>
+     <form onSubmit={handleSubmit} className="relative z-10 space-y-6">
+      {/* Success Notification */}
+      {status === 'success' && (
+        <div className="flex items-center gap-3 p-4 rounded-xl border border-emerald-500/30 bg-emerald-950/30 text-emerald-300 text-sm">
+          <CheckCircle2 className="w-5 h-5 flex-shrink-0 text-emerald-400" />
+          <span>Thank you! Your request has been received. Our team will be in touch shortly.</span>
+        </div>
+      )}
 
-              <div className="space-y-2">
-                <label className="text-[11px] font-mono uppercase tracking-[0.2em] text-zinc-400 block">
-                  Last Name <span className="text-[#f5c563]">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  placeholder="Doe"
-                  className="w-full h-12 px-4 rounded-xl bg-[#0e0e0e]/80 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#f5c563]/80 focus:ring-1 focus:ring-[#f5c563]/40 transition-all duration-300"
-                />
-              </div>
-            </div>
+      {/* Error Notification */}
+      {status === 'error' && (
+        <div className="flex items-center gap-3 p-4 rounded-xl border border-rose-500/30 bg-rose-950/30 text-rose-300 text-sm">
+          <AlertCircle className="w-5 h-5 flex-shrink-0 text-rose-400" />
+          <span>{errorMessage}</span>
+        </div>
+      )}
 
-            {/* Row 2: Company Name & Email */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div className="space-y-2">
-                <label className="text-[11px] font-mono uppercase tracking-[0.2em] text-zinc-400 block">
-                  Company Name <span className="text-[#f5c563]">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  name="companyName"
-                  value={formData.companyName}
-                  onChange={handleChange}
-                  placeholder="Acme Corp"
-                  className="w-full h-12 px-4 rounded-xl bg-[#0e0e0e]/80 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#f5c563]/80 focus:ring-1 focus:ring-[#f5c563]/40 transition-all duration-300"
-                />
-              </div>
+      {/* Row 1: First Name & Last Name */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="space-y-2">
+          <label className="text-[11px] font-mono uppercase tracking-[0.2em] text-zinc-400 block">
+            First Name <span className="text-[#f5c563]">*</span>
+          </label>
+          <input
+            type="text"
+            required
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+            placeholder="Jane"
+            className="w-full h-12 px-4 rounded-xl bg-[#0e0e0e]/80 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#f5c563]/80 focus:ring-1 focus:ring-[#f5c563]/40 transition-all duration-300"
+          />
+        </div>
 
-              <div className="space-y-2">
-                <label className="text-[11px] font-mono uppercase tracking-[0.2em] text-zinc-400 block">
-                  Email <span className="text-[#f5c563]">*</span>
-                </label>
-                <input
-                  type="email"
-                  required
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="jane@company.com"
-                  className="w-full h-12 px-4 rounded-xl bg-[#0e0e0e]/80 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#f5c563]/80 focus:ring-1 focus:ring-[#f5c563]/40 transition-all duration-300"
-                />
-              </div>
-            </div>
+        <div className="space-y-2">
+          <label className="text-[11px] font-mono uppercase tracking-[0.2em] text-zinc-400 block">
+            Last Name <span className="text-[#f5c563]">*</span>
+          </label>
+          <input
+            type="text"
+            required
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleChange}
+            placeholder="Doe"
+            className="w-full h-12 px-4 rounded-xl bg-[#0e0e0e]/80 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#f5c563]/80 focus:ring-1 focus:ring-[#f5c563]/40 transition-all duration-300"
+          />
+        </div>
+      </div>
 
-            {/* Row 3: Role Selector */}
-            <div className="space-y-2">
-              <label className="text-[11px] font-mono uppercase tracking-[0.2em] text-zinc-400 block">
-                Which Best Describes Your Role? <span className="text-[#f5c563]">*</span>
-              </label>
-              <div className="relative">
-                <select
-                  required
-                  name="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                  className="w-full h-12 px-4 rounded-xl bg-[#0e0e0e]/80 border border-white/10 text-zinc-200 text-sm focus:outline-none focus:border-[#f5c563]/80 focus:ring-1 focus:ring-[#f5c563]/40 transition-all duration-300 appearance-none cursor-pointer"
-                >
-                  <option value="">Please Select</option>
-                  <option value="CEO or CMO looking for more sales">CEO or CMO looking for more sales</option>
-                  <option value="Marketing manager looking to boost ROI">Marketing manager looking to boost ROI</option>
-                  <option value="Marketer at a marketing or ad agency">Marketer at a marketing or ad agency</option>
-                  <option value="HubSpot customer who needs help">HubSpot customer who needs help</option>
-                </select>
-                <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500">
-                  <svg className="w-4 h-4 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </div>
-              </div>
-            </div>
+      {/* Row 2: Company Name & Email */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="space-y-2">
+          <label className="text-[11px] font-mono uppercase tracking-[0.2em] text-zinc-400 block">
+            Company Name <span className="text-[#f5c563]">*</span>
+          </label>
+          <input
+            type="text"
+            required
+            name="companyName"
+            value={formData.companyName}
+            onChange={handleChange}
+            placeholder="Acme Corp"
+            className="w-full h-12 px-4 rounded-xl bg-[#0e0e0e]/80 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#f5c563]/80 focus:ring-1 focus:ring-[#f5c563]/40 transition-all duration-300"
+          />
+        </div>
 
-            {/* Row 4: Challenge Selector */}
-            <div className="space-y-2">
-              <label className="text-[11px] font-mono uppercase tracking-[0.2em] text-zinc-400 block">
-                What Is Your Biggest Marketing Challenge? <span className="text-[#f5c563]">*</span>
-              </label>
-              <div className="relative">
-                <select
-                  required
-                  name="challenge"
-                  value={formData.challenge}
-                  onChange={handleChange}
-                  className="w-full h-12 px-4 rounded-xl bg-[#0e0e0e]/80 border border-white/10 text-zinc-200 text-sm focus:outline-none focus:border-[#f5c563]/80 focus:ring-1 focus:ring-[#f5c563]/40 transition-all duration-300 appearance-none cursor-pointer"
-                >
-                  <option value="">Please Select</option>
-                  <option value="Ineffective Marketing Strategy">Ineffective Marketing Strategy</option>
-                  <option value="Ineffective Messaging Across Buyer's Journey">Ineffective Messaging Across Buyer's Journey</option>
-                  <option value="Website Not Producing Enough Quality Leads">Website Not Producing Enough Quality Leads</option>
-                  <option value="Website Leads Not Converting Into Customers">Website Leads Not Converting Into Customers</option>
-                </select>
-                <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500">
-                  <svg className="w-4 h-4 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </div>
-              </div>
-            </div>
+        <div className="space-y-2">
+          <label className="text-[11px] font-mono uppercase tracking-[0.2em] text-zinc-400 block">
+            Email <span className="text-[#f5c563]">*</span>
+          </label>
+          <input
+            type="email"
+            required
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="jane@company.com"
+            className="w-full h-12 px-4 rounded-xl bg-[#0e0e0e]/80 border border-white/10 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#f5c563]/80 focus:ring-1 focus:ring-[#f5c563]/40 transition-all duration-300"
+          />
+        </div>
+      </div>
 
-         <div className="pt-4">
-  <motion.button
-    type="submit"
-    whileHover={{ scale: 1.02 }}
-    whileTap={{ scale: 0.98 }}
-    className="group flex w-full sm:w-auto items-center justify-between sm:justify-start gap-5 rounded-xl border border-white/20 bg-[#161616] px-8 py-4 transition-all duration-300 hover:border-[#f5c563] hover:bg-white hover:text-[#131313] focus:outline-none"
-  >
-    <span className="font-mono text-xs uppercase tracking-[0.22em] font-semibold text-zinc-100 transition-colors duration-300 group-hover:text-[#131313]">
-      Get Free Marketing Proposal
-    </span>
-    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white transition-all duration-300 group-hover:bg-[#131313] group-hover:text-white">
-      <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-    </div>
-  </motion.button>
-</div>
+      {/* Row 3: Role Selector */}
+      <div className="space-y-2">
+        <label className="text-[11px] font-mono uppercase tracking-[0.2em] text-zinc-400 block">
+          Which Best Describes Your Role? <span className="text-[#f5c563]">*</span>
+        </label>
+        <div className="relative">
+          <select
+            required
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            className="w-full h-12 px-4 rounded-xl bg-[#0e0e0e]/80 border border-white/10 text-zinc-200 text-sm focus:outline-none focus:border-[#f5c563]/80 focus:ring-1 focus:ring-[#f5c563]/40 transition-all duration-300 appearance-none cursor-pointer"
+          >
+            <option value="">Please Select</option>
+            <option value="CEO or CMO looking for more sales">CEO or CMO looking for more sales</option>
+            <option value="Marketing manager looking to boost ROI">Marketing manager looking to boost ROI</option>
+            <option value="Marketer at a marketing or ad agency">Marketer at a marketing or ad agency</option>
+            <option value="HubSpot customer who needs help">HubSpot customer who needs help</option>
+          </select>
+          <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500">
+            <svg className="w-4 h-4 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </div>
+        </div>
+      </div>
 
-          </form>
+      {/* Row 4: Challenge Selector */}
+      <div className="space-y-2">
+        <label className="text-[11px] font-mono uppercase tracking-[0.2em] text-zinc-400 block">
+          What Is Your Biggest Marketing Challenge? <span className="text-[#f5c563]">*</span>
+        </label>
+        <div className="relative">
+          <select
+            required
+            name="challenge"
+            value={formData.challenge}
+            onChange={handleChange}
+            className="w-full h-12 px-4 rounded-xl bg-[#0e0e0e]/80 border border-white/10 text-zinc-200 text-sm focus:outline-none focus:border-[#f5c563]/80 focus:ring-1 focus:ring-[#f5c563]/40 transition-all duration-300 appearance-none cursor-pointer"
+          >
+            <option value="">Please Select</option>
+            <option value="Ineffective Marketing Strategy">Ineffective Marketing Strategy</option>
+            <option value="Ineffective Messaging Across Buyer's Journey">Ineffective Messaging Across Buyer's Journey</option>
+            <option value="Website Not Producing Enough Quality Leads">Website Not Producing Enough Quality Leads</option>
+            <option value="Website Leads Not Converting Into Customers">Website Leads Not Converting Into Customers</option>
+          </select>
+          <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500">
+            <svg className="w-4 h-4 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* Submit Button */}
+      <div className="pt-4">
+        <motion.button
+          type="submit"
+          disabled={status === 'loading'}
+          whileHover={{ scale: status === 'loading' ? 1 : 1.02 }}
+          whileTap={{ scale: status === 'loading' ? 1 : 0.98 }}
+          className="group flex w-full sm:w-auto items-center justify-between sm:justify-start gap-5 rounded-xl border border-white/20 bg-[#161616] px-8 py-4 transition-all duration-300 hover:border-[#f5c563] hover:bg-white hover:text-[#131313] focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span className="font-mono text-xs uppercase tracking-[0.22em] font-semibold text-zinc-100 transition-colors duration-300 group-hover:text-[#131313]">
+            {status === 'loading' ? 'Submitting...' : 'Get Free Marketing Proposal'}
+          </span>
+          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white transition-all duration-300 group-hover:bg-[#131313] group-hover:text-white">
+            {status === 'loading' ? (
+              <Loader2 className="h-4 w-4 animate-spin text-zinc-300" />
+            ) : (
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            )}
+          </div>
+        </motion.button>
+      </div>
+    </form>
         </motion.div>
 
       </div>

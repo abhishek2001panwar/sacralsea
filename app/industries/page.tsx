@@ -392,88 +392,30 @@ export default function IndustriesSaaSTechPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center pt-4">
 
             {/* LEFT: THE INTERACTIVE CIRCULAR ENGAGEMENT MODEL */}
-            <div className="lg:col-span-6 flex justify-center items-center relative">
-              <div className="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-[#f5c563]/10 blur-3xl pointer-events-none" />
+           {/* LEFT: RESPONSIVE ENGAGEMENT MODEL IMAGE */}
+<div className="lg:col-span-6 flex justify-center items-center relative">
+  {/* Ambient gold glow matching the rest of the section */}
+  <div className="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-[#f5c563]/10 blur-3xl pointer-events-none" />
 
-              <div className="relative w-[340px] h-[340px] sm:w-[420px] sm:h-[420px] rounded-full border border-white/10 flex items-center justify-center p-6 bg-[#161616]/70 backdrop-blur-sm shadow-2xl">
-                
-                {/* SVG Rotating Flow Arrows */}
-                <svg
-                  className="absolute inset-0 w-full h-full pointer-events-none"
-                  viewBox="0 0 400 400"
-                  fill="none"
-                >
-                  <defs>
-                    <marker
-                      id="arrow"
-                      viewBox="0 0 10 10"
-                      refX="5"
-                      refY="5"
-                      markerWidth="6"
-                      markerHeight="6"
-                      orient="auto-start-reverse"
-                    >
-                      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f5c563" />
-                    </marker>
-                  </defs>
+  <div className="relative w-full max-w-md lg:max-w-none overflow-hidden rounded-2xl border border-white/10 bg-[#161616]/70 backdrop-blur-sm shadow-2xl">
+    
+    {/* Mobile Only: Landscape Image (aspect ratio ~ 16:9 or auto) */}
+    <img
+      src="/industry1.jpeg"
+      alt="Engagement Models"
+      className="block lg:hidden w-full h-auto  object-cover rounded-2xl"
+    />
 
-                 
+    {/* Desktop Only: Portrait Image (aspect ratio ~ 4:5 or 3:4) */}
+  {/* Desktop Only: Full view without cropping */}
+<img
+  src="/industry.jpeg"
+  alt="Engagement Models"
+  className="hidden lg:block w-full h-full object-contain rounded-2xl"
+/>
 
-                  {/* Divider lines */}
-                  <line x1="200" y1="140" x2="200" y2="70" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" />
-                  <line x1="150" y1="230" x2="80" y2="280" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" />
-                  <line x1="250" y1="230" x2="320" y2="280" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" />
-                </svg>
-
-                {/* Center Core Hub */}
-                <div className="relative z-10 w-24 h-24 sm:w-28 sm:h-28 rounded-full border border-[#f5c563]/40 bg-[#121212] flex flex-col items-center justify-center text-center p-2 shadow-[0_0_20px_rgba(245,197,99,0.15)]">
-                
-                  <h1 className="text-[9px] font-mono uppercase tracking-widest text-[#f5c563]">
-                    Engagement Models
-                  </h1>
-                </div>
-
-                {/* Top Node: Customer Acquisition Campaigns */}
-                <div
-                  onMouseEnter={() => setActiveSegment(1)}
-                  onMouseLeave={() => setActiveSegment(null)}
-                  className={`absolute top-6 left-1/2 -translate-x-1/2 text-center max-w-[150px] transition-all duration-300 cursor-pointer ${
-                    activeSegment === 1 ? 'scale-105 text-[#f5c563]' : 'text-zinc-200 hover:text-white'
-                  }`}
-                >
-                  <h1 className="text-xs sm:text-sm font-semibold tracking-tight leading-snug">
-                    Customer Acquisition Campaigns
-                  </h1>
-                </div>
-
-                {/* Right Node: Project-Based Development & Integrations */}
-                <div
-                  onMouseEnter={() => setActiveSegment(2)}
-                  onMouseLeave={() => setActiveSegment(null)}
-                  className={`absolute bottom-16 right-4 sm:right-6 text-center max-w-[140px] transition-all duration-300 cursor-pointer ${
-                    activeSegment === 2 ? 'scale-105 text-[#f5c563]' : 'text-zinc-200 hover:text-white'
-                  }`}
-                >
-                  <h1 className="text-xs sm:text-sm font-semibold tracking-tight leading-snug">
-                    Project-Based Development & Integrations
-                  </h1>
-                </div>
-
-                {/* Left Node: Agile Retainer Engagements */}
-                <div
-                  onMouseEnter={() => setActiveSegment(3)}
-                  onMouseLeave={() => setActiveSegment(null)}
-                  className={`absolute bottom-16 left-4 sm:left-6 text-center max-w-[140px] transition-all duration-300 cursor-pointer ${
-                    activeSegment === 3 ? 'scale-105 text-[#f5c563]' : 'text-zinc-200 hover:text-white'
-                  }`}
-                >
-                  <h1 className="text-xs sm:text-sm font-semibold tracking-tight leading-snug">
-                    Agile Retainer Engagements
-                  </h1>
-                </div>
-
-              </div>
-            </div>
+  </div>
+</div>
 
             {/* RIGHT: LIST & CALL TO ACTION */}
             <div className="lg:col-span-6 space-y-6">

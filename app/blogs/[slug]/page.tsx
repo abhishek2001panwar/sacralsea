@@ -1,26 +1,26 @@
 import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, ArrowUpRight, Clock, Calendar, User, Sparkles } from 'lucide-react';
-import { getAllPosts, getPostBySlug } from '@/lib/blog-data';
+import { ArrowLeft, ArrowUpRight, Clock, Calendar, User } from 'lucide-react';
+import { fetchBlogPosts, fetchBlogPostBySlug } from '@/lib/strapi';
 import Navbar from '@/app/components/Navbar';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-// Generate static params for fast, pre-rendered static routes
+// Pre-render pages statically at build time using Strapi data
 export async function generateStaticParams() {
-  const posts = getAllPosts();
-  return posts.map((post) => ({
+  const posts = await fetchBlogPosts();
+  return posts.map((post: { slug: string }) => ({
     slug: post.slug,
   }));
 }
 
-// Generate SEO meta tags per dynamic slug
+// Dynamic SEO metadata pulled directly from Strapi
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await fetchBlogPostBySlug(slug);
 
   if (!post) {
     return { title: 'Article Not Found' };
@@ -34,16 +34,23 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  
+  // Fetch current article and full list concurrently for deal velocity & bottom next link
+  const [post, allPosts] = await Promise.all([
+    fetchBlogPostBySlug(slug),
+    fetchBlogPosts(),
+  ]);
 
   if (!post) {
     notFound();
   }
 
-  // Find next article for bottom loop
-  const allPosts = getAllPosts();
-  const currentIndex = allPosts.findIndex((p) => p.slug === slug);
-  const nextPost = allPosts[(currentIndex + 1) % allPosts.length];
+  // Calculate next post in cycle
+  const currentIndex = allPosts.findIndex((p: { slug: string }) => p.slug === slug);
+  const nextPost =
+    allPosts.length > 1
+      ? allPosts[(currentIndex + 1) % allPosts.length]
+      : null;
 
   return (
     <article className="relative min-h-screen bg-[#131313] text-zinc-100 font-sans selection:bg-[#f5c563] selection:text-[#131313] overflow-x-hidden">
@@ -95,51 +102,58 @@ export default async function BlogPostPage({ params }: PageProps) {
 
       {/* Article Body */}
       <div className="max-w-3xl mx-auto px-6 sm:px-8 py-16 space-y-12">
-        {post.content.map((section, idx) => (
+        {post.content && post.content.map((section: any, idx: number) => (
           <section key={idx} className="space-y-6">
             {section.heading && (
               <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
                 {section.heading}
               </h2>
             )}
-            {section.paragraphs.map((p, pIdx) => (
-              <p
-                key={pIdx}
-                className="text-base sm:text-lg text-zinc-300 font-light leading-relaxed"
-              >
-                {p}
+            {Array.isArray(section.paragraphs) ? (
+              section.paragraphs.map((p: string, pIdx: number) => (
+                <p
+                  key={pIdx}
+                  className="text-base sm:text-lg text-zinc-300 font-light leading-relaxed whitespace-pre-line"
+                >
+                  {p}
+                </p>
+              ))
+            ) : (
+              <p className="text-base sm:text-lg text-zinc-300 font-light leading-relaxed whitespace-pre-line">
+                {section.paragraphs}
               </p>
-            ))}
+            )}
           </section>
         ))}
       </div>
 
       {/* Next Article Card Strip */}
-      <footer className="max-w-4xl mx-auto px-6 sm:px-8 py-20 border-t border-white/10">
-        <div className="space-y-6">
-          <span className="text-[11px] font-mono uppercase tracking-[0.3em] text-[#f5c563]">
-            Next Read
-          </span>
+      {nextPost && (
+        <footer className="max-w-4xl mx-auto px-6 sm:px-8 py-20 border-t border-white/10">
+          <div className="space-y-6">
+            <span className="text-[11px] font-mono uppercase tracking-[0.3em] text-[#f5c563]">
+              Next Read
+            </span>
 
-          <Link href={`/blogs/${nextPost.slug}`} className="block group">
-            <div className="p-8 sm:p-10 rounded-2xl border border-white/10 bg-[#171717] hover:border-[#f5c563]/50 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-              <div className="space-y-2">
-                <span className="text-xs font-mono text-zinc-500 uppercase tracking-wider block">
-                  {nextPost.category} • {nextPost.readTime}
-                </span>
-                <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-[#f5c563] transition-colors leading-snug">
-                  {nextPost.title}
-                </h3>
+            <Link href={`/blogs/${nextPost.slug}`} className="block group">
+              <div className="p-8 sm:p-10 rounded-2xl border border-white/10 bg-[#171717] hover:border-[#f5c563]/50 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                <div className="space-y-2">
+                  <span className="text-xs font-mono text-zinc-500 uppercase tracking-wider block">
+                    {nextPost.category} • {nextPost.readTime}
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-[#f5c563] transition-colors leading-snug">
+                    {nextPost.title}
+                  </h3>
+                </div>
+
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-300 group-hover:border-[#f5c563] group-hover:bg-[#f5c563] group-hover:text-[#131313] transition-all">
+                  <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </div>
               </div>
-
-              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-300 group-hover:border-[#f5c563] group-hover:bg-[#f5c563] group-hover:text-[#131313] transition-all">
-                <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </div>
-            </div>
-          </Link>
-        </div>
-      </footer>
-
+            </Link>
+          </div>
+        </footer>
+      )}
     </article>
   );
 }

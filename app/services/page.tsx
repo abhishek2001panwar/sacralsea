@@ -289,6 +289,7 @@ export default function ServicesPage() {
         </motion.div>
       </section>
 
+
       {/* ========================================================= */}
       {/* 4TH FOLD: INBOUND READINESS & REVENUE PLAYBOOK            */}
       {/* ========================================================= */}
@@ -392,6 +393,62 @@ export default function ServicesPage() {
         </div>
 
       </section>
+
+    {/* ========================================================= */}
+{/* CENTERED 2-IMAGE SECTION (LEFT & RIGHT)                   */}
+{/* ========================================================= */}
+<section className="py-20 px-6 sm:px-8 max-w-6xl mx-auto flex justify-center items-center">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 w-full max-w-4xl justify-center items-center">
+    
+    {/* 1. LEFT IMAGE */}
+    <div className="relative flex justify-center items-center w-full">
+      <div className="absolute w-48 h-48 sm:w-64 sm:h-64 rounded-full bg-[#f5c563]/10 blur-3xl pointer-events-none" />
+      <div className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-[#161616]/70 backdrop-blur-sm shadow-2xl">
+        {/* Mobile: Landscape */}
+        <img
+          src="/service1.jpeg"
+          alt="Engagement preview left"
+          loading="lazy"
+          decoding="async"
+          className="block md:hidden w-full h-auto  object-cover rounded-2xl"
+        />
+        {/* Desktop: Portrait */}
+        <img
+          src="/service.jpeg"
+          alt="Engagement preview left"
+          loading="lazy"
+          decoding="async"
+          className="hidden md:block w-full h-auto  object-cover rounded-2xl"
+        />
+      </div>
+    </div>
+
+    {/* 2. RIGHT IMAGE */}
+    <div className="relative flex justify-center items-center w-full">
+      <div className="absolute w-48 h-48 sm:w-64 sm:h-64 rounded-full bg-[#f5c563]/10 blur-3xl pointer-events-none" />
+      <div className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-[#161616]/70 backdrop-blur-sm shadow-2xl">
+        {/* Mobile: Landscape */}
+        <img
+          src="/service2mob.jpeg"
+          alt="Engagement preview right"
+          loading="lazy"
+          decoding="async"
+          className="block md:hidden w-full h-auto  object-cover rounded-2xl"
+        />
+        {/* Desktop: Portrait */}
+        <img
+          src="/service2des.jpeg"
+          alt="Engagement preview right"
+          loading="lazy"
+          decoding="async"
+          className="hidden md:block w-full h-auto  object-cover rounded-2xl"
+        />
+      </div>
+    </div>
+
+  </div>
+</section>
+
 
     </div></>
   );

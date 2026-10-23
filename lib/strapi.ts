@@ -1,17 +1,30 @@
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+
+const STRAPI_URL = (
+  process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
+).replace(/\/+$/, "");
 
 export async function fetchBlogPosts() {
-  const res = await fetch(`${STRAPI_URL}/api/posts?populate=*`, {
-    cache: 'no-store', // or { next: { revalidate: 60 } } for Next.js ISR
+  const url = `${STRAPI_URL}/api/posts?populate=*`;
+
+  console.log("Strapi URL being called:", url);
+
+  const res = await fetch(url, {
+    cache: "no-store",
   });
 
+  const body = await res.text();
+
+  console.log("Strapi HTTP status:", res.status);
+  console.log("Strapi response body:", body);
+
   if (!res.ok) {
-    throw new Error('Failed to fetch posts from Strapi');
+    throw new Error(
+      `Failed to fetch posts from Strapi: HTTP ${res.status} ${res.statusText}`
+    );
   }
 
-  const json = await res.json();
+  const json = JSON.parse(body);
 
-  // Map Strapi 5 response to your original BlogPost shape
   return json.data.map((item: any) => ({
     id: item.id,
     documentId: item.documentId,
@@ -24,13 +37,14 @@ export async function fetchBlogPosts() {
     summary: item.summary,
     content: (item.content || []).map((section: any) => ({
       heading: section.heading,
-      // Split paragraphs back into an array if your UI expects string[]
-      paragraphs: typeof section.paragraphs === 'string'
-        ? section.paragraphs.split('\n\n')
-        : section.paragraphs,
+      paragraphs:
+        typeof section.paragraphs === "string"
+          ? section.paragraphs.split("\n\n")
+          : section.paragraphs,
     })),
   }));
 }
+
 
 export async function fetchBlogPostBySlug(slug: string) {
   const res = await fetch(`${STRAPI_URL}/api/posts?filters[slug][$eq]=${slug}&populate=*`, {

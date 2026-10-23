@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useScroll, useTransform, Variants } from 'framer-motion';
-import { ArrowUpRight, Sparkles } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { useRef } from 'react';
 
 // High-end agency quintic ease curve
@@ -46,14 +46,14 @@ interface SmoothWordProps {
 const SmoothWord: React.FC<SmoothWordProps> = ({ word, isYellow = false }) => {
   return (
     <span className="inline-block overflow-hidden py-1">
-      <motion.h1
+      <motion.span
         variants={wordVariant}
         className={`inline-block transform-gpu will-change-transform ${
           isYellow ? 'text-[#f5c563] font-normal' : ''
         }`}
       >
         {word}
-      </motion.h1>
+      </motion.span>
     </span>
   );
 };
@@ -83,7 +83,7 @@ export default function CinematicHero() {
   // Frame 2: "On the dot" + Clock Zoom (0.48 -> 0.72)
   const frame2Opacity = useTransform(scrollYProgress, [0.48, 0.53, 0.68, 0.73], [0, 1, 1, 0]);
   const clockScale = useTransform(scrollYProgress, [0.48, 0.72], [0.8, 1.6]);
-  const bigHandRotation = useTransform(scrollYProgress, [0.48, 0.65], [0, 360]); // Big hand completes rotation to land on small hand
+  const bigHandRotation = useTransform(scrollYProgress, [0.48, 0.65], [0, 360]);
 
   // Frame 3: "Get Full-Stack Agency Services" (0.74 -> 1.0)
   const frame3Opacity = useTransform(scrollYProgress, [0.73, 0.8], [0, 1]);
@@ -141,55 +141,42 @@ export default function CinematicHero() {
             y: phase1Y,
             display: useTransform(scrollYProgress, (v) => (v >= 0.25 ? 'none' : 'flex')),
           }}
-          className="relative z-10 w-full max-w-5xl px-6 flex-col items-center justify-between h-[75vh] transform-gpu will-change-transform"
+          className="relative z-10 w-full max-w-5xl px-6 flex-col items-center justify-center min-h-[75vh] transform-gpu will-change-transform"
         >
-          {/* Top Pill Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: EASE }}
-            className="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full border border-white/10 bg-[#1a1a1a] shadow-xl"
-          >
-           
-            <span className="text-zinc-400 text-xs uppercase tracking-[0.25em] font-mono">
-              You found us!
-            </span>
-          </motion.div>
-
-          {/* Masked Headline: "Together, we'll take it from here." */}
-          <div className="text-center space-y-6 my-auto max-w-4xl">
+          <div className="text-center space-y-6 max-w-4xl">
+            {/* Primary Heading: "You found us" (Masked Word Reveal, No borders/pills) */}
             <motion.h1
               variants={sentenceContainer}
               initial="hidden"
               animate="visible"
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white leading-[1.08] flex flex-col items-center justify-center gap-y-1 sm:gap-y-2 select-none"
+              className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-medium tracking-tight text-white leading-[1.05] flex flex-wrap justify-center gap-x-[0.25em] select-none"
             >
-              {/* Line 1 */}
-              <div className="flex flex-wrap justify-center gap-x-[0.28em]">
-                <SmoothWord word="Together," />
-              </div>
-
-              {/* Line 2 */}
-              <div className="flex flex-wrap justify-center gap-x-[0.28em]">
-                <SmoothWord word="we'll" />
-                <SmoothWord word="take" />
-                <SmoothWord word="it" />
-                <SmoothWord word="from" isYellow={true} />
-                <SmoothWord word="here." isYellow={true} />
-              </div>
+              <SmoothWord word="You" />
+              <SmoothWord word="found" />
+              <SmoothWord word="us" />
             </motion.h1>
 
+            {/* Subheading: "Together, we'll take it from here." */}
+            <motion.h2
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.8, ease: EASE }}
+              className="text-xl sm:text-2xl md:text-3xl text-zinc-300 font-light tracking-tight leading-snug"
+            >
+              Together, we&apos;ll take it{' '}
+              <span className="text-[#f5c563] font-normal">from here.</span>
+            </motion.h2>
+
+            {/* Supporting Copy */}
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.1, duration: 0.8, ease: EASE }}
+              transition={{ delay: 0.9, duration: 0.8, ease: EASE }}
               className="text-xs sm:text-sm md:text-base text-zinc-400 font-light tracking-wide max-w-md mx-auto"
             >
               Crafting high-end digital experiences, visual identity, and modern applications.
             </motion.p>
           </div>
-
-         
         </motion.div>
 
         {/* ================= FRAME 1: YOU ARRIVED ================= */}
@@ -242,7 +229,7 @@ export default function CinematicHero() {
           </motion.div>
 
           <h3 className="text-3xl sm:text-5xl md:text-6xl font-serif italic font-light text-white tracking-wide">
-            ‘On the dot’
+            &lsquo;On the dot&rsquo;
           </h3>
         </motion.div>
 

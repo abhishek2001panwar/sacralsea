@@ -7,12 +7,12 @@ import Navbar from '../components/Navbar';
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 
 const INITIAL_FORM = {
-  firstName: '',
-  lastName: '',
-  companyName: '',
-  email: '',
-  role: '',
-  challenge: '',
+  firstName: "",
+  lastName: "",
+  companyName: "",
+  email: "",
+  challenge: "",
+  role: "",
 };
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -53,37 +53,61 @@ export default function MarketingAssessmentPage() {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('loading');
-    setErrorMessage('');
 
-    try {
-      // Strapi accepts { data: payload }
-      const res = await fetch(`${STRAPI_URL}/api/leads`, {
-        method: 'POST',
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setStatus("loading");
+  setErrorMessage("");
+
+  try {
+    const res = await fetch(
+      `${STRAPI_URL.replace(/\/+$/, "")}/api/leads`,
+      {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           data: formData,
         }),
+      }
+    );
+
+    const responseText = await res.text();
+
+    let result: any;
+    try {
+      result = responseText ? JSON.parse(responseText) : {};
+    } catch {
+      throw new Error(
+        `Strapi returned a non-JSON response: ${responseText}`
+      );
+    }
+
+    if (!res.ok) {
+      console.error("Strapi lead submission failed:", {
+        status: res.status,
+        result,
       });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(
-          errorData.error?.message || 'Failed to submit proposal request.'
-        );
-      }
-
-      setStatus('success');
-      setFormData(INITIAL_FORM);
-    } catch (err: any) {
-      setStatus('error');
-      setErrorMessage(err.message || 'Something went wrong. Please try again.');
+      throw new Error(
+        result.error?.message ||
+          `Failed to submit request (${res.status})`
+      );
     }
-  };
+
+    setStatus("success");
+    setFormData(INITIAL_FORM);
+  } catch (err: unknown) {
+    setStatus("error");
+    setErrorMessage(
+      err instanceof Error
+        ? err.message
+        : "Something went wrong. Please try again."
+    );
+  }
+};
+
 
   const discoveryPoints = [
     'Where your current marketing funnel is leaking good prospects.',
